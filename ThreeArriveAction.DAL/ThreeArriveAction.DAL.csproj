@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{575A0962-9788-49EF-8472-EA06BA2A6A03}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ThreeArriveAction.DAL</RootNamespace>
+    <AssemblyName>ThreeArriveAction.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sys_configDAL.cs" />
+    <Compile Include="sys_NavigationsDAL.cs" />
+    <Compile Include="sys_OnSignsDAL.cs" />
+    <Compile Include="sys_OrganizationAndNavigationsDAL.cs" />
+    <Compile Include="sys_OrganizationsDAL.cs" />
+    <Compile Include="sys_SignsDAL.cs" />
+    <Compile Include="sys_SubcriberFamilyDAL.cs" />
+    <Compile Include="sys_ThingRecordsDAL.cs" />
+    <Compile Include="sys_UserIntergralsDAL.cs" />
+    <Compile Include="sys_UsersDAL.cs" />
+    <Compile Include="sys_UsersInfoDAL.cs" />
+    <Compile Include="sys_VillagesDAL.cs" />
+    <Compile Include="sys_WeekArrivesDAL.cs" />
+    <Compile Include="wx\wx_requestRuleContentDAL.cs" />
+    <Compile Include="wx\wx_requestRuleDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ThreeArriveAction.Common\ThreeArriveAction.Common.csproj">
+      <Project>{D94BB4F1-DF3F-4BA7-93D2-1C76A1BF1C68}</Project>
+      <Name>ThreeArriveAction.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.DBUtility\ThreeArriveAction.DBUtility.csproj">
+      <Project>{D9895801-A8F8-41F4-A756-AC404CE177B8}</Project>
+      <Name>ThreeArriveAction.DBUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.Model\ThreeArriveAction.Model.csproj">
+      <Project>{949E40E6-A255-4E85-8CBA-B0E61FF66378}</Project>
+      <Name>ThreeArriveAction.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

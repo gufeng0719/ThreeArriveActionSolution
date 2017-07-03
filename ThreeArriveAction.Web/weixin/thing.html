@@ -1,0 +1,113 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <title>三到行动</title>
+    <style>
+        select
+        {
+            height: 30px;
+            border: 1px solid #eeeeee;
+            padding-left: 5px;
+            width: 40%;
+        }
+        
+    </style>
+</head>
+<body>
+    <!--top开始-->
+    <div class="banner">
+        <img src="../images/banner_heiban.jpg">
+    </div>
+    <div class="header">
+        <div class="crile">
+        </div>
+        <div class="text">
+            有事马上到</div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    选择拜访户
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <select id="subtype">
+                    <option>五保户</option>
+                    <option>老党员户</option>
+                    <option>低保户</option>
+                </select>
+                <select id="subfamily">
+                    <option>李宜林--15152413749</option>
+                    <option>王殿法--13083558818</option>
+                    <option>时开煦--15189588596</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    事件
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <input type="text" id="title" style="width: 99%;height:30px;" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    原因
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <textarea id="thing" style="width: 99%; height: 100px;"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    是否解决
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <input type="radio" name="thinghaving" />已解决<input type="radio" name="thinghaving" />未解决
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    解决方式
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <textarea id="Textarea1" style="width: 99%; height: 100px;"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    照片
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <a>
+                    <img src="../images/templates/bottommenu/218.png" style="width: 64px; height: 64px;" /></a>
+                <a>
+                    <img src="../images/templates/bottommenu/67.png" style="width: 64px; height: 64px;" /></a>
+            </div>
+        </div>
+        <div class="row">
+            <input type="button" class="btn" value="提交" />
+        </div>
+    </div>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{949E40E6-A255-4E85-8CBA-B0E61FF66378}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ThreeArriveAction.Model</RootNamespace>
+    <AssemblyName>ThreeArriveAction.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sys_config.cs" />
+    <Compile Include="sys_DictionairesModel.cs" />
+    <Compile Include="sys_IntegralInfoModel.cs" />
+    <Compile Include="sys_InteractionLearnsModel.cs" />
+    <Compile Include="sys_NavigationsModel.cs" />
+    <Compile Include="sys_OnButysModel.cs" />
+    <Compile Include="sys_OnlineInteractionsModel.cs" />
+    <Compile Include="sys_OnSignsModel.cs" />
+    <Compile Include="sys_OrganizationANDNavigationsModel.cs" />
+    <Compile Include="sys_OrganizationsModel.cs" />
+    <Compile Include="sys_PublicMessagesModel.cs" />
+    <Compile Include="sys_ReplaysModel.cs" />
+    <Compile Include="sys_SignsModel.cs" />
+    <Compile Include="sys_SubscriberFamilyModel.cs" />
+    <Compile Include="sys_ThingRecordsModel.cs" />
+    <Compile Include="sys_UserIntegralsModel.cs" />
+    <Compile Include="sys_UsersInfoModel.cs" />
+    <Compile Include="sys_UsersModel.cs" />
+    <Compile Include="sys_VillagesModel.cs" />
+    <Compile Include="sys_WeekArrivesModel.cs" />
+    <Compile Include="wx\pre_common_district.cs" />
+    <Compile Include="wx\ResponseContentEntity.cs" />
+    <Compile Include="wx\wxcodeconfig.cs" />
+    <Compile Include="wx\wx_lbs_setting.cs" />
+    <Compile Include="wx\wx_lbs_shopInfo.cs" />
+    <Compile Include="wx\wx_link_module.cs" />
+    <Compile Include="wx\wx_logs.cs" />
+    <Compile Include="wx\wx_PicStore.cs" />
+    <Compile Include="wx\wx_property_info.cs" />
+    <Compile Include="wx\wx_requestRuleModel.cs" />
+    <Compile Include="wx\wx_requestRuleContentModel.cs" />
+    <Compile Include="wx\wx_requst_BaseDataModel.cs" />
+    <Compile Include="wx\wx_response_BaseDataModel.cs" />
+    <Compile Include="wx\wx_small_link.cs" />
+    <Compile Include="wx\wx_sms_config.cs" />
+    <Compile Include="wx\wx_sms_info.cs" />
+    <Compile Include="wx\wx_sysConfig.cs" />
+    <Compile Include="wx\wx_templates.cs" />
+    <Compile Include="wx\wx_templates_wcode.cs" />
+    <Compile Include="wx\wx_userweixin.cs" />
+    <Compile Include="wx\wx_wsite_modulebase.cs" />
+    <Compile Include="wx\wx_wsite_setting.cs" />
+    <Compile Include="wx_MenusModel.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

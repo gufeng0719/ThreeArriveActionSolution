@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>用户列表</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1" runat="server">
+    <!--导航栏-->
+    <div class="location">
+        <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+        <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>用户列表</span>
+    </div>
+    <!--/导航栏-->
+    <!--工具栏-->
+    <div class="toolbar-wrap">
+        <div id="floatHead" class="toolbar">
+            <div class="l-list">
+                <ul class="icon-list">
+                    <li><a class="add" href="UsersEdit.html?type=add"><i></i><span>新增</span></a></li>
+                    <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+                    <li><a class="del"><i></i><span>删除</span></a> </li>
+                </ul>
+            </div>
+            <div class="r-list">
+                <input type="text" class="keyword" id="keywords" />
+                <input type="button" id="btnSearch" class="btn-search" value="查询" />
+            </div>
+        </div>
+    </div>
+    <!--/工具栏-->
+    <!--列表-->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+        <thead>
+            <tr>
+                <th width="8%">
+                    选择
+                </th>
+                <th align="left" width="10%">
+                    手机号
+                </th>
+                <th align="left" width="12%">
+                    用户名
+                </th>
+                <th align="left" width="11%">
+                    用户职务
+                </th>
+                <th align="left" width="11%">
+                    村居
+                </th>
+                <th align="left" width="12%">
+                    出生日期
+                </th>
+                <th align="left" width="12%">
+                    学历
+                </th>
+                <th align="left" width="16%">
+                    入党日期
+                </th>
+                <th width="4%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+        <!--/列表-->
+    </table>
+    <!--内容底部-->
+    <div class="line20">
+    </div>
+    <div class="pagelist">
+        <div class="l-btns">
+            <span>显示</span>
+            <label class="pagenum">10</label>
+            <span>条/页</span>
+        </div>
+        <div id="PageContent" class="default">
+        </div>
+    </div>
+    <!--/内容底部-->
+    </form>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Load(1);
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+        });
+
+        function Load(page) {
+            var key = $("#keywords").val();
+            //加载列表
+            $.getJSON("../Ajax/sys_UsersManager.ashx?type=get", { "keywords": key, "page": page }, function (msg) {
+                $("#tbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
+                        s += "<input id=\"chkId" + msg.rows[i].UserId + "\" type=\"checkbox\"  enabled='enabled' /> </span>";
+                        s += "<input type=\"hidden\" id=\"userid" + i + "\" value=\"" + msg.rows[i].UserId + "\" />";
+                        s += "</td>";
+                        s += "<td>" + msg.rows[i].UserPhone + "</td>";
+                        s += "<td><a href='UserEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>" + msg.rows[i].UserName + "</a></td>";
+                        s += "<td>" + msg.rows[i].UserDuties + "</td>";
+                        s += "<td>" + msg.rows[i].VillageName + "</td>";
+                        s += "<td>" + msg.rows[i].UserBirthday + "</td>";
+                        s += "<td>" + msg.rows[i].UserEducation + "</td>";
+                        s += "<td>" + msg.rows[i].JoinPartyDate + "</td>";
+                        s += "<td align=\"center\"><a href='UserEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>修改</a></td>";
+                        s += "</tr>";
+                        $("#tbody").append(s);
+                    }
+                    console.info(msg.pageContent);
+                    $("#PageContent").html(msg.pageContent);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
