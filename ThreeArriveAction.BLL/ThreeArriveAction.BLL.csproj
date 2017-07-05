@@ -53,6 +53,7 @@
     <Compile Include="sys_UsersBLL.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="sys_UsersInfoBLL.cs" />
     <Compile Include="sys_VillagesBLL.cs" />
     <Compile Include="sys_WeekArrivesBLL.cs" />
     <Compile Include="wx\wx_requestRuleBLL.cs" />

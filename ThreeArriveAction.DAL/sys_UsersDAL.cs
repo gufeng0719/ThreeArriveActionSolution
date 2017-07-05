@@ -108,7 +108,7 @@ namespace ThreeArriveAction.DAL
                 strSql2.Append("UserEducation,JoinPartyDate,UserRemarks)");
                 strSql2.Append(" values (");
                 strSql2.Append("@UserId,@UserPhoto,@UserUrl,@PersonalIntroduction,");
-                strSql2.Append("@PersonalHonor,@UserEduction,@JoinPartyDate,@UserRemarks)");
+                strSql2.Append("@PersonalHonor,@UserEducation,@JoinPartyDate,@UserRemarks)");
                 SqlParameter[] parameters2 = {
 					    new SqlParameter("@UserId", SqlDbType.Int,4),
 					    new SqlParameter("@UserPhoto", SqlDbType.NVarChar,50),
@@ -116,7 +116,7 @@ namespace ThreeArriveAction.DAL
                         new SqlParameter("@PersonalIntroduction",SqlDbType.NVarChar,5000),
                         new SqlParameter("@PersonalHonor",SqlDbType.NVarChar,5000),
                         new SqlParameter("@UserEducation",SqlDbType.NVarChar,100),
-                        new SqlParameter("@JoinParthDate",SqlDbType.VarChar,50),
+                        new SqlParameter("@JoinPartyDate",SqlDbType.VarChar,50),
 					    new SqlParameter("@UserRemarks", SqlDbType.NVarChar,5000)
                                                  };
                 parameters2[0].Direction = ParameterDirection.InputOutput;
@@ -177,18 +177,22 @@ namespace ThreeArriveAction.DAL
             cmdInfo1.CommandText = strSql.ToString();
             cmdInfo1.Parameters = parameters;
             cmdList.Add(cmdInfo1);
-            CommandInfo cmdInfo2 = new CommandInfo();
-            StringBuilder strSql2 = new StringBuilder();
-            strSql2.Append("update sys_UsersInfo set ");
-            strSql2.Append("UserPhoto =@UserPhoto,");
-            strSql2.Append("UserUrl=@UserUrl,");
-            strSql2.Append("PersonalIntroduction=@PersonalIntroduction,");
-            strSql2.Append("PersonalHonor=@PersonalHonor,");
-            strSql2.Append("UserEducation=@UserEducation,");
-            strSql2.Append("JoinPartyDate=@JoinPartyDate,");
-            strSql2.Append("UserRemarks=@UserRemarks");
-            strSql2.Append(" where UserId=@UserId ");
-            SqlParameter[] parameters2 ={
+            sys_UsersInfoDAL infoDAL = new sys_UsersInfoDAL();
+            //已存在子表信息
+            if (infoDAL.GetUsersInfoByUserId(model.UserId) != null)
+            {
+                CommandInfo cmdInfo2 = new CommandInfo();
+                StringBuilder strSql2 = new StringBuilder();
+                strSql2.Append("update sys_UsersInfo set ");
+                strSql2.Append("UserPhoto =@UserPhoto,");
+                strSql2.Append("UserUrl=@UserUrl,");
+                strSql2.Append("PersonalIntroduction=@PersonalIntroduction,");
+                strSql2.Append("PersonalHonor=@PersonalHonor,");
+                strSql2.Append("UserEducation=@UserEducation,");
+                strSql2.Append("JoinPartyDate=@JoinPartyDate,");
+                strSql2.Append("UserRemarks=@UserRemarks");
+                strSql2.Append(" where UserId=@UserId ");
+                SqlParameter[] parameters2 ={
                                             new SqlParameter("@UserId",SqlDbType.Int,4),
                                             new SqlParameter("@UserPhoto",SqlDbType.VarChar,50),
                                             new SqlParameter("@UserUrl",SqlDbType.VarChar,500),
@@ -198,17 +202,52 @@ namespace ThreeArriveAction.DAL
                                             new SqlParameter("@JoinPartyDate",SqlDbType.VarChar,50),
                                             new SqlParameter("@UserRemarks",SqlDbType.VarChar,5000)
                                        };
-            parameters2[0].Value = model.UserId;
-            parameters2[1].Value = model.UserInfoModel.UserPhoto;
-            parameters2[2].Value = model.UserInfoModel.UserUrl;
-            parameters2[3].Value = model.UserInfoModel.PersonalIntroduction;
-            parameters2[4].Value = model.UserInfoModel.PersonalHonor;
-            parameters2[5].Value = model.UserInfoModel.UserEducation;
-            parameters2[6].Value = model.UserInfoModel.JoinPartyDate;
-            parameters2[7].Value = model.UserInfoModel.UserRemarks;
-            cmdInfo2.CommandText = strSql2.ToString();
-            cmdInfo2.Parameters = parameters2;
-            cmdList.Add(cmdInfo2);
+                parameters2[0].Value = model.UserId;
+                parameters2[1].Value = model.UserInfoModel.UserPhoto;
+                parameters2[2].Value = model.UserInfoModel.UserUrl;
+                parameters2[3].Value = model.UserInfoModel.PersonalIntroduction;
+                parameters2[4].Value = model.UserInfoModel.PersonalHonor;
+                parameters2[5].Value = model.UserInfoModel.UserEducation;
+                parameters2[6].Value = model.UserInfoModel.JoinPartyDate;
+                parameters2[7].Value = model.UserInfoModel.UserRemarks;
+                cmdInfo2.CommandText = strSql2.ToString();
+                cmdInfo2.Parameters = parameters2;
+                cmdList.Add(cmdInfo2);
+            }
+            else
+            {
+                //不存在子表信息
+                if (model.UserInfoModel != null)
+                {
+                    StringBuilder strSql3 = new StringBuilder();
+                    strSql3.Append("insert into sys_UsersInfo(");
+                    strSql3.Append("UserId,UserPhoto,UserUrl,PersonalIntroduction,PersonalHonor,");
+                    strSql3.Append("UserEducation,JoinPartyDate,UserRemarks)");
+                    strSql3.Append(" values (");
+                    strSql3.Append("@UserId,@UserPhoto,@UserUrl,@PersonalIntroduction,");
+                    strSql3.Append("@PersonalHonor,@UserEducation,@JoinPartyDate,@UserRemarks)");
+                    SqlParameter[] parameters3 = {
+					    new SqlParameter("@UserId", SqlDbType.Int,4),
+					    new SqlParameter("@UserPhoto", SqlDbType.NVarChar,50),
+					    new SqlParameter("@UserUrl", SqlDbType.NVarChar,500),
+                        new SqlParameter("@PersonalIntroduction",SqlDbType.NVarChar,5000),
+                        new SqlParameter("@PersonalHonor",SqlDbType.NVarChar,5000),
+                        new SqlParameter("@UserEducation",SqlDbType.NVarChar,100),
+                        new SqlParameter("@JoinPartyDate",SqlDbType.VarChar,50),
+					    new SqlParameter("@UserRemarks", SqlDbType.NVarChar,5000)
+                                                 };
+                    parameters3[0].Value = model.UserId;
+                    parameters3[1].Value = model.UserInfoModel.UserPhoto;
+                    parameters3[2].Value = model.UserInfoModel.UserUrl;
+                    parameters3[3].Value = model.UserInfoModel.PersonalIntroduction;
+                    parameters3[4].Value = model.UserInfoModel.PersonalHonor;
+                    parameters3[5].Value = model.UserInfoModel.UserEducation;
+                    parameters3[6].Value = model.UserInfoModel.JoinPartyDate;
+                    parameters3[7].Value = model.UserInfoModel.UserRemarks;
+                   CommandInfo cmd3 = new CommandInfo(strSql3.ToString(), parameters3);
+                   cmdList.Add(cmd3);
+                }
+            }
             int rows = DbHelperSQL.ExecuteSqlTran(cmdList);
             if (rows > 0)
             {
@@ -296,13 +335,10 @@ namespace ThreeArriveAction.DAL
                     model.VillageId = int.Parse(ds.Tables[0].Rows[0]["VillageId"].ToString());
                 }
                 model.UserBirthday = ds.Tables[0].Rows[0]["UserBirthday"].ToString();
+                model.UserPassword = ds.Tables[0].Rows[0]["UserPassword"].ToString();
                 model.UserRemark = ds.Tables[0].Rows[0]["UserRemark"].ToString();
                 #endregion
 
-                #region 用户从表信息
-                sys_UsersInfoDAL usersInfoDAL = new sys_UsersInfoDAL();
-                model.UserInfoModel = usersInfoDAL.GetUsersInfoByUserId(userId);
-                #endregion
                 return model;
             }
             else

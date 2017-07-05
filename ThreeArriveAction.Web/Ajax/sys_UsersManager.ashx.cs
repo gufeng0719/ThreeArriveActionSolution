@@ -9,6 +9,7 @@ using System.Web.SessionState;
 using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
 using System.Data;
+using System.Reflection;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -33,6 +34,12 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "get":
                     GetUsersList(context);
+                    break;
+                case "edit":
+                    GetUserModel(context);
+                    break;
+                case "save":
+                    SaveUser(context);
                     break;
             }
         }
@@ -126,6 +133,67 @@ namespace ThreeArriveAction.Web.Ajax
                 strJson.Append("}");
                 context.Response.Write(strJson.ToString());
             }
+        }
+        #endregion
+        #region 加载该用户信息
+        private void GetUserModel(HttpContext context)
+        {
+            int userid = int.Parse(MXRequest.GetQueryString("userid"));
+            string result = usersBLL.GetUsersModelJson(userid);
+            context.Response.Write(result);
+        }
+        #endregion
+        #region 保存用户信息
+        private void SaveUser(HttpContext context)
+        {
+            sys_UsersModel userModel = new sys_UsersModel();
+            sys_UsersInfoModel infoModel = new sys_UsersInfoModel();
+            userModel.UserPhone = MXRequest.GetFormString("userphone").ToString();
+            userModel.UserName = MXRequest.GetFormString("username").ToString();
+            userModel.UserDuties = MXRequest.GetFormString("userduties").ToString();
+            userModel.OrganizationId = int.Parse(MXRequest.GetFormString("organid").ToString());
+            userModel.VillageId = int.Parse(MXRequest.GetFormString("villageid").ToString());
+            userModel.UserBirthday = MXRequest.GetFormString("userbirthday").ToString();
+            userModel.UserPassword = MXRequest.GetFormString("userpassword").ToString();
+            userModel.UserRemark = MXRequest.GetFormString("userremark").ToString();
+            string action = MXRequest.GetFormString("action");
+            bool blinfo = false;
+            infoModel.UserPhoto = MXRequest.GetFormString("userphoto");
+            infoModel.UserUrl = MXRequest.GetFormString("userurl");
+            infoModel.PersonalIntroduction = MXRequest.GetFormString("introduction");
+            infoModel.PersonalHonor = MXRequest.GetFormString("honor");
+            infoModel.UserEducation = MXRequest.GetFormString("education");
+            infoModel.JoinPartyDate = MXRequest.GetFormString("joinpartydate");
+            infoModel.UserRemarks = MXRequest.GetFormString("remark");
+            //循环查看infoModel中是否有属性值不为空或者不为空字符串
+             PropertyInfo[] propertyInfo = infoModel.GetType().GetProperties();
+             for (int i = 0; i < propertyInfo.Length; i++)
+             {
+                 object objectValue = propertyInfo[i].GetGetMethod().Invoke(infoModel, null);
+                 if (objectValue == null)
+                 {
+                     continue;
+                 }
+                 if (objectValue.ToString() != ""&&objectValue.ToString()!="0")
+                 {
+                     blinfo = true;
+                 }
+             }
+             if (blinfo)
+             {
+                 userModel.UserInfoModel = infoModel;
+             }
+            string result = "";
+            if (action.IndexOf("add") > 0)
+            {
+                result = usersBLL.AddUser(userModel);
+            }
+            else
+            {
+                userModel.UserId = int.Parse(MXRequest.GetFormString("userid"));
+                result = usersBLL.UpdateUser(userModel);
+            }
+            context.Response.Write(result);
         }
         #endregion
         public bool IsReusable

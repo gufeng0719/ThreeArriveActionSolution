@@ -52,7 +52,33 @@ namespace ThreeArriveAction.BLL
 
        public string GetListJson(int parId)
        {
-           return "";
+           DataTable dt = villageDAL.GetList(parId);
+           StringBuilder strJson = new StringBuilder();
+           strJson.Append("{\"total\":");
+           if (dt != null)
+           {
+               strJson.Append((dt.Rows.Count+1) + "," + "\"rows\":[");
+               strJson.Append("{\"title\":\"无父级导航\",\"value\":0}");
+               foreach (DataRow dr in dt.Rows)
+               {
+                   string id = dr["VillageId"].ToString();
+                   string title = dr["VillageName"].ToString();
+                   int grage =int.Parse(dr["VillageGrage"].ToString());
+                   if (grage != 1)
+                   {
+                       title = "|- " + title;
+                       title = Utils.StringOfChar(grage - 1, "&nbsp;&nbsp;&nbsp;&nbsp;") + title;                      
+                   }
+                   strJson.Append(",{\"title\":\"" + title + "\",\"value\":\"" + id + "\"}");
+               }
+               strJson.Append("]");
+           }
+           else
+           {
+               strJson.Append("0");
+           }
+           strJson.Append("}");
+           return strJson.ToString();
        }
 
        #endregion

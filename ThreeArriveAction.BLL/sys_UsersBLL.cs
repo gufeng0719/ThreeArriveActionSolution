@@ -104,6 +104,33 @@ namespace ThreeArriveAction.BLL
 
         #region 查询
         /// <summary>
+        /// 根据用户编号查询该用户信息
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns></returns>
+        public sys_UsersModel GetUsersModel(int userId)
+        {
+            sys_UsersModel model = userDAL.GetModel(userId);
+            return model;
+        }
+
+        public string GetUsersModelJson(int userId)
+        {
+            sys_UsersInfoBLL infoBLL = new sys_UsersInfoBLL();
+            sys_UsersModel model = GetUsersModel(userId);
+            sys_UsersInfoModel infoModel = infoBLL.GetUserInfoModel(userId);
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append(JsonHelper.ToJson(model));
+            strJson.Replace("}",",\"info\":[");
+            if (infoModel != null)
+            {
+                strJson.Append(JsonHelper.ToJson(infoModel));
+            }
+            strJson.Append("]}");
+            return strJson.ToString();
+        }
+
+        /// <summary>
         /// 根据用户电话查询改用户实体信息
         /// </summary>
         /// <param name="userPhone"></param>

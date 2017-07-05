@@ -19,6 +19,7 @@ namespace ThreeArriveAction.DAL
            StringBuilder strSql = new StringBuilder();
            strSql.Append("select top 1 InfoId,UserId,UserPhoto,UserUrl,PersonalIntroduction,PersonalHonor, ");
            strSql.Append("UserEducation,JoinPartyDate,UserRemarks ");
+           strSql.Append(" from sys_UsersInfo ");
            strSql.Append(" where UserId=@UserId ");
            SqlParameter[] parameters ={
                                          new SqlParameter("@UserId",SqlDbType.Int,4)

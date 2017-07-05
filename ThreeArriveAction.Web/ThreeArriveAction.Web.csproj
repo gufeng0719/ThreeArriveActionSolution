@@ -1043,6 +1043,9 @@
       <DependentUpon>upload_ajax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ajax\sys_VillagesManager.ashx.cs">
+      <DependentUpon>sys_VillagesManager.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreeArriveAction.BLL\ThreeArriveAction.BLL.csproj">
@@ -1170,6 +1173,7 @@
     <Content Include="weixin\thing.html" />
     <Content Include="weixin\week.html" />
     <Content Include="xmlconfig\site.config" />
+    <Content Include="Ajax\sys_VillagesManager.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ajax\sys_UsersManager.ashx" />

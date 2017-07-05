@@ -105,13 +105,13 @@
                         s += "<input type=\"hidden\" id=\"userid" + i + "\" value=\"" + msg.rows[i].UserId + "\" />";
                         s += "</td>";
                         s += "<td>" + msg.rows[i].UserPhone + "</td>";
-                        s += "<td><a href='UserEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>" + msg.rows[i].UserName + "</a></td>";
+                        s += "<td><a href='UsersEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>" + msg.rows[i].UserName + "</a></td>";
                         s += "<td>" + msg.rows[i].UserDuties + "</td>";
                         s += "<td>" + msg.rows[i].VillageName + "</td>";
                         s += "<td>" + msg.rows[i].UserBirthday + "</td>";
                         s += "<td>" + msg.rows[i].UserEducation + "</td>";
                         s += "<td>" + msg.rows[i].JoinPartyDate + "</td>";
-                        s += "<td align=\"center\"><a href='UserEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>修改</a></td>";
+                        s += "<td align=\"center\"><a href='UsersEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>修改</a></td>";
                         s += "</tr>";
                         $("#tbody").append(s);
                     }

@@ -117,7 +117,7 @@
         var urlArr = urlStr.split('&');
         if (urlArr.length == 2) {
             $("#action").val(urlArr[0]);
-            $("#orgid").val(urlArr[1]);
+            $("#orgid").val(urlArr[1].split('=')[1]);
             $.getJSON('../Ajax/sys_OrganizationsManager.ashx?' + urlStr, function (msg) {
                 if (msg) {
                     $("#organname").val(msg.OrganizationName);

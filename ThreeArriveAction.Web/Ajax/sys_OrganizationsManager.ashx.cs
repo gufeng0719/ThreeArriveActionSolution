@@ -82,6 +82,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
             else
             {
+                organModel.OrganizationId = int.Parse(MXRequest.GetFormString("orgid"));
                 result = organBLL.UpdateOrganization(organModel);
             }
             context.Response.Write(result);
