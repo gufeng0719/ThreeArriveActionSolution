@@ -54,6 +54,12 @@ namespace ThreeArriveAction.BLL
        {
            return navDAL.GetDataList(parentId);
        }
+
+       public DataTable GetList(int parentId)
+       {
+           return navDAL.GetList(parentId);
+       }
+
        /// <summary>
        /// 根据父级编号，获取所有菜单数据(已经排序好)
        /// </summary>

@@ -2,3 +2,4 @@ E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveAc
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.Model\bin\Debug\ThreeArriveAction.Model.pdb
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.Model\obj\Debug\ThreeArriveAction.Model.dll
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.Model\obj\Debug\ThreeArriveAction.Model.pdb
+E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.Model\obj\Debug\ThreeArriveAction.Model.csprojResolveAssemblyReference.cache

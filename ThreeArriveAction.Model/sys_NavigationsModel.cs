@@ -68,6 +68,17 @@ namespace ThreeArriveAction.Model
             get { return navState; }
             set { navState = value; }
         }
+
+        private int navLayer;
+        /// <summary>
+        /// 菜单等级
+        /// </summary>
+        public int NavLayer
+        {
+            get { return navLayer; }
+            set { navLayer = value; }
+        }
+
         private string reamrks;
         /// <summary>
         /// 备注

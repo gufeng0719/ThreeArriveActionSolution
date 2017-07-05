@@ -45,14 +45,14 @@ namespace ThreeArriveAction.Web.Ajax
             else
             {
                 List<sys_OrganizationANDNavigationsModel> modelList = new sys_OrganizationAndNavigationsBLL().GetOrganizationNavigation(model.OrganizationId);
-                DataTable dt = navBLL.GetDataList(0);
+                DataTable dt = navBLL.GetList(0);
                 GetNavigationChilds(context, dt, 0, modelList);
             }
         }
 
         private void GetNavigationChilds(HttpContext context,DataTable oldData,int parentId,List<sys_OrganizationANDNavigationsModel> ls)
         {
-            DataRow[] dr = oldData.Select("parentId="+parentId);
+            DataRow[] dr = oldData.Select("ParentId="+parentId);
             bool isWrite=false;
             for (int i = 0; i < dr.Length; i++)
             {

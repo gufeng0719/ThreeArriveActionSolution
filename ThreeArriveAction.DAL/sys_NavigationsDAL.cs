@@ -31,7 +31,7 @@ namespace ThreeArriveAction.DAL
        public sys_NavigationsModel GetNavigationsByNavId(int navigationId)
        {
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("select top 1 NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NvaState,Remarks ");
+           strSql.Append("select top 1 NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NvaState,NavLayer,Remarks ");
            strSql.Append(" from sys_Navigations where NavigationId=@NavigationId ");
            SqlParameter[] parameters ={
                                           new SqlParameter("@NavigationId",SqlDbType.Int,4)
@@ -62,6 +62,10 @@ namespace ThreeArriveAction.DAL
                {
                    navigationsModel.NavState = int.Parse(ds.Tables[0].Rows[0]["NavState"].ToString());
                }
+               if (ds.Tables[0].Rows[0]["NavLayer"] != null)
+               {
+                   navigationsModel.NavLayer = int.Parse(ds.Tables[0].Rows[0]["NavLayer"].ToString());
+               }
                navigationsModel.Reamrks = ds.Tables[0].Rows[0]["Remarks"].ToString();
                return navigationsModel;
            }
@@ -80,7 +84,7 @@ namespace ThreeArriveAction.DAL
        {
            List<sys_NavigationsModel> modelList = new List<sys_NavigationsModel>();
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("select NavigationId,NavigationName,ParentId,Navicon,NavUrl,NavState,Remarks ");
+           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NavState,NavLayer,Remarks ");
            strSql.Append(" from sys_Navigations ");
            strSql.Append(" where ParentId="+parnetId);
            DataTable dt = DbHelperSQL.Query(strSql.ToString()).Tables[0];
@@ -115,6 +119,10 @@ namespace ThreeArriveAction.DAL
                    {
                        model.NavState = int.Parse(dt.Rows[n]["NavState"].ToString());
                    }
+                   if (dt.Rows[n]["NavLayer"] != null && dt.Rows[n]["NavLayer"].ToString() != "")
+                   {
+                       model.NavLayer = int.Parse(dt.Rows[n]["NavLayer"].ToString());
+                   }
                    if (dt.Rows[n]["Remarks"] != null)
                    {
                        model.Reamrks = dt.Rows[n]["Remarks"].ToString();
@@ -126,16 +134,16 @@ namespace ThreeArriveAction.DAL
        }
 
        /// <summary>
-       /// 取得所有类别列表
+       /// 取得所有类别列表(排好序)
        /// </summary>
        /// <param name="parentId">父级编号</param>
        /// <returns></returns>
        public DataTable GetDataList(int parentId)
        {
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NavState ");
+           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NavState,NavLayer,Remarks ");
            strSql.Append(" from sys_Navigations ");
-           strSql.Append(" where NavState=1 ");
+           strSql.Append(" where NavState=1 order by NavigationId asc ");
            DataSet ds = DbHelperSQL.Query(strSql.ToString());
            DataTable oldData = ds.Tables[0] as DataTable;
            if (oldData == null)
@@ -148,6 +156,15 @@ namespace ThreeArriveAction.DAL
            GetChilds(oldData, newData, parentId);
            return newData;
        }
+       public DataTable GetList(int parentId)
+       {
+           StringBuilder strSql = new StringBuilder();
+           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NavState,NavLayer,Remarks ");
+           strSql.Append(" from sys_Navigations ");
+           strSql.Append(" where NavState=1 ");
+           DataSet ds = DbHelperSQL.Query(strSql.ToString());
+           return ds.Tables[0];
+       }
 
        /// <summary>
        /// 根据组织等级编号获取该等级所拥有的权限
@@ -158,7 +175,7 @@ namespace ThreeArriveAction.DAL
        {
            List<sys_NavigationsModel> modelList = new List<sys_NavigationsModel>();
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavState,Remarks,OrganizationId ");
+           strSql.Append("select NavigationId,NavigationName,ParentId,NavIcon,NavState,NavLayer,Remarks,OrganizationId ");
            strSql.Append(" from  v_OrgAndNavigations ");
            strSql.Append(" where OrganizationId=" + organizationId);
            DataTable dt = DbHelperSQL.Query(strSql.ToString()).Tables[0];
@@ -193,6 +210,10 @@ namespace ThreeArriveAction.DAL
                    {
                        model.NavState = int.Parse(dt.Rows[n]["NavState"].ToString());
                    }
+                   if (dt.Rows[n]["NavLayer"] != null && dt.Rows[n]["NavLayer"].ToString() != "")
+                   {
+                       model.NavLayer = int.Parse(dt.Rows[n]["NavLayer"].ToString());
+                   }
                    if (dt.Rows[n]["Remarks"] != null)
                    {
                        model.Reamrks = dt.Rows[n]["Remarks"].ToString();
@@ -213,21 +234,22 @@ namespace ThreeArriveAction.DAL
        /// <param name="parId"></param>
        private void GetChilds(DataTable oldData, DataTable newData, int parId)
        {
-           DataRow[] dr = oldData.Select("VillageParId=" + parId);
+           DataRow[] dr = oldData.Select("ParentId=" + parId);
            for (int i = 0; i < dr.Length; i++)
            {
                //添加一行数据
                DataRow row = newData.NewRow();
-               row["NavgationId"] = int.Parse(dr[i]["NavgationId"].ToString());
-               row["NavgationName"] = dr[i]["NavgationName"].ToString();
+               row["NavigationId"] = int.Parse(dr[i]["NavigationId"].ToString());
+               row["NavigationName"] = dr[i]["NavigationName"].ToString();
                row["ParentId"] = int.Parse(dr[i]["ParentId"].ToString());
-               row["Navicon"] = dr[i]["Navicon"].ToString();
+               row["NavIcon"] = dr[i]["NavIcon"].ToString();
                row["NavUrl"] = dr[i]["NavUrl"].ToString();
                row["NavState"] = dr[i]["NavState"];
+               row["NavLayer"] = dr[i]["NavLayer"];
                row["Remarks"] = dr[i]["Remarks"];
                newData.Rows.Add(row);
                //调用自身迭代
-               this.GetChilds(oldData, newData, int.Parse(dr[i]["ParentId"].ToString()));
+               this.GetChilds(oldData, newData, int.Parse(dr[i]["NavigationId"].ToString()));
            }
        }
         #endregion

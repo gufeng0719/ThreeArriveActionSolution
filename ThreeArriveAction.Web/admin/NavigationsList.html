@@ -73,7 +73,7 @@
                         s += "</td>";
                         s += "<td style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">" + msg.rows[i].NavigationId + "</td>";
                         s += "<td style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">";
-                        var layer = 1;
+                        var layer = msg.rows[i].NavLayer;
                         if (layer == 1) {
                             s += "<span class=\"folder-open\"></span>"
                         } else {
