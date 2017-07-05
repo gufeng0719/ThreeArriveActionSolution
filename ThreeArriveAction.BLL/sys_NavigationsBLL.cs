@@ -54,6 +54,29 @@ namespace ThreeArriveAction.BLL
        {
            return navDAL.GetDataList(parentId);
        }
+       /// <summary>
+       /// 根据父级编号，获取所有菜单数据(已经排序好)
+       /// </summary>
+       /// <param name="parentId"></param>
+       /// <returns></returns>
+       public string GetDataListJson(int parentId)
+       {
+           DataTable dt = GetDataList(parentId);
+           StringBuilder strJson = new StringBuilder();
+           strJson.Append("{\"total\":"+dt.Rows.Count);
+           strJson.Append(",\"rows\":");
+           if (dt.Rows.Count > 0)
+           {
+               strJson.Append(JsonHelper.ToJson(dt));
+           }
+           else
+           {
+               strJson.Append("[]");
+           }
+           strJson.Append("}");
+           return strJson.ToString();
+       }
+
         #endregion
     }
 }

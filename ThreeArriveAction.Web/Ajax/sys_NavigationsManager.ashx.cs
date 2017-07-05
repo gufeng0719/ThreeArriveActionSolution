@@ -25,6 +25,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "get":
                     GetNavigationByOrgan(context);
                     break;
+                case "query":
+                    GetNavigationListJson(context);
+                    break;
 
             }
             
@@ -112,6 +115,12 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
         #endregion
+
+        private void GetNavigationListJson(HttpContext context)
+        {
+            string result = navBLL.GetDataListJson(0);
+            context.Response.Write(result);
+        }
 
         public bool IsReusable
         {

@@ -137,7 +137,16 @@ namespace ThreeArriveAction.DAL
            strSql.Append(" from sys_Navigations ");
            strSql.Append(" where NavState=1 ");
            DataSet ds = DbHelperSQL.Query(strSql.ToString());
-           return ds.Tables[0];
+           DataTable oldData = ds.Tables[0] as DataTable;
+           if (oldData == null)
+           {
+               return null;
+           }
+           //复制结构
+           DataTable newData = oldData.Clone();
+           //调用
+           GetChilds(oldData, newData, parentId);
+           return newData;
        }
 
        /// <summary>
@@ -195,6 +204,32 @@ namespace ThreeArriveAction.DAL
        }
 
         #endregion
-
+        #region 私有方法=====
+       /// <summary>
+       /// 从内存中取得所有下级导航列表(自身迭代)
+       /// </summary>
+       /// <param name="oldData"></param>
+       /// <param name="newData"></param>
+       /// <param name="parId"></param>
+       private void GetChilds(DataTable oldData, DataTable newData, int parId)
+       {
+           DataRow[] dr = oldData.Select("VillageParId=" + parId);
+           for (int i = 0; i < dr.Length; i++)
+           {
+               //添加一行数据
+               DataRow row = newData.NewRow();
+               row["NavgationId"] = int.Parse(dr[i]["NavgationId"].ToString());
+               row["NavgationName"] = dr[i]["NavgationName"].ToString();
+               row["ParentId"] = int.Parse(dr[i]["ParentId"].ToString());
+               row["Navicon"] = dr[i]["Navicon"].ToString();
+               row["NavUrl"] = dr[i]["NavUrl"].ToString();
+               row["NavState"] = dr[i]["NavState"];
+               row["Remarks"] = dr[i]["Remarks"];
+               newData.Rows.Add(row);
+               //调用自身迭代
+               this.GetChilds(oldData, newData, int.Parse(dr[i]["ParentId"].ToString()));
+           }
+       }
+        #endregion
     }
 }

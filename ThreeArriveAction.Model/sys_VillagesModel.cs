@@ -40,14 +40,14 @@ namespace ThreeArriveAction.Model
             get { return villageParId; }
             set { villageParId = value; }
         }
-        private int villageGrage;
+        private int villageGrade;
         /// <summary>
         /// 村居登记
         /// </summary>
-        public int VillageGrage
+        public int VillageGrade
         {
-            get { return villageGrage; }
-            set { villageGrage = value; }
+            get { return villageGrade; }
+            set { villageGrade = value; }
         }
         private string remarks;
         /// <summary>

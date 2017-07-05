@@ -70,6 +70,7 @@
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
     <Content Include="admin\login.html" />
+    <Content Include="admin\NavigationsList.html" />
     <Content Include="admin\OrganizationEdit.html" />
     <Content Include="admin\OrganizationList.html" />
     <Content Include="admin\skin\base.css" />
@@ -96,6 +97,8 @@
     <Content Include="admin\test.html" />
     <Content Include="admin\UsersEdit.html" />
     <Content Include="admin\UsersList.html" />
+    <Content Include="admin\VillageEdit.html" />
+    <Content Include="admin\VillageList.html" />
     <Content Include="admin\weixin\Sign.html" />
     <Content Include="admin\weixin\ThingRecord.html" />
     <Content Include="admin\weixin\WeekArrives.html" />

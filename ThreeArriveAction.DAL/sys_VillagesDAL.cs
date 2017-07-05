@@ -16,15 +16,86 @@ namespace ThreeArriveAction.DAL
     public partial class sys_VillagesDAL
     {
         #region 添加
+        /// <summary>
+        /// 添加村居信息
+        /// </summary>
+        /// <param name="model">村居实体信息</param>
+        /// <returns></returns>
+        public int AddVillage(sys_VillagesModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into sys_Villages (VillageName,VillageParId,VillageGrade,Remarks)  ");
+            strSql.Append(" values(@VillageName,@VillageParId,@VillageGrade,@Remarks) ");
+            SqlParameter[] parameters ={
+                                          new SqlParameter("@VillageName",SqlDbType.VarChar,100),
+                                          new SqlParameter("@VillageParId",SqlDbType.Int,4),
+                                          new SqlParameter("@VillageGrade",SqlDbType.Int,4),
+                                          new SqlParameter("@Remarks",SqlDbType.VarChar,500)
+                                      };
+            parameters[0].Value = model.VillageName;
+            parameters[1].Value = model.VillageParId;
+            parameters[2].Value = model.VillageGrade;
+            parameters[3].Value = model.Remarks;
+            int number = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            return number;
+        }
         #endregion
 
         #region 修改
+        /// <summary>
+        /// 修改村居信息
+        /// </summary>
+        /// <param name="model">村居实体</param>
+        /// <returns></returns>
+        public int UpdateVillage(sys_VillagesModel model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update sys_Villages set VillageName=@VillageName,");
+            strSql.Append("VillageParId=@VillageParId,");
+            strSql.Append("VillageGrade=@VillageGrade,");
+            strSql.Append("Remarks=@Remarks ");
+            strSql.Append(" where VillageId=@VillageId ");
+            SqlParameter[] parameters ={
+                                           new SqlParameter("@VillageName",SqlDbType.VarChar,100),
+                                           new SqlParameter("@VillageParId",SqlDbType.Int,4),
+                                           new SqlParameter("@VillageGrade",SqlDbType.Int,4),
+                                           new SqlParameter("@Remarks",SqlDbType.VarChar,500),
+                                           new SqlParameter("@VillageId",SqlDbType.Int,4)
+                                      };
+
+            parameters[0].Value = model.VillageName;
+            parameters[1].Value = model.VillageParId;
+            parameters[2].Value = model.VillageGrade;
+            parameters[3].Value = model.Remarks;
+            parameters[4].Value = model.VillageId;
+            int number = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            return number;
+        }
         #endregion
 
         #region 删除
         #endregion
 
         #region 查询
+        /// <summary>
+        /// 根据父级村居编号，获取该村居等级
+        /// </summary>
+        /// <param name="parId">父级村居编号</param>
+        /// <returns></returns>
+        public int GetVillageGrade(int parId)
+        {
+            string strSql = "select VillageGrade from sys_Villages where VillageId="+parId;
+            object obj = DbHelperSQL.GetSingle(strSql);
+            if (obj != null)
+            {
+                return Convert.ToInt32(obj) + 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
         /// <summary>
         /// 根据村居编号查询该村居信息
         /// </summary>
@@ -33,7 +104,7 @@ namespace ThreeArriveAction.DAL
         public sys_VillagesModel GetVillage(int villageId)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select top 1 VillageId,VillageName,VillageParId,VillageGrage,Remarks ");
+            strSql.Append("select top 1 VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
             strSql.Append("from sys_Villages where VillageId=@VillageId ");
             SqlParameter[] parameters ={
                                           new SqlParameter("@VillageId",SqlDbType.Int,4)
@@ -55,9 +126,9 @@ namespace ThreeArriveAction.DAL
                 {
                     model.VillageParId = int.Parse(ds.Tables[0].Rows[0]["VillageParId"].ToString());
                 }
-                if (ds.Tables[0].Rows[0]["VillageGrage"] != null && ds.Tables[0].Rows[0]["VillageGrage"].ToString() != "")
+                if (ds.Tables[0].Rows[0]["VillageGrade"] != null && ds.Tables[0].Rows[0]["VillageGrade"].ToString() != "")
                 {
-                    model.VillageGrage = int.Parse(ds.Tables[0].Rows[0]["VillageGrage"].ToString());
+                    model.VillageGrade = int.Parse(ds.Tables[0].Rows[0]["VillageGrade"].ToString());
                 }
                 if (ds.Tables[0].Rows[0]["Remarks"].ToString() != "")
                 {
@@ -80,7 +151,7 @@ namespace ThreeArriveAction.DAL
         public DataTable GetVillageListByParId(int parId)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select VillageId,VillageName,VillageParId,VillageGrage,Remarks ");
+            strSql.Append("select VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
             strSql.Append("from sys_Villages ");
             strSql.Append("where VillageParId=@VillageParId ");
             SqlParameter[] parameter ={
@@ -100,7 +171,7 @@ namespace ThreeArriveAction.DAL
         public DataTable GetList(int parId)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append(" select VillageId,VillageName,VillageParId,VillageGrage,Remarks ");
+            strSql.Append(" select VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
             strSql.Append(" from sys_Villages order by VillageId asc ");
             DataSet ds = DbHelperSQL.Query(strSql.ToString());
             DataTable oldData = ds.Tables[0] as DataTable;
@@ -132,7 +203,7 @@ namespace ThreeArriveAction.DAL
                 row["VillageId"] = int.Parse(dr[i]["VillageId"].ToString());
                 row["VillageName"] = dr[i]["VillageName"].ToString();
                 row["VillageParId"] = int.Parse(dr[i]["VillageParId"].ToString());
-                row["VillageGrage"] = int.Parse(dr[i]["VillageGrage"].ToString());
+                row["VillageGrade"] = int.Parse(dr[i]["VillageGrade"].ToString());
                 row["Remarks"] = dr[i]["Remarks"].ToString();
                 newData.Rows.Add(row);
                 //调用自身迭代
