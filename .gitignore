@@ -34,3 +34,8 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
+ThreeArriveAction.BLL/obj/Debug/ThreeArriveAction.BLL.csproj.FileListAbsolute.txt
+ThreeArriveAction.DAL/obj/Debug/ThreeArriveAction.DAL.csproj.FileListAbsolute.txt
+ThreeArriveAction.Web.UI/obj/Debug/ThreeArriveAction.Web.UI.csproj.FileListAbsolute.txt
+ThreeArriveAction.Web/obj/Debug/ThreeArriveAction.Web.csproj.FileListAbsolute.txt
+ThreeArriveAction.WeiXinComm/obj/Debug/ThreeArriveAction.WeiXinComm.csproj.FileListAbsolute.txt
