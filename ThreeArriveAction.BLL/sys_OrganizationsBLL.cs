@@ -65,7 +65,14 @@ namespace ThreeArriveAction.BLL
             sys_OrganizationsModel model= organDAL.GetOrganizationsModel(organId);
             if (model != null)
             {
-                return JsonHelper.ToJson(model);
+                sys_OrganizationAndNavigationsBLL organNavBLL = new sys_OrganizationAndNavigationsBLL();
+                string navArr = organNavBLL.GetNavigationIdsByOrganizationId(model.OrganizationId);
+                StringBuilder strJson = new StringBuilder();
+                strJson.Append("{\"orgModel\":[");
+                strJson.Append(JsonHelper.ToJson(model));
+                strJson.Append("],\"navArr\":["+navArr+"]");
+                strJson.Append("}");
+                return strJson.ToString();
             }
             else
             {

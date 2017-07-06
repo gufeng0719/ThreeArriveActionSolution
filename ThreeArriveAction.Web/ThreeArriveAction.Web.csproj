@@ -75,6 +75,7 @@
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
     <Content Include="admin\login.html" />
+    <Content Include="admin\NavigationsEdit.html" />
     <Content Include="admin\NavigationsList.html" />
     <Content Include="admin\OrganizationEdit.html" />
     <Content Include="admin\OrganizationList.html" />

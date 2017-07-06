@@ -13,6 +13,15 @@ namespace ThreeArriveAction.BLL
         public sys_OrganizationAndNavigationsBLL() { }
         #region 查询
         /// <summary>
+        /// 根据组织角色编号，查询该角色所拥有的菜单编号
+        /// </summary>
+        /// <param name="organizationId">组织角色编号</param>
+        /// <returns></returns>
+        public string GetNavigationIdsByOrganizationId(int organizationId)
+        {
+            return organNavDAL.GetNavigationIdsByOrganizationId(organizationId);
+        }
+        /// <summary>
         /// 根据组织等级编号，查询所拥有的菜单
         /// </summary>
         /// <param name="organizationId">组织等级编号</param>

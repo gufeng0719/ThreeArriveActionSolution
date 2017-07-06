@@ -16,6 +16,34 @@ namespace ThreeArriveAction.DAL
         public sys_OrganizationAndNavigationsDAL() { }
 
         #region 查询
+        /// <summary>
+        /// 根据组织角色编号获取所有用菜单编号
+        /// </summary>
+        /// <param name="organizationId">组织角色编号</param>
+        /// <returns></returns>
+        public string GetNavigationIdsByOrganizationId(int organizationId)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select NavigationId = stuff((select ',' + cast(NavigationId as varchar(8)) ");
+            strSql.Append("	from sys_OrganizationANDNavigations t  ");
+            strSql.Append("	where OrganizationId = sys_OrganizationANDNavigations.OrganizationId for xml path('')) , 1 , 1 , '') ");
+            strSql.Append(" from sys_OrganizationANDNavigations where OrganizationId=@OrganizationId ");
+            strSql.Append(" group by OrganizationId");
+            SqlParameter[] parameters ={
+                                          new SqlParameter("@OrganizationId",SqlDbType.Int,4)
+                                      };
+            parameters[0].Value = organizationId;
+            object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
+            if (obj != null)
+            {
+                return obj.ToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         public List<sys_OrganizationANDNavigationsModel> GetOrganizationNavigation(int organizationId)
         {
             List<sys_OrganizationANDNavigationsModel> modelList = new List<sys_OrganizationANDNavigationsModel>();

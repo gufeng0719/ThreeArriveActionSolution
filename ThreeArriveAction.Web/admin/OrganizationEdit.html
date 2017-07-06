@@ -52,7 +52,7 @@
                 <textarea id="remarks" name="remarks" class="input normal" cols="20" errormsg="请输入事情解决方式"></textarea>
             </dd>
         </dl>
-        <!--<dl>
+        <dl>
             <dt>管理权限</dt>
             <dd>
                 <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
@@ -61,36 +61,16 @@
                             <th width="30%">
                                 导航名称
                             </th>
-                            <th>
-                                权限分配
-                            </th>
                             <th width="10%">
                                 全选
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <asp:repeater id="rptList" runat="server" onitemdatabound="rptList_ItemDataBound">
-          <ItemTemplate>
-          <tr>
-            <td style="white-space:nowrap;word-break:break-all;overflow:hidden;">
-              <asp:HiddenField ID="hidName" Value='xx' runat="server" />
-              <asp:HiddenField ID="hidActionType" Value='xx' runat="server" />
-              <asp:HiddenField ID="hidLayer" Value='xx' runat="server" />
-              <asp:Literal ID="LitFirst" runat="server"></asp:Literal>
-              xx
-            </td>
-            <td>
-              <asp:CheckBoxList ID="cblActionType" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbllist"></asp:CheckBoxList>
-            </td>
-            <td align="center"><input name="checkAll" type="checkbox" /></td>
-          </tr>
-          </ItemTemplate>
-          </asp:repeater>
+                    <tbody id="tbody">
                     </tbody>
                 </table>
             </dd>
-        </dl>-->
+        </dl>
     </div>
     <!--/内容-->
     <!--工具栏-->
@@ -112,30 +92,33 @@
 <script type="text/javascript" src="js/layout.js"></script>
 <script type="text/javascript">
     $(function () {
+        Load();
+
         var url = window.location.href;
         var urlStr = url.substring(url.indexOf('?') + 1)
         var urlArr = urlStr.split('&');
         if (urlArr.length == 2) {
-            $("#action").val(urlArr[0]);
+            $("#action").val(urlArr[0].split('=')[1]);
             $("#orgid").val(urlArr[1].split('=')[1]);
             $.getJSON('../Ajax/sys_OrganizationsManager.ashx?' + urlStr, function (msg) {
                 if (msg) {
-                    $("#organname").val(msg.OrganizationName);
-                    if (msg.OrganizationState == 1) {
+                    $("#organname").val(msg.orgModel[0].OrganizationName);
+                    if (msg.orgModel[0].OrganizationState == 1) {
                         $("div.rule-single-checkbox a").addClass("selected")
                         $("#organstate").prop("checked", true)
                     } else {
                         $("div.rule-single-checkbox a").removeClass("selected")
                         $("#organstate").prop("checked", false)
                     }
-                    if (msg.Remarks != undefined) {
-                        $("#remarks").val(msg.Remarks);
+                    if (msg.orgModel[0].Remarks != undefined) {
+                        $("#remarks").val(msg.orgModel[0].Remarks);
                     }
                 }
             });
         } else {
-            $("#action").val(urlArr[0]);
+            $("#action").val(urlArr[0].split('=')[1]);
             $("#orgid").val(0);
+            
         }
 
 
@@ -195,5 +178,34 @@
             }
         });
     });
+
+    function Load() {
+        //加载列表
+        $.getJSON("../Ajax/sys_NavigationsManager.ashx?type=query", function (msg) {
+            $("#tbody").html("");
+            //console.info(msg);
+            if (msg.total > 0) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "";
+                    s += "<tr>";
+                    s += "<td style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">";
+                    var layer = msg.rows[i].NavLayer;
+                    if (layer == 1) {
+                        s += "<span class=\"folder-open\"></span>"
+                    } else {
+                        s += "<span style=\"display:inline-block;width:" + ((layer - 2) * 24) + "px\"></span>";
+                        s += "<span class=\"folder-line\"></span>";
+                        s += "<span class=\"folder-open\"></span>";
+                    }
+                    s +=  msg.rows[i].NavigationName + "</td>";
+                    s += "<td align=\"center\" style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">";
+                    s += "<input type=\"checkbox\" name=\"checkAll\" value="+msg.rows[i].NavigationId+" >";
+                    s += "</td>";
+                    s += "</tr>";
+                    $("#tbody").append(s);
+                }
+            }
+        });
+    }
 </script>
 </html>
