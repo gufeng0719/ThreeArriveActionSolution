@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
@@ -21,8 +20,6 @@ namespace ThreeArriveAction.Web.Ajax
         private readonly sys_UsersBLL usersBLL = new sys_UsersBLL();
         public void ProcessRequest(HttpContext context)
         {
-
-
             string type = MXRequest.GetQueryString("type");
             switch (type)
             {
@@ -41,6 +38,15 @@ namespace ThreeArriveAction.Web.Ajax
                 case "save":
                     SaveUser(context);
                     break;
+                case "checkOpenId":
+                    CheckOpenId(context);
+                    break;
+                case "signInPhone":
+                    SignInPhone(context);
+                    break;
+                default:
+                    context.Response.Write("错误的请求");
+                    return;
             }
         }
         #region 登录
@@ -48,22 +54,23 @@ namespace ThreeArriveAction.Web.Ajax
         {
             string uphone = context.Request.Form["uphone"].ToString();
             string upwd = context.Request.Form["upwd"].ToString();
-            string result = usersBLL.Login(uphone,upwd);
+            string result = usersBLL.Login(uphone, upwd);
             context.Response.Write(result);
         }
         #endregion
+
         #region 退出
         private void Exit(HttpContext context)
         {
             try
             {
-               
-               context.Session[MXKeys.SESSION_ADMIN_INFO] = null;
-               Utils.WriteCookie("uphone", "ThreeArriveAction", -14400);
-               Utils.WriteCookie("upwd", "ThreeArriveAction", -14400);
 
-               //context.Session["yubomId"] = null;
-               // Utils.WriteCookie("yubomId", "MxWeiXinPF", -14400);
+                context.Session[MXKeys.SESSION_ADMIN_INFO] = null;
+                Utils.WriteCookie("uphone", "ThreeArriveAction", -14400);
+                Utils.WriteCookie("upwd", "ThreeArriveAction", -14400);
+
+                //context.Session["yubomId"] = null;
+                // Utils.WriteCookie("yubomId", "MxWeiXinPF", -14400);
                 context.Response.Write("{\"success\":true}");
             }
             catch (Exception)
@@ -72,10 +79,11 @@ namespace ThreeArriveAction.Web.Ajax
             }
 
 
-            
+
         }
-             
+
         #endregion
+
         #region 分页查询
         public void GetUsersList(HttpContext context)
         {
@@ -100,7 +108,7 @@ namespace ThreeArriveAction.Web.Ajax
                 else if (model.OrganizationId == 2)
                 {
                     //镇组织委员 只能查询镇下行政村的人员
-                    strSql.Append("VillageId in (select ViilageId from sys_Villages where VillageId="+model.VillageId+" or VillageParId =)"+model.VillageId);
+                    strSql.Append("VillageId in (select ViilageId from sys_Villages where VillageId=" + model.VillageId + " or VillageParId =)" + model.VillageId);
                 }
                 else
                 {
@@ -109,16 +117,16 @@ namespace ThreeArriveAction.Web.Ajax
                 }
                 if (!string.IsNullOrEmpty(key))
                 {
-                    strSql.Append(" and ( UserPhone like '%"+key+"%' or UserName like '%"+key+"%' or UserDuties like '%"+key+"%' ) ");
+                    strSql.Append(" and ( UserPhone like '%" + key + "%' or UserName like '%" + key + "%' or UserDuties like '%" + key + "%' ) ");
                 }
-                int totalCount=0;
+                int totalCount = 0;
                 StringBuilder strJson = new StringBuilder();
-                
-                DataSet ds = usersBLL.GetList(pageSize,page,strSql.ToString(),"UserId asc",out totalCount);
+
+                DataSet ds = usersBLL.GetList(pageSize, page, strSql.ToString(), "UserId asc", out totalCount);
                 strJson.Append("{\"total\":" + totalCount);
                 if (totalCount > 0)
                 {
-                   strJson.Append(",\"rows\":"+ JsonHelper.ToJson(ds.Tables[0]));
+                    strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
                 }
                 string pageContent = Utils.OutPageList(pageSize, page, totalCount, "Load(__id__)", 8);
                 if (pageContent == "")
@@ -129,12 +137,13 @@ namespace ThreeArriveAction.Web.Ajax
                 {
                     strJson.Append(",\"pageContent\":" + pageContent);
                 }
-                
+
                 strJson.Append("}");
                 context.Response.Write(strJson.ToString());
             }
         }
         #endregion
+
         #region 加载该用户信息
         private void GetUserModel(HttpContext context)
         {
@@ -143,6 +152,7 @@ namespace ThreeArriveAction.Web.Ajax
             context.Response.Write(result);
         }
         #endregion
+
         #region 保存用户信息
         private void SaveUser(HttpContext context)
         {
@@ -166,23 +176,23 @@ namespace ThreeArriveAction.Web.Ajax
             infoModel.JoinPartyDate = MXRequest.GetFormString("joinpartydate");
             infoModel.UserRemarks = MXRequest.GetFormString("remark");
             //循环查看infoModel中是否有属性值不为空或者不为空字符串
-             PropertyInfo[] propertyInfo = infoModel.GetType().GetProperties();
-             for (int i = 0; i < propertyInfo.Length; i++)
-             {
-                 object objectValue = propertyInfo[i].GetGetMethod().Invoke(infoModel, null);
-                 if (objectValue == null)
-                 {
-                     continue;
-                 }
-                 if (objectValue.ToString() != ""&&objectValue.ToString()!="0")
-                 {
-                     blinfo = true;
-                 }
-             }
-             if (blinfo)
-             {
-                 userModel.UserInfoModel = infoModel;
-             }
+            PropertyInfo[] propertyInfo = infoModel.GetType().GetProperties();
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                object objectValue = propertyInfo[i].GetGetMethod().Invoke(infoModel, null);
+                if (objectValue == null)
+                {
+                    continue;
+                }
+                if (objectValue.ToString() != "" && objectValue.ToString() != "0")
+                {
+                    blinfo = true;
+                }
+            }
+            if (blinfo)
+            {
+                userModel.UserInfoModel = infoModel;
+            }
             string result = "";
             if (action.IndexOf("add") > 0)
             {
@@ -196,6 +206,30 @@ namespace ThreeArriveAction.Web.Ajax
             context.Response.Write(result);
         }
         #endregion
+
+        #region 验证人员是否已注册
+        public void CheckOpenId(HttpContext context)
+        {
+            var sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
+            sh.AddWhere("UserRemarks", context.Request["openid"], RelationEnum.Like);
+            context.Response.Write(sh.Select().Any() ? "1" : "0");
+        }
+        #endregion
+
+        #region 注册手机号码
+        public void SignInPhone(HttpContext context)
+        {
+            var sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
+            sh.AddUpdate("UserRemarks", context.Request["openid"]);
+            sh.AddWhere("UserPhoto", context.Request["phone"]);
+            sh.Update();
+            sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
+            sh.AddWhere("UserPhoto", context.Request["phone"]);
+            context.Response.Write(sh.Select().ToJson());
+            return;
+        }
+        #endregion
+
         public bool IsReusable
         {
             get

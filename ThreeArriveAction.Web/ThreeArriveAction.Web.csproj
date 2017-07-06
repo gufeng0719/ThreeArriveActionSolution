@@ -1013,12 +1013,17 @@
     <Content Include="scripts\music\play.png" />
     <Content Include="scripts\music\stop.png" />
     <Content Include="scripts\mycommjs.js" />
+    <Content Include="scripts\require\css.js" />
+    <Content Include="scripts\require\r.js" />
+    <Content Include="scripts\sweetalert\sweetalert.css" />
+    <Content Include="scripts\sweetalert\sweetalert.min.js" />
     <Content Include="scripts\swfupload\swfupload.handlers.js" />
     <Content Include="scripts\swfupload\swfupload.js" />
     <Content Include="scripts\swfupload\swfupload.queue.js" />
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\weixin\index.js" />
-    <Content Include="scripts\weixin\main.js" />
+    <Content Include="scripts\weixin\sign.js" />
+    <Content Include="weixin\main.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1028,6 +1033,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\BaseAjax.cs" />
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
     </Compile>

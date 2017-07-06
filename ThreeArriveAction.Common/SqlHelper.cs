@@ -30,7 +30,7 @@ namespace ThreeArriveAction.Common
         {
             _model = t;
             _tableName =
-                $"{ConfigurationManager.ConnectionStrings["DATABASE"]}.dbo.{_model.GetType().UnderlyingSystemType.Name}";
+                $"{ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString}.dbo.{RemoveStrModel(_model.GetType().UnderlyingSystemType.Name)}";
             PrimaryKey = GetPrimaryKey();
             IdentityKey = GetIdentityKey();
 
@@ -40,7 +40,7 @@ namespace ThreeArriveAction.Common
         {
             _model = t;
             _tableName =
-                $"{ConfigurationManager.ConnectionStrings["DATABASE"]}.dbo.{_model.GetType().UnderlyingSystemType.Name}";
+                $"{ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString}.dbo.{RemoveStrModel(_model.GetType().UnderlyingSystemType.Name)}";
             PrimaryKey = primaryKey;
             IdentityKey = GetIdentityKey();
         }
@@ -49,7 +49,7 @@ namespace ThreeArriveAction.Common
         {
             _model = t;
             _tableName =
-                $"{ConfigurationManager.ConnectionStrings["DATABASE"]}.dbo.{_model.GetType().UnderlyingSystemType.Name}";
+                $"{ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString}.dbo.{RemoveStrModel(_model.GetType().UnderlyingSystemType.Name)}";
             PrimaryKey = primaryKey;
             IdentityKey = identityKey;
         }
@@ -59,7 +59,7 @@ namespace ThreeArriveAction.Common
             _model = t;
             PrimaryKey = primaryKey;
             IdentityKey = identityKey;
-            _tableName = $"{ConfigurationManager.ConnectionStrings["DATABASE"]}.dbo.{tableName}";
+            _tableName = $"{ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString}.dbo.{tableName}";
         }
 
         public string IdentityKey { get; }
@@ -131,7 +131,7 @@ namespace ThreeArriveAction.Common
             var para = new DynamicParameters();
             foreach (PropertyInfo t in properties)
             {
-                if (string.IsNullOrEmpty(IdentityKey) || IdentityKey != t.Name)
+                if (IsNullOrEmpty(IdentityKey) || IdentityKey != t.Name)
                 {
                     fields += $"{t.Name},";
                     values += $"@{t.Name},";
@@ -139,7 +139,7 @@ namespace ThreeArriveAction.Common
                 }
             }
             SqlString.Append($" INSERT INTO {_tableName} ({fields.TrimEnd(',')}) VALUES ({values.TrimEnd(',')});");
-            if (!string.IsNullOrEmpty(IdentityKey))
+            if (!IsNullOrEmpty(IdentityKey))
             {
                 SqlString.Append(" SELECT @@IDENTITY; ");
                 var dt = DbClient.Query<DataTable>(SqlString.ToString(), para).FirstOrDefault();
@@ -156,7 +156,7 @@ namespace ThreeArriveAction.Common
         #region UPDATE
         public int Update(T model)
         {
-            if (string.IsNullOrEmpty(IdentityKey)) throw new Exception(GetDescription(ErrorEnum.E1000));
+            if (IsNullOrEmpty(IdentityKey)) throw new Exception(GetDescription(ErrorEnum.E1000));
             SqlString = new StringBuilder();
             SqlString.Append($" UPDATE {_tableName} SET ");
             var properties = model.GetType().GetProperties();
@@ -197,14 +197,14 @@ namespace ThreeArriveAction.Common
             SqlString.Append($"UPDATE {top} SET ");
             var para = new DynamicParameters();
             var sp = GetUpdateString();
-            if (string.IsNullOrEmpty(sp.SqlStr))
+            if (IsNullOrEmpty(sp.SqlStr))
             {
                 throw new Exception(GetDescription(ErrorEnum.E1002));
             }
             SqlString.Append($"{sp.SqlStr}");
             para.AddDynamicParams(sp.Parameter);
             sp = GetWhereString();
-            if (string.IsNullOrEmpty(sp.SqlStr))
+            if (IsNullOrEmpty(sp.SqlStr))
             {
                 throw new Exception(GetDescription(ErrorEnum.E1001));
             }
@@ -222,7 +222,7 @@ namespace ThreeArriveAction.Common
         /// <returns></returns>
         public int Delete(string where)
         {
-            if (string.IsNullOrEmpty(where)) throw new Exception(GetDescription(ErrorEnum.E1001));
+            if (IsNullOrEmpty(where)) throw new Exception(GetDescription(ErrorEnum.E1001));
             SqlString = new StringBuilder();
             SqlString.Append($"DELECT {_tableName} WHERE 1=1 {where} ");
             return DbClient.Excute(SqlString.ToString());
@@ -230,7 +230,7 @@ namespace ThreeArriveAction.Common
 
         public int DeleteByPrimaryKey(object id)
         {
-            if (string.IsNullOrEmpty(PrimaryKey)) throw new Exception(GetDescription(ErrorEnum.E1000));
+            if (IsNullOrEmpty(PrimaryKey)) throw new Exception(GetDescription(ErrorEnum.E1000));
             SqlString = new StringBuilder();
             SqlString.Append($"DELECT {_tableName} WHERE {PrimaryKey} = @key ");
             return DbClient.Excute(SqlString.ToString(), new { @key = id });
@@ -310,9 +310,9 @@ namespace ThreeArriveAction.Common
             if (isPage)
             {
                 string pageSortField;
-                if (string.IsNullOrEmpty(PageConfig.PageSortField))
+                if (IsNullOrEmpty(PageConfig.PageSortField.Trim()))
                 {
-                    pageSortField = string.IsNullOrEmpty(IdentityKey) ? PrimaryKey : IdentityKey;
+                    pageSortField = IsNullOrEmpty(IdentityKey.Trim()) ? PrimaryKey : IdentityKey;
                     pageSortField = Alia + "." + pageSortField;
                 }
                 else
@@ -329,9 +329,9 @@ namespace ThreeArriveAction.Common
                 SqlString.Append($"SELECT {top} {GetShowString()} FROM {_tableName} ");
             }
             var join = GetJoinString();
-            if (!string.IsNullOrEmpty(join))
+            if (!IsNullOrEmpty(join.Trim()))
             {
-                if (string.IsNullOrEmpty(Alia))
+                if (IsNullOrEmpty(Alia.Trim()))
                 {
                     throw new Exception(GetDescription(ErrorEnum.E1003));
                 }
@@ -343,12 +343,12 @@ namespace ThreeArriveAction.Common
             SqlString.Append(" WHERE 1=1 " + sp.SqlStr);
 
             var group = GetGroupString();
-            if (!string.IsNullOrEmpty(group))
+            if (!IsNullOrEmpty(group.Trim()))
             {
                 SqlString.Append(" GROUP BY " + group);
             }
             var sort = GetSortString();
-            if (!string.IsNullOrEmpty(sort))
+            if (!IsNullOrEmpty(sort.Trim()))
             {
                 SqlString.Append(" ORDER BY " + sort);
             }
@@ -397,7 +397,7 @@ namespace ThreeArriveAction.Common
         {
             var top = Top > 0 ? $"TOP ({Top})" : "";
             SqlString = new StringBuilder();
-            SqlString.Append(string.IsNullOrEmpty(show)
+            SqlString.Append(IsNullOrEmpty(show)
                 ? $" SELECT {top} * FROM {_tableName} WHERE 1=1 {where}"
                 : $" SELECT {top} {show} FROM {_tableName} WHERE 1=1 {where}");
         }
@@ -407,10 +407,10 @@ namespace ThreeArriveAction.Common
             SqlString = new StringBuilder();
             var top = Top > 0 ? $"TOP ({Top})" : "";
             SqlString.Append(IsNaN(value)
-                ? (string.IsNullOrEmpty(show)
+                ? (IsNullOrEmpty(show)
                     ? $" SELECT {top} * FROM {_tableName} WHERE {field} = '{value}' "
                     : $" SELECT {top} {show} FROM {_tableName} WHERE {field} = '{value}' ")
-                : (string.IsNullOrEmpty(show)
+                : (IsNullOrEmpty(show)
                     ? $" SELECT {top} * FROM {_tableName} WHERE {field} = {value} "
                     : $" SELECT {top} {show} FROM {_tableName} WHERE {field} = {value} "));
         }
@@ -419,7 +419,7 @@ namespace ThreeArriveAction.Common
         {
             var field = string.Empty;
             var strSql =
-                $@"USE {ConfigurationManager.ConnectionStrings["DATABASE"]};
+                $@"USE {ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString};
                    SELECT ( CASE WHEN COLUMNPROPERTY(id, name, 'IsIdentity') = 1
                                                THEN '1'
                                                ELSE '0'
@@ -435,7 +435,7 @@ namespace ThreeArriveAction.Common
 
         public string GetPrimaryKey()
         {
-            var strSql = $"USE {ConfigurationManager.ConnectionStrings["DATABASE"]};EXEC sp_pkeys @table_name='{_model.GetType().UnderlyingSystemType.Name}'";
+            var strSql = $"USE {ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString};EXEC sp_pkeys @table_name='{RemoveStrModel(_model.GetType().UnderlyingSystemType.Name)}'";
             var dr = DbClient.Query<dynamic>(strSql).FirstOrDefault();
 
             // ReSharper disable once PossibleNullReferenceException
@@ -532,7 +532,10 @@ namespace ThreeArriveAction.Common
         }
 
         private string GetShowString()
-            => string.Join(",", _showStr).TrimEnd(',');
+        {
+            var str = string.Join(",", _showStr).TrimEnd(',');
+            return IsNullOrEmpty(str) ? " * " : str;
+        }
 
         private string GetSortString()
         {
@@ -553,7 +556,7 @@ namespace ThreeArriveAction.Common
                 .Aggregate(strSql,
                 (current, @join)
                 => current +
-                $@" {GetDescription(join.RelationJoin)} {ConfigurationManager.ConnectionStrings["DATABASE"]}.dbo.{join.ThatTable} 
+                $@" {GetDescription(join.RelationJoin)} {ConfigurationManager.ConnectionStrings["DATABASE"].ConnectionString}.dbo.{join.ThatTable} 
                     {join.ThatAlia} ON {Alia}.{join.RelationField} = {join.ThatAlia}.{join.ThatRelationField} {join.Where}");
             if (_joinStr.Any())
             {
@@ -561,6 +564,31 @@ namespace ThreeArriveAction.Common
             }
             return strSql;
         }
+
+        /// <summary>
+        /// 移除 T 后面可能出现的个别字符串
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private string RemoveStrModel(string name)
+        {
+            var re = name.ToLower();
+            if (re.IndexOf("model") == re.Length - 5)
+            {
+                re = name.Remove(name.Length - 5);
+            }
+            if (re.Remove(0, re.Length - 1) == "_" || re.Remove(0, re.Length - 1) == ".")
+            {
+                re = name.Remove(name.Length - 1);
+            }
+            return re;
+        }
+
+        private bool IsNullOrEmpty(string str)
+        {
+            return string.IsNullOrEmpty(str.Trim());
+        }
+
     }
 
     public class PageConfig
@@ -781,9 +809,17 @@ namespace ThreeArriveAction.Common
             }
             using (IDbConnection con = DataSource.GetConnection())
             {
-                IEnumerable<T> tList = con.Query<T>(sql, param);
-                con.Close();
-                return tList;
+                IEnumerable<T> tList;
+                try
+                {
+                    tList = con.Query<T>(sql, param);
+                    con.Close();
+                    return tList;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message + "------------ SQL:" + sql);
+                }
             }
         }
 
@@ -859,7 +895,7 @@ namespace ThreeArriveAction.Common
 
     public class DataSource
     {
-        public static string ConnString = ConfigurationManager.ConnectionStrings["DJES"].ConnectionString;
+        public static string ConnString = ConfigurationManager.ConnectionStrings["DBString"].ConnectionString;
         public static IDbConnection GetConnection()
         {
             if (string.IsNullOrEmpty(ConnString))
