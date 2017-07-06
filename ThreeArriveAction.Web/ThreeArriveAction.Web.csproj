@@ -1014,10 +1014,17 @@
     <Content Include="scripts\music\play.png" />
     <Content Include="scripts\music\stop.png" />
     <Content Include="scripts\mycommjs.js" />
+    <Content Include="scripts\require\css.js" />
+    <Content Include="scripts\require\r.js" />
+    <Content Include="scripts\sweetalert\sweetalert.css" />
+    <Content Include="scripts\sweetalert\sweetalert.min.js" />
     <Content Include="scripts\swfupload\swfupload.handlers.js" />
     <Content Include="scripts\swfupload\swfupload.js" />
     <Content Include="scripts\swfupload\swfupload.queue.js" />
     <Content Include="scripts\swfupload\swfupload.swf" />
+    <Content Include="scripts\weixin\index.js" />
+    <Content Include="scripts\weixin\sign.js" />
+    <Content Include="weixin\main.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1027,6 +1034,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\BaseAjax.cs" />
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
     </Compile>
@@ -1050,6 +1058,9 @@
     </Compile>
     <Compile Include="Ajax\upload_ajax.ashx.cs">
       <DependentUpon>upload_ajax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\weixinInfo.ashx.cs">
+      <DependentUpon>weixinInfo.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ajax\sys_VillagesManager.ashx.cs">
@@ -1082,6 +1093,7 @@
     <Content Include="Ajax\sys_WeekArrivesManager.ashx" />
     <Content Include="Ajax\sys_ThingRecordManager.ashx" />
     <Content Include="Ajax\sys_OrganizationsManager.ashx" />
+    <Content Include="Ajax\weixinInfo.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1162,6 +1174,7 @@
     <None Include="images\font-awesome\scss\_path.scss" />
     <None Include="images\font-awesome\scss\_variables.scss" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.woff" />

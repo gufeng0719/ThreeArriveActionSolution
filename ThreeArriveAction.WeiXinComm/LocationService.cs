@@ -4,7 +4,6 @@ using Senparc.Weixin.MP.Entities.GoogleMap;
 using Senparc.Weixin.MP.Helpers;
 using System.Collections.Generic;
 
-
 namespace ThreeArriveAction.WeiXinComm
 {
     public class LocationService
