@@ -1017,6 +1017,8 @@
     <Content Include="scripts\swfupload\swfupload.js" />
     <Content Include="scripts\swfupload\swfupload.queue.js" />
     <Content Include="scripts\swfupload\swfupload.swf" />
+    <Content Include="scripts\weixin\index.js" />
+    <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1050,6 +1052,9 @@
     <Compile Include="Ajax\upload_ajax.ashx.cs">
       <DependentUpon>upload_ajax.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Ajax\weixinInfo.ashx.cs">
+      <DependentUpon>weixinInfo.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ajax\sys_VillagesManager.ashx.cs">
       <DependentUpon>sys_VillagesManager.ashx</DependentUpon>
@@ -1081,6 +1086,7 @@
     <Content Include="Ajax\sys_WeekArrivesManager.ashx" />
     <Content Include="Ajax\sys_ThingRecordManager.ashx" />
     <Content Include="Ajax\sys_OrganizationsManager.ashx" />
+    <Content Include="Ajax\weixinInfo.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
