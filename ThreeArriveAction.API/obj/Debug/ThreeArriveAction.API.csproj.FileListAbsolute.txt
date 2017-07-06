@@ -1,8 +1,0 @@
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\bin\Debug\ThreeArriveAction.API.dll
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\bin\Debug\ThreeArriveAction.API.pdb
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\bin\Debug\LitJSON.dll
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\bin\Debug\Senparc.Weixin.dll
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\bin\Debug\Senparc.Weixin.MP.dll
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\obj\Debug\ThreeArriveAction.API.dll
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\obj\Debug\ThreeArriveAction.API.pdb
-E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.API\obj\Debug\ThreeArriveAction.API.csprojResolveAssemblyReference.cache
