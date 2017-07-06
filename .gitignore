@@ -54,3 +54,13 @@ ThreeArriveAction.Web/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 ThreeArriveAction.Web/obj/Debug/ThreeArriveAction.Web.csproj.FileListAbsolute.txt
 ThreeArriveAction.WeiXinComm/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 ThreeArriveAction.WeiXinComm/obj/Debug/ThreeArriveAction.WeiXinComm.csproj.FileListAbsolute.txt
+
+ThreeArriveAction.DBUtility/bin/Debug/ThreeArriveAction.DBUtility.dll
+ThreeArriveAction.DBUtility/bin/Debug/ThreeArriveAction.DBUtility.pdb
+ThreeArriveAction.DBUtility/obj/Debug/ThreeArriveAction.DBUtility.dll
+ThreeArriveAction.DBUtility/obj/Debug/ThreeArriveAction.DBUtility.pdb
+ThreeArriveAction.Model/bin/Debug/ThreeArriveAction.Model.dll
+ThreeArriveAction.Model/bin/Debug/ThreeArriveAction.Model.pdb
+ThreeArriveAction.Model/obj/Debug/ThreeArriveAction.Model.dll
+ThreeArriveAction.Model/obj/Debug/ThreeArriveAction.Model.pdb
+ThreeArriveActionSolution.suo
