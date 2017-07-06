@@ -1173,6 +1173,7 @@
     <None Include="images\font-awesome\scss\_path.scss" />
     <None Include="images\font-awesome\scss\_variables.scss" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.woff" />

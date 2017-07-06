@@ -162,20 +162,23 @@ namespace ThreeArriveAction.Common
             var properties = model.GetType().GetProperties();
             var para = new DynamicParameters();
             var keyValue = new object();
-            foreach (var t in properties)
+            foreach (PropertyInfo t in properties)
             {
-                if (IdentityKey != t.Name)
+                if (IdentityKey != t.Name && PrimaryKey != t.Name)
                 {
                     SqlString.Append($" {t.Name} = @{t.Name},");
+                    para.Add("@" + t.Name, t.GetValue(model, null));
+                }
+                else
+                {
                     if (t.Name == PrimaryKey)
                     {
                         keyValue = t.GetValue(model, null);
                     }
-                    para.Add("@" + t.Name, t.GetValue(model, null));
                 }
             }
             SqlString = RemoveEndNumber(SqlString, 1);
-            SqlString.Append($" WHERE {PrimaryKey}_Key = @{PrimaryKey}_Key ");
+            SqlString.Append($" WHERE {PrimaryKey} = @{PrimaryKey}_Key ");
             para.Add($"@{PrimaryKey}_Key", keyValue);
             return DbClient.Excute(SqlString.ToString(), para);
         }
@@ -194,7 +197,7 @@ namespace ThreeArriveAction.Common
         {
             SqlString = new StringBuilder();
             var top = Top > 0 ? $"TOP({Top})" : "";
-            SqlString.Append($"UPDATE {top} SET ");
+            SqlString.Append($"UPDATE {top} {_tableName} SET ");
             var para = new DynamicParameters();
             var sp = GetUpdateString();
             if (IsNullOrEmpty(sp.SqlStr))
@@ -474,7 +477,7 @@ namespace ThreeArriveAction.Common
             var count = 0;
             foreach (var update in _updateList)
             {
-                re.SqlStr += $"{update.Key}{count}=@{update.Key}{count},";
+                re.SqlStr += $"{update.Key}=@{update.Key}{count},";
                 re.Parameter.Add($"@{update.Key}{count}", update.Value);
                 count++;
             }
@@ -831,7 +834,16 @@ namespace ThreeArriveAction.Common
             }
             using (IDbConnection con = DataSource.GetConnection())
             {
-                return con.Execute(sql, param, transaction);
+                var line = 0;
+                try
+                {
+                    line = con.Execute(sql, param, transaction);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message + "-------------- SQL:" + sql);
+                }
+                return line;
             }
         }
 

@@ -210,22 +210,44 @@ namespace ThreeArriveAction.Web.Ajax
         #region 验证人员是否已注册
         public void CheckOpenId(HttpContext context)
         {
-            var sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
-            sh.AddWhere("UserRemarks", context.Request["openid"], RelationEnum.Like);
-            context.Response.Write(sh.Select().Any() ? "1" : "0");
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("UserRemark", context.Request["openid"], RelationEnum.Like);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                context.Response.Write(new
+                {
+                    code = 0
+                }.ToJson());
+            }
+            else
+            {
+                context.Response.Write(new
+                {
+                    code = 1,
+                    model
+                }.ToJson());
+            }
         }
         #endregion
 
         #region 注册手机号码
         public void SignInPhone(HttpContext context)
         {
-            var sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
-            sh.AddUpdate("UserRemarks", context.Request["openid"]);
-            sh.AddWhere("UserPhoto", context.Request["phone"]);
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("UserPhone", context.Request["phone"]);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                context.Response.Write("0");
+                return;
+            }
+            sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddUpdate("UserRemark", context.Request["openid"]);
+            sh.AddWhere("UserPhone", context.Request["phone"]);
             sh.Update();
-            sh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
-            sh.AddWhere("UserPhoto", context.Request["phone"]);
-            context.Response.Write(sh.Select().ToJson());
+            model.UserRemark = context.Request["openid"];
+            context.Response.Write(model.ToJson());
             return;
         }
         #endregion
