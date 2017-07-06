@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Data;
 using ThreeArriveAction.Common;
 using Senparc.Weixin.MP.Entities;
-using Senparc.Weixin.MP.Helpers;
-using Senparc.Weixin.MP;
-using System.Diagnostics;
-using ThreeArriveAction.BLL;
 using ThreeArriveAction.Model;
-//using ThreeArriveAction.DAL;
 
 namespace ThreeArriveAction.WeiXinComm
 {

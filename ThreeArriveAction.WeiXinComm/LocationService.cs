@@ -2,11 +2,8 @@
 using Senparc.Weixin.MP.Entities.BaiduMap;
 using Senparc.Weixin.MP.Entities.GoogleMap;
 using Senparc.Weixin.MP.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ThreeArriveAction.WeiXinComm
 {

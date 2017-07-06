@@ -1,9 +1,4 @@
-﻿using ThreeArriveAction.BLL;
-using Senparc.Weixin.MP.AdvancedAPIs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Senparc.Weixin.MP.AdvancedAPIs.User;
 
 namespace ThreeArriveAction.WeiXinComm
