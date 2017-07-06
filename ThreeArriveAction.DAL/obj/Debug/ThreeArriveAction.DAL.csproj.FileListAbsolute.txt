@@ -9,3 +9,14 @@ E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveAc
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.Model.pdb
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.DAL\obj\Debug\ThreeArriveAction.DAL.dll
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.DAL\obj\Debug\ThreeArriveAction.DAL.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.DAL.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.DAL.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.Common.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.DBUtility.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.Model.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.Common.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.DBUtility.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\bin\Debug\ThreeArriveAction.Model.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\obj\Debug\ThreeArriveAction.DAL.csprojResolveAssemblyReference.cache
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\obj\Debug\ThreeArriveAction.DAL.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.DAL\obj\Debug\ThreeArriveAction.DAL.pdb

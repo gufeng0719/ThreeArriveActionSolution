@@ -11,3 +11,16 @@ E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveAc
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.csprojResolveAssemblyReference.cache
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.dll
 E:\2017年项目文件\淮安区组织部三到行动平台\项目\ThreeArriveActionSolution\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.BLL.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.BLL.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.Common.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.DAL.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.Model.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.DBUtility.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.Common.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.DAL.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.Model.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\bin\Debug\ThreeArriveAction.DBUtility.pdb
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.csprojResolveAssemblyReference.cache
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.dll
+E:\work\ThreeArriveActionSolution4\ThreeArriveAction.BLL\obj\Debug\ThreeArriveAction.BLL.pdb
