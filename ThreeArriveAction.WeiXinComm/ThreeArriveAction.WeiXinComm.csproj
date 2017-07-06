@@ -34,13 +34,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Senparc.Weixin, Version=4.11.4.23282, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Sharp\Desktop\WeiXinMPSDK-NET4.0\WeiXinMPSDK-NET4.0\src\Senparc.Weixin.MP.BuildOutPut\.net4.0\Senparc.Weixin.dll</HintPath>
+    <Reference Include="Senparc.Weixin">
+      <HintPath>..\ThreeArriveAction.Common\Reference\Senparc.Weixin.dll</HintPath>
     </Reference>
-    <Reference Include="Senparc.Weixin.MP, Version=14.3.135.23282, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Sharp\Desktop\WeiXinMPSDK-NET4.0\WeiXinMPSDK-NET4.0\src\Senparc.Weixin.MP.BuildOutPut\.net4.0\Senparc.Weixin.MP.dll</HintPath>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\ThreeArriveAction.Common\Reference\Senparc.Weixin.MP.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

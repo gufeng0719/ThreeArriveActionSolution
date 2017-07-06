@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJson, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -1156,6 +1160,7 @@
     <None Include="images\font-awesome\scss\_mixins.scss" />
     <None Include="images\font-awesome\scss\_path.scss" />
     <None Include="images\font-awesome\scss\_variables.scss" />
+    <Content Include="packages.config" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.woff" />
