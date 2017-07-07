@@ -33,6 +33,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "select":
                     GetOrganizationSelect(context);
                     break;
+                case "del":
+                    DeleteOrganization(context);
+                    break;
             }
         }
 
@@ -64,28 +67,51 @@ namespace ThreeArriveAction.Web.Ajax
         private void SaveOrganization(HttpContext context)
         {
             sys_OrganizationsModel organModel = new sys_OrganizationsModel();
+            List<sys_OrganizationANDNavigationsModel> orgList = new List<sys_OrganizationANDNavigationsModel>();
             string action = MXRequest.GetFormString("action");
             string check = MXRequest.GetFormString("checkAll");
+            if (check != "")
+            {
+                string[] strArr = check.Split(',');
+                for (int i = 0; i < strArr.Length; i++)
+                {
+                    sys_OrganizationANDNavigationsModel orgNavModel = new sys_OrganizationANDNavigationsModel();
+                    orgNavModel.NavigationId = int.Parse(strArr[i]);
+                    orgList.Add(orgNavModel);
+                }
+            }
             organModel.OrganizationName = MXRequest.GetFormString("organname").ToString();
             if (MXRequest.GetFormString("organstate") == "on")
             {
+
                 organModel.OrganizationState = 1;
             }
             else
             {
+
                 organModel.OrganizationState = 2;
             }
             organModel.Remarks = MXRequest.GetFormString("remarks");
+
+            organModel.OrgAndNavs = orgList;
             string result = "";
-            if (action.IndexOf("add")>0)
+            if (action == "add")
             {
-               // result = organBLL.AddOrganization(organModel);
+                organModel.OrgAndNavs = orgList;
+                result = organBLL.AddOrganization(organModel);
             }
             else
             {
                 organModel.OrganizationId = int.Parse(MXRequest.GetFormString("orgid"));
-                //result = organBLL.UpdateOrganization(organModel);
+                result = organBLL.UpdateOrganization(organModel);
             }
+            context.Response.Write(result);
+        }
+
+        private void DeleteOrganization(HttpContext context)
+        {
+            string ids = MXRequest.GetFormString("str");
+            string result = organBLL.DeleteOrganization(ids);
             context.Response.Write(result);
         }
 

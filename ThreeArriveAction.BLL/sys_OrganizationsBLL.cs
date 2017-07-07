@@ -54,6 +54,21 @@ namespace ThreeArriveAction.BLL
         }
         #endregion
 
+        #region 删除
+        public string DeleteOrganization(string ids)
+        {
+            int number = organDAL.DeleteOrganization(ids);
+            if (number > 0)
+            {
+                return "{\"info\":\"组织角色删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"组织角色删除失败\",\"status\":\"n\"}";
+            }
+        }
+        #endregion
+
         #region 查询
         /// <summary>
         /// 根据编号，查询该组织的信息

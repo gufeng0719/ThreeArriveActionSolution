@@ -165,7 +165,7 @@ namespace ThreeArriveAction.Web.Ajax
             userModel.VillageId = int.Parse(MXRequest.GetFormString("villageid").ToString());
             userModel.UserBirthday = MXRequest.GetFormString("userbirthday").ToString();
             userModel.UserPassword = MXRequest.GetFormString("userpassword").ToString();
-            userModel.UserRemark = MXRequest.GetFormString("userremark").ToString();
+            
             string action = MXRequest.GetFormString("action");
             bool blinfo = false;
             infoModel.UserPhoto = MXRequest.GetFormString("userphoto");

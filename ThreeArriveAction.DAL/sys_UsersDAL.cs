@@ -71,9 +71,9 @@ namespace ThreeArriveAction.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sys_Users(");
-            strSql.Append("UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword,UserRemark)");
+            strSql.Append("UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword)");
             strSql.Append(" values (");
-            strSql.Append("@UserPhone,@UserName,@UserDuties,@OrganizationId,@VillageId,@UserBirthday,@UserPassword,@UserRemark)");
+            strSql.Append("@UserPhone,@UserName,@UserDuties,@OrganizationId,@VillageId,@UserBirthday,@UserPassword)");
             strSql.Append(";set @ReturnValue= @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@UserPhone", SqlDbType.VarChar,11),
@@ -83,7 +83,6 @@ namespace ThreeArriveAction.DAL
 					new SqlParameter("@VillageId", SqlDbType.Int,4),
 					new SqlParameter("@UserBirthday", SqlDbType.NVarChar,50),
 					new SqlParameter("@UserPassword", SqlDbType.NVarChar,20),
-					new SqlParameter("@UserRemark", SqlDbType.NVarChar,500),
                     new SqlParameter("@ReturnValue",SqlDbType.Int)};
             parameters[0].Value = model.UserPhone;
             parameters[1].Value = model.UserName;
@@ -92,8 +91,7 @@ namespace ThreeArriveAction.DAL
             parameters[4].Value = model.VillageId;
             parameters[5].Value = model.UserBirthday;
             parameters[6].Value = model.UserPassword;
-            parameters[7].Value = model.UserRemark; ;
-            parameters[8].Direction = ParameterDirection.Output;
+            parameters[7].Direction = ParameterDirection.Output;
 
             List<CommandInfo> sqllist = new List<CommandInfo>();
             CommandInfo cmd = new CommandInfo(strSql.ToString(), parameters);
@@ -152,8 +150,7 @@ namespace ThreeArriveAction.DAL
             strSql.Append("OrganizationId=@OrganizationId,");
             strSql.Append("VillageId=@VillageId,");
             strSql.Append("UserBirthday=@UserBirthday,");
-            strSql.Append("UserPassword=@UserPassword,");
-            strSql.Append("UserRemark=@UserRemark");
+            strSql.Append("UserPassword=@UserPassword ");
             strSql.Append(" where UserId=@UserId");
             SqlParameter[] parameters = {
 					new SqlParameter("@UserId", SqlDbType.Int,4),
@@ -163,8 +160,7 @@ namespace ThreeArriveAction.DAL
 					new SqlParameter("@OrganizationId", SqlDbType.Int,4),
 					new SqlParameter("@VillageId", SqlDbType.Int,4),
 					new SqlParameter("@UserBirthday", SqlDbType.VarChar,50),
-					new SqlParameter("@UserPassword", SqlDbType.VarChar,20),
-					new SqlParameter("@UserRemark", SqlDbType.VarChar,5000)};
+					new SqlParameter("@UserPassword", SqlDbType.VarChar,20)};
             parameters[0].Value = model.UserId;
             parameters[1].Value = model.UserPhone;
             parameters[2].Value = model.UserName;
@@ -173,7 +169,6 @@ namespace ThreeArriveAction.DAL
             parameters[5].Value = model.VillageId;
             parameters[6].Value = model.UserBirthday;
             parameters[7].Value = model.UserPassword;
-            parameters[8].Value = model.UserRemark;
             cmdInfo1.CommandText = strSql.ToString();
             cmdInfo1.Parameters = parameters;
             cmdList.Add(cmdInfo1);

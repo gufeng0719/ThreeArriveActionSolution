@@ -74,6 +74,18 @@ namespace ThreeArriveAction.DAL
         #endregion
 
         #region 删除
+        /// <summary>
+        /// 根据村居编号，删除村居信息，包含其子级村居
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public int DeleteVillage(string ids)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from sys_Villages where VillageId in ("+ids+") or VillagePadId in ("+ids+")");
+            int number = DbHelperSQL.ExecuteSql(strSql.ToString());
+            return number;
+        }
         #endregion
 
         #region 查询
@@ -211,5 +223,6 @@ namespace ThreeArriveAction.DAL
             }
         }
         #endregion
+
     }
 }

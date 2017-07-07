@@ -88,12 +88,6 @@
                 </div>
             </dd>
         </dl>
-        <dl>
-            <dt>备注</dt>
-            <dd>
-                <textarea id="userremark" name="userremark" class="input normal" rows="2" cols="20"></textarea>
-            </dd>
-        </dl>
     </div>
     <div class="tab-content" style="display: none;">
         <dl>
@@ -286,7 +280,6 @@
                     $("#village span").text($("#villageid").find("option:selected").text());
                     $("#userbirthday").val(msg.UserBirthday);
                     $("#userpassword").val(msg.UserPassword);
-                    $("#userremark").val(msg.UserRemark);
                     if (msg.info.length > 0) {
                         $("#userimg").attr("src", msg.info[0].UserPhoto);
                         $("#userphoto").val(msg.info[0].UserPhoto);

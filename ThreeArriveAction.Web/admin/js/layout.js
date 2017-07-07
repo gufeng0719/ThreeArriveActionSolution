@@ -113,7 +113,7 @@ function jsprint(msgtitle, url, msgcss, callback) {
     }
 }
 //弹出一个Dialog窗口
-function jsdialog(msgtitle, msgcontent, url, msgcss, callback) {
+function jsdialog(msgtitle, msgcontent, url, msgcss) {
     var iconurl = "";
     var argnum = arguments.length;
     switch (msgcss) {
@@ -143,9 +143,9 @@ function jsdialog(msgtitle, msgcontent, url, msgcss, callback) {
                 location.href = url;
             }
             //执行回调函数
-            if (argnum == 5) {
-                callback();
-            }
+//            if (argnum == 5) {
+//                callback();
+//            }
         }
     });
 }

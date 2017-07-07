@@ -54,6 +54,18 @@ namespace ThreeArriveAction.BLL
        #endregion
 
        #region 删除
+       public string DeleteVillage(string ids)
+       {
+           int number = villageDAL.DeleteVillage(ids);
+           if (number > 0)
+           {
+               return "{\"info\":\"村居删除成功\",\"status\":\"y\"}";
+           }
+           else
+           {
+               return "{\"info\":\"村居删除失败\",\"status\":\"n\"}";
+           }
+       }
        #endregion
 
        #region 查询

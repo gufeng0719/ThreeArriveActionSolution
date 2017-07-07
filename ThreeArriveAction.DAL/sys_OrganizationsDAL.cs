@@ -21,21 +21,45 @@ namespace ThreeArriveAction.DAL
         /// <returns></returns>
         public int AddOrganization(sys_OrganizationsModel organModel)
         {
+            List<CommandInfo> cmdList = new List<CommandInfo>();
+            //组织角色表
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sys_Organizations (OrganizationName,OrganizationState,Remarks) ");
-            strSql.Append("values(@Organization,@OrganizationState,@Remarks)");
+            strSql.Append("values(@Organization,@OrganizationState,@Remarks);");
+            strSql.Append("set @ReturnValue=@@IDENTITY");
             SqlParameter[] parameter ={
                                           new SqlParameter("@Organization",SqlDbType.VarChar,100),
                                           new SqlParameter("@OrganizationState",SqlDbType.Int,4),
-                                          new SqlParameter("@Remarks",SqlDbType.VarChar,500)
+                                          new SqlParameter("@Remarks",SqlDbType.VarChar,500),
+                                          new SqlParameter("@ReturnValue",SqlDbType.Int)
                                      };
             parameter[0].Value = organModel.OrganizationName;
             parameter[1].Value = organModel.OrganizationState;
             parameter[2].Value = organModel.Remarks;
+            parameter[3].Direction = ParameterDirection.Output;
 
-            int number = DbHelperSQL.ExecuteSql(strSql.ToString(),parameter);
-            return number;
+            CommandInfo cmd = new CommandInfo(strSql.ToString(),parameter);
+            cmdList.Add(cmd);
 
+            //组织菜单列表
+            if(organModel.OrgAndNavs.Count>0){
+                StringBuilder strSql2;
+                foreach( sys_OrganizationANDNavigationsModel orgNav in organModel.OrgAndNavs){
+                    strSql2 =new StringBuilder();
+                    strSql2.Append("insert into sys_OrganizationANDNavigations ( OrganizationId,NavigationId) ");
+                    strSql2.Append(" values (@OrganizationId,@NavigationId)");
+                    SqlParameter[] parameters2 ={
+                                                    new SqlParameter("@OrganizationId",SqlDbType.Int,4),
+                                                    new SqlParameter("@NavigationId",SqlDbType.Int,4)
+                                               };
+                    parameters2[0].Direction = ParameterDirection.InputOutput;
+                    parameters2[1].Value = orgNav.NavigationId;
+                    cmd = new CommandInfo(strSql2.ToString(), parameters2);
+                    cmdList.Add(cmd);
+                }
+            }
+            DbHelperSQL.ExecuteSqlTranWithIndentity(cmdList);
+            return (int)parameter[3].Value;
         }
         #endregion
 
@@ -47,6 +71,8 @@ namespace ThreeArriveAction.DAL
         /// <returns></returns>
         public int UpdateOrganization(sys_OrganizationsModel organModel)
         {
+            List<CommandInfo> cmdList = new List<CommandInfo>();
+            //组织角色主表
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update sys_Organizations set OrganizationName=@OrganizationName,");
             strSql.Append("OrganizationState=@OrganizationState,Remarks=@Remarks ");
@@ -61,9 +87,63 @@ namespace ThreeArriveAction.DAL
             parameters[1].Value = organModel.OrganizationState;
             parameters[2].Value = organModel.Remarks;
             parameters[3].Value = organModel.OrganizationId;
-            int numbers = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            CommandInfo cmd = new CommandInfo(strSql.ToString(), parameters);
+            cmdList.Add(cmd);
+            if (organModel.OrgAndNavs.Count > 0)
+            {
+                //角色菜单表
+                //1.先删除以前的列表
+                StringBuilder strSql2 = new StringBuilder();
+                strSql2.Append("delete from sys_OrganizationANDNavigations where OrganizationId=@OrganizationId ");
+                SqlParameter[] parameters2 ={
+                                                new SqlParameter("@OrganizationId",SqlDbType.Int,4)
+                                            };
+                parameters2[0].Value = organModel.OrganizationId;
+                cmd = new CommandInfo(strSql2.ToString(), parameters2);
+                cmdList.Add(cmd);
+                //2.添加菜单列表
+                StringBuilder strSql3;
+                foreach (sys_OrganizationANDNavigationsModel orgNav in organModel.OrgAndNavs)
+                {
+                    strSql3 = new StringBuilder();
+                    strSql3.Append("insert into sys_OrganizationANDNavigations ( OrganizationId,NavigationId) ");
+                    strSql3.Append(" values (@OrganizationId,@NavigationId)");
+                    SqlParameter[] parameters3 ={
+                                                    new SqlParameter("@OrganizationId",SqlDbType.Int,4),
+                                                    new SqlParameter("@NavigationId",SqlDbType.Int,4)
+                                               };
+                    parameters3[0].Value = organModel.OrganizationId;
+                    parameters3[1].Value = orgNav.NavigationId;
+                    cmd = new CommandInfo(strSql3.ToString(), parameters3);
+                    cmdList.Add(cmd);
+                }
+            }
+            int numbers = DbHelperSQL.ExecuteSqlTran(cmdList);
             return numbers;
 
+        }
+        #endregion
+
+        #region 删除
+        /// <summary>
+        /// 根据组织角色编号删除组织角色(可多个一起删除)
+        /// </summary>
+        /// <param name="ids">编号</param>
+        /// <returns></returns>
+        public int DeleteOrganization(string ids)
+        {
+            //删除组织角色
+            //先删除组织角色菜单表中对应数据
+            StringBuilder strSql1 = new StringBuilder();
+            strSql1.Append("delete from sys_OrganizationANDNavigations where OrganizationId in ("+ids+")");
+            List<string> strList = new List<string>();
+            strList.Add(strSql1.ToString());
+            //删除组织角色表中对应数据
+            StringBuilder strSql2 = new StringBuilder();
+            strSql2.Append("delete from sys_Organizations where OrganizationId in ("+ids+")");
+            strList.Add(strSql2.ToString());
+            int number = DbHelperSQL.ExecuteSqlTran(strList);
+            return number;
         }
         #endregion
 

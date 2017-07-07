@@ -113,12 +113,15 @@
                     if (msg.orgModel[0].Remarks != undefined) {
                         $("#remarks").val(msg.orgModel[0].Remarks);
                     }
+                    $.each(msg.navArr, function (i, item) {
+                        $("input[name='checkAll'][value=" + item + "]").attr("checked", "checked");
+                    });
                 }
             });
         } else {
             $("#action").val(urlArr[0].split('=')[1]);
             $("#orgid").val(0);
-            
+
         }
 
 

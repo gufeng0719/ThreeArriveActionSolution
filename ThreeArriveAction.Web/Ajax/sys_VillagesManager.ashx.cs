@@ -32,6 +32,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "save":
                     SaveVillage(context);
                     break;
+                case "del":
+                    DeleteVillage(context);
+                    break;
 
             }
         }
@@ -83,8 +86,17 @@ namespace ThreeArriveAction.Web.Ajax
                 result = villageBLL.UpdateVillage(villageModel);
             }
             context.Response.Write(result);
+        }
 
-
+        /// <summary>
+        /// 删除村居信息，包含其子级村居
+        /// </summary>
+        /// <param name="context"></param>
+        private void DeleteVillage(HttpContext context)
+        {
+            string ids = MXRequest.GetFormString("str");
+            string result = villageBLL.DeleteVillage(ids);
+            context.Response.Write(result);
         }
         public bool IsReusable
         {
