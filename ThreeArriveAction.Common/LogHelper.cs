@@ -10,7 +10,7 @@ namespace ThreeArriveAction.Common
 
         public static void Log(string msg, string title = "", LogTypeEnum type = LogTypeEnum.Info)
         {
-            path += $"\\log\\{DateTime.Now.ToShortDateString()}.log";
+            path += "\\log\\" + DateTime.Now.ToShortDateString() + ".log";
             var str = new StringBuilder();
             str.AppendLine("----------------------------------------------------------");
             str.AppendLine("时间:");
