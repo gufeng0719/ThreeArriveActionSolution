@@ -19,5 +19,18 @@ namespace ThreeArriveAction.Common
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        public static int ToInt(this object o)
+        {
+            try
+            {
+                return Convert.ToInt32(o);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex.Message, o.ToString() + "int类型转换失败");
+                return 0;
+            }
+        }
     }
 }

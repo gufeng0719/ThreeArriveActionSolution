@@ -11,7 +11,6 @@ function GetRequest() {
     }
     return theRequest;
 }
-
 var req = GetRequest();
 
 require.config({
@@ -30,7 +29,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
         $(function () {
             if (!localStorage) return;
             if (localStorage.getItem("current_user") != null
-                && JSON.parse(localStorage.getItem("current_user")).UserRemark == req["openid"]) return;
+                && JSON.parse(localStorage.getItem("current_user")).UserRemark == localStorage.getItem("openId")) return;
             signVerification();
         });
 
@@ -38,7 +37,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
             $.ajax({
                 type: "post",
                 data: {
-                    openid: req["openid"]
+                    openid: localStorage.getItem("openId")
                 },
                 url: "../Ajax/sys_UsersManager.ashx?type=checkOpenId",
                 success: function (d) {
@@ -57,7 +56,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                                 swal.showInputError("请输入11位的手机号码");
                                 return false
                             }
-                            signIn(inputValue, req["openid"]);
+                            signIn(inputValue, localStorage.getItem("openId"));
                         });
                     } else {
                         if (localStorage) {

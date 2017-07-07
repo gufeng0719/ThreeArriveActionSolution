@@ -22,6 +22,11 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetUserInfo(context);
             }
+            else if (type == "getToUrl")
+            {
+                context.Response.Write(GetToUrl(context.Request["page"].ToInt()));
+                context.Response.End();
+            }
             else
             {
                 context.Response.Write("错误的请求");
@@ -32,7 +37,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         public void GetCodeUrl(HttpContext context)
         {
-            var url = string.Format(ConfigurationManager.AppSettings["WinxinCodeUrl"], 
+            var url = string.Format(ConfigurationManager.AppSettings["WinxinCodeUrl"],
                                     ConfigurationManager.AppSettings["AppId"],
                                     ConfigurationManager.AppSettings["Localhost"]
                                         + "/weixin/redirect_uri.html"
@@ -49,18 +54,8 @@ namespace ThreeArriveAction.Web.Ajax
                                         context.Request["code"]);
 
             var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
+            var toUrl = GetToUrl(context.Request["page"].ToInt());
 
-            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/"; 
-            switch (context.Request["page"])
-            {
-                case "0":
-                    toUrl += "sign.html";
-                    break;
-                // todo 根据 page 区分需要跳转的url
-                default:
-                    toUrl += "sign.html";
-                    break;
-            }
             context.Response.Write(new
             {
                 response.openid,
@@ -69,6 +64,22 @@ namespace ThreeArriveAction.Web.Ajax
             context.Response.End();
         }
 
+
+        private string GetToUrl(int page)
+        {
+            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/";
+            switch (page)
+            {
+                case 0:
+                    toUrl += "sign.html";
+                    break;
+                // todo 根据 page 区分需要跳转的url
+                default:
+                    toUrl += "sign.html";
+                    break;
+            }
+            return toUrl;
+        }
 
         public bool IsReusable
         {
