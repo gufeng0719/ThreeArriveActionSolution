@@ -70,7 +70,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Regexlib.cs" />
     <Compile Include="SerializationHelper.cs" />
-    <Compile Include="SqlHelper.cs" />
     <Compile Include="Thumbnail.cs" />
     <Compile Include="ThumbnailByLp.cs" />
     <Compile Include="Utils.cs" />
@@ -80,6 +79,7 @@
   <ItemGroup>
     <Content Include="Reference\Senparc.Weixin.dll" />
     <Content Include="Reference\Senparc.Weixin.MP.dll" />
+    <Content Include="Reference\SqlHelper.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

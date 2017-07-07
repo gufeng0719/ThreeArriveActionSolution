@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Configuration;
 using System.Web;
 using System.Web.SessionState;
@@ -48,14 +49,8 @@ namespace ThreeArriveAction.Web.Ajax
 
         public void GetUserInfo(HttpContext context)
         {
-            string url = string.Format(ConfigurationManager.AppSettings["WinxinOpenIdUrl"],
-                                        ConfigurationManager.AppSettings["AppId"],
-                                        ConfigurationManager.AppSettings["AppSecret"],
-                                        context.Request["code"]);
-
-            var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
+            var response = GetAccessToken(context.Request["code"]);
             var toUrl = GetToUrl(context.Request["page"].ToInt());
-
             context.Response.Write(new
             {
                 response.openid,
@@ -64,6 +59,22 @@ namespace ThreeArriveAction.Web.Ajax
             context.Response.End();
         }
 
+        public void GetJsapiTicket(HttpContext context)
+        {
+            var aModel = CacheHelper.Get<AccessToken>("AccessToken");
+            if (aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) < DateTime.Now)
+            {
+
+            }
+            else
+            {
+                aModel = new AccessToken
+                {
+                    Time = DateTime.Now,
+                    Value = GetAccessToken(context.Request["code"]).access_token
+                };
+            }
+        }
 
         private string GetToUrl(int page)
         {
@@ -81,6 +92,18 @@ namespace ThreeArriveAction.Web.Ajax
             return toUrl;
         }
 
+        private OpenIdModel GetAccessToken(string code)
+        {
+            string url = string.Format(ConfigurationManager.AppSettings["WinxinOpenIdUrl"],
+                                        ConfigurationManager.AppSettings["AppId"],
+                                        ConfigurationManager.AppSettings["AppSecret"],
+                                        code);
+
+            var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
+            LogHelper.Log($"获取access_token:{response.access_token} \r\n    openid:{response.openid}", "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+            return response;
+        }
+
         public bool IsReusable
         {
             get
@@ -96,6 +119,12 @@ namespace ThreeArriveAction.Web.Ajax
             public string refresh_token;
             public string openid;
             public string scope;
+        }
+
+        class AccessToken
+        {
+            public string Value;
+            public DateTime Time;
         }
     }
 }

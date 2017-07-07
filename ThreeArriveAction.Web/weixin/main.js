@@ -23,7 +23,17 @@ require.config({
     },
 });
 
-require(['/scripts/sweetalert/sweetalert.min.js',
+wx.config({
+    debug: true, 
+    appId: 'wx7c32c023241aba89',
+    timestamp: new Date().getTime(), 
+    nonceStr: Math.random(), // 必填，生成签名的随机串
+    signature: '',// 必填，签名，见附录1
+    jsApiList: [] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+});
+
+require(['/scripts/weixin/jweixin-1.2.0.js',
+    '/scripts/sweetalert/sweetalert.min.js',
     'css!/scripts/sweetalert/sweetalert.css'],
     function () {
         $(function () {
