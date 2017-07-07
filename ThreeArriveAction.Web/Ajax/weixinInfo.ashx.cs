@@ -100,7 +100,7 @@ namespace ThreeArriveAction.Web.Ajax
                                         code);
 
             var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
-            LogHelper.Log($"获取access_token:{response.access_token} \r\n    openid:{response.openid}", "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+            LogHelper.Log("获取access_token:" + response.access_token + " \r\n    openid:" + response.openid, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
             return response;
         }
 
