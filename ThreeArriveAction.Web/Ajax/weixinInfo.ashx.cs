@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Web;
 using System.Web.SessionState;
@@ -28,6 +29,10 @@ namespace ThreeArriveAction.Web.Ajax
                 context.Response.Write(GetToUrl(context.Request["page"].ToInt()));
                 context.Response.End();
             }
+            else if (type == "getJsapiTicket")
+            {
+                GetJsapiTicket(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
@@ -35,10 +40,9 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-
         public void GetCodeUrl(HttpContext context)
         {
-            var url = string.Format(ConfigurationManager.AppSettings["WinxinCodeUrl"],
+            var url = string.Format(ConfigurationManager.AppSettings["WeixinCodeUrl"],
                                     ConfigurationManager.AppSettings["AppId"],
                                     ConfigurationManager.AppSettings["Localhost"]
                                         + "/weixin/redirect_uri.html"
@@ -61,19 +65,112 @@ namespace ThreeArriveAction.Web.Ajax
 
         public void GetJsapiTicket(HttpContext context)
         {
-            var aModel = CacheHelper.Get<AccessToken>("AccessToken");
-            if (aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) < DateTime.Now)
+            var url = "";
+            var openId = context.Request["openid"];
+            var jModel = CacheHelper.Get<Token>(openId + "_JsapiTicket");
+            if (jModel != null && !jModel.Value.IsNullOrEmpty() && jModel.Time.AddHours(2) >= DateTime.Now)
             {
-
+                context.Response.Write(GetJDKConfig(jModel.Value, context));
+                return;
             }
             else
             {
-                aModel = new AccessToken
+                var aModel = CacheHelper.Get<Token>(openId + "_AccessToken");
+                if (aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now)
                 {
-                    Time = DateTime.Now,
-                    Value = GetAccessToken(context.Request["code"]).access_token
-                };
+                    url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
+                                        aModel.Value);
+                    var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
+                    LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间", LogTypeEnum.Info);
+                    CacheHelper.Insert(openId + "_JsapiTicket",
+                        new Token
+                        {
+                            Time = DateTime.Now,
+                            Value = jticket.ticket
+                        });
+                    context.Response.Write(GetJDKConfig(jticket.ticket, context));
+                    return;
+                }
+                else
+                {
+                    url = string.Format(ConfigurationManager.AppSettings["WeixinAccessToken"],
+                                       ConfigurationManager.AppSettings["AppId"],
+                                       ConfigurationManager.AppSettings["AppSecret"]);
+                    var accessToken = new HttpHelper().HttpGet(url).JsonToObject<AccessToken>();
+                    LogHelper.Log("获取access_token:" + accessToken.access_token + " \r\n    openid:" + openId, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+                    CacheHelper.Insert(openId + "_AccessToken",
+                        new Token
+                        {
+                            Time = DateTime.Now,
+                            Value = accessToken.access_token
+                        });
+                    url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
+                                        accessToken.access_token);
+                    var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
+                    CacheHelper.Insert(openId + "_JsapiTicket",
+                        new Token
+                        {
+                            Time = DateTime.Now,
+                            Value = jticket.ticket
+                        });
+                    context.Response.Write(GetJDKConfig(jticket.ticket, context));
+                    return;
+                }
             }
+        }
+
+        private string GetJDKConfig(string ticket, HttpContext context)
+        {
+            var nonceStr = ConvertHelper.GetNonce(16);
+            var timestamp = ConvertHelper.GetTimeStamp();
+            var str = "jsapi_ticket=" + ticket
+                + "&noncestr=" + nonceStr
+                + "&timestamp=" + timestamp
+                + "&url=" + context.Request.Url.ToString();
+            return new JDKConfig
+            {
+                jsApiList = new List<string>
+                {
+                    "onMenuShareTimeline",
+                    "onMenuShareAppMessage",
+                    "onMenuShareQQ",
+                    "onMenuShareWeibo",
+                    "onMenuShareQZone",
+                    "startRecord",
+                    "stopRecord",
+                    "onVoiceRecordEnd",
+                    "playVoice",
+                    "pauseVoice",
+                    "stopVoice",
+                    "onVoicePlayEnd",
+                    "uploadVoice",
+                    "downloadVoice",
+                    "chooseImage",
+                    "previewImage",
+                    "uploadImage",
+                    "downloadImage",
+                    "translateVoice",
+                    "getNetworkType",
+                    "openLocation",
+                    "getLocation",
+                    "hideOptionMenu",
+                    "showOptionMenu",
+                    "hideMenuItems",
+                    "showMenuItems",
+                    "hideAllNonBaseMenuItem",
+                    "showAllNonBaseMenuItem",
+                    "closeWindow",
+                    "scanQRCode",
+                    "chooseWXPay",
+                    "openProductSpecificView",
+                    "addCard",
+                    "chooseCard",
+                    "openCard"
+                },
+                nonceStr = nonceStr,
+                signature = DESEncrypt.Sha1(str),
+                timestamp = timestamp
+            }.ToJson();
         }
 
         private string GetToUrl(int page)
@@ -94,7 +191,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         private OpenIdModel GetAccessToken(string code)
         {
-            string url = string.Format(ConfigurationManager.AppSettings["WinxinOpenIdUrl"],
+            string url = string.Format(ConfigurationManager.AppSettings["WeixinOpenIdUrl"],
                                         ConfigurationManager.AppSettings["AppId"],
                                         ConfigurationManager.AppSettings["AppSecret"],
                                         code);
@@ -121,10 +218,33 @@ namespace ThreeArriveAction.Web.Ajax
             public string scope;
         }
 
-        class AccessToken
+        class Token
         {
             public string Value;
             public DateTime Time;
+        }
+
+        class JsapiTicket
+        {
+            public string errcode;
+            public string errmsg;
+            public string ticket;
+            public string expires_in;
+        }
+
+        class AccessToken
+        {
+            public string access_token;
+            public string expires_in;
+        }
+
+        class JDKConfig
+        {
+            public string appId = ConfigurationManager.AppSettings["AppId"];
+            public string timestamp;
+            public string nonceStr;
+            public string signature;
+            public List<string> jsApiList;
         }
     }
 }

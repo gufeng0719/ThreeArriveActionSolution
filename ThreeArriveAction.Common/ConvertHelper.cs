@@ -32,5 +32,40 @@ namespace ThreeArriveAction.Common
                 return 0;
             }
         }
+
+
+        /// <summary>  
+        /// 获取当前时间戳  
+        /// </summary>  
+        /// <param name="bflag">为真时获取10位时间戳,为假时获取13位时间戳.</param>  
+        /// <returns></returns>  
+        public static string GetTimeStamp(bool bflag = true)
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            string ret = string.Empty;
+            if (bflag)
+                ret = Convert.ToInt64(ts.TotalSeconds).ToString();
+            else
+                ret = Convert.ToInt64(ts.TotalMilliseconds).ToString();
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 一定长度的随机字符串
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string GetNonce(int length)
+        {
+            var n = "qwertyuioplkjhgfdsazxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM";
+            var s = "";
+            var r = new Random();
+            for (int i = 0; i < length; i++)
+            {
+                s += n[r.Next(0, n.Length)];
+            }
+            return s;
+        }
     }
 }

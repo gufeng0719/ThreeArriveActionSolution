@@ -1026,6 +1026,7 @@
     <Content Include="scripts\swfupload\swfupload.queue.js" />
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\weixin\index.js" />
+    <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
     <Content Include="weixin\main.html" />
@@ -1039,7 +1040,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ajax\BaseAjax.cs" />
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
     </Compile>
