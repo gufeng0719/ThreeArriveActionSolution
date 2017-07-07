@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.SessionState;
 using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
+using ThreeArriveAction.Common;
 using System.Data;
 using ThreeArriveAction.BLL;
 
@@ -28,10 +29,26 @@ namespace ThreeArriveAction.Web.Ajax
                 case "query":
                     GetNavigationListJson(context);
                     break;
-
-            }
-            
+                case "select":
+                    GetListTreeJson(context);
+                    break;
+                case "edit":
+                    GetNavigationJson(context);
+                    break;
+                case "save":
+                    SaveNavigation(context);
+                    break;
+            }   
         }
+
+        #region 获取该菜单信息
+        private void GetNavigationJson(HttpContext context)
+        {
+            int navid = int.Parse(MXRequest.GetQueryString("navid"));
+            string result = navBLL.GetNavigationsJsonByNavId(navid);
+            context.Response.Write(result);
+        }
+        #endregion
 
         #region  获取后台导航字符串
         private void GetNavigationByOrgan(HttpContext context)
@@ -116,12 +133,56 @@ namespace ThreeArriveAction.Web.Ajax
         }
         #endregion
 
+        #region  菜单列表数据
+        /// <summary>
+        /// 获取所有菜单列表
+        /// </summary>
+        /// <param name="context"></param>
         private void GetNavigationListJson(HttpContext context)
         {
             string result = navBLL.GetDataListJson(0);
             context.Response.Write(result);
         }
+        #endregion
 
+        #region 菜单下列列表数据
+        /// <summary>
+        /// 获取用于下来选择的单选数据列表
+        /// </summary>
+        /// <param name="context"></param>
+        private void GetListTreeJson(HttpContext context)
+        {
+            string result = navBLL.GetListTreeJson(0);
+            context.Response.Write(result);
+        }
+        #endregion
+
+        #region 保存菜单信息
+        private void SaveNavigation(HttpContext context)
+        {
+            sys_NavigationsModel model = new sys_NavigationsModel();
+            model.NavigationName = MXRequest.GetFormString("navname");
+            model.NavUrl = MXRequest.GetFormString("navurl");
+            model.Reamrks = MXRequest.GetFormString("remark");
+            model.NavState = 1;
+            model.NavIcon = null;
+            model.ParentId = int.Parse(MXRequest.GetFormString("parentid"));
+            string action = MXRequest.GetFormString("action");
+            
+            string result = "";
+            if (action == "add")
+            {
+                result = navBLL.AddNavigation(model);
+            }
+            else
+            {
+                model.NavigationId = int.Parse(MXRequest.GetFormString("navid"));
+                result = navBLL.UpdateNavigation(model);
+
+            }
+            context.Response.Write(result);
+        }
+        #endregion
         public bool IsReusable
         {
             get

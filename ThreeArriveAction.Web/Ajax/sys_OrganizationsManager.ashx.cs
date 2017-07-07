@@ -65,6 +65,7 @@ namespace ThreeArriveAction.Web.Ajax
         {
             sys_OrganizationsModel organModel = new sys_OrganizationsModel();
             string action = MXRequest.GetFormString("action");
+            string check = MXRequest.GetFormString("checkAll");
             organModel.OrganizationName = MXRequest.GetFormString("organname").ToString();
             if (MXRequest.GetFormString("organstate") == "on")
             {
@@ -78,12 +79,12 @@ namespace ThreeArriveAction.Web.Ajax
             string result = "";
             if (action.IndexOf("add")>0)
             {
-                result = organBLL.AddOrganization(organModel);
+               // result = organBLL.AddOrganization(organModel);
             }
             else
             {
                 organModel.OrganizationId = int.Parse(MXRequest.GetFormString("orgid"));
-                result = organBLL.UpdateOrganization(organModel);
+                //result = organBLL.UpdateOrganization(organModel);
             }
             context.Response.Write(result);
         }

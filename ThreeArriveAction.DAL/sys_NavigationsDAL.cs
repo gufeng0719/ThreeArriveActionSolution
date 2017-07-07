@@ -17,12 +17,96 @@ namespace ThreeArriveAction.DAL
        public sys_NavigationsDAL() { }
 
         #region 添加
+       /// <summary>
+       /// 添加菜单
+       /// </summary>
+       /// <param name="model">菜单实体信息</param>
+       /// <returns></returns>
+       public int AddNavigation(sys_NavigationsModel model)
+       {
+           StringBuilder strSql = new StringBuilder();
+           strSql.Append("insert into sys_Navigations (NavigationName,ParentId,NavIcon, ");
+           strSql.Append("NavUrl,NavState,NavLayer,Remarks ) ");
+           strSql.Append(" values ( @NavigationName,@ParentId,@NavIcon,@NavUrl,@NavState,");
+           strSql.Append(" @NavLayer,@Remarks )");
+           SqlParameter[] parameters ={
+                                          new SqlParameter("@NavigationName",SqlDbType.VarChar,100),
+                                          new SqlParameter("@ParentId",SqlDbType.Int,4),
+                                          new SqlParameter("@NavIcon",SqlDbType.VarChar,50),
+                                          new SqlParameter("@NavUrl",SqlDbType.VarChar,50),
+                                          new SqlParameter("@NavState",SqlDbType.Int,4),
+                                          new SqlParameter("@NavLayer",SqlDbType.Int,4),
+                                          new SqlParameter("@Remarks",SqlDbType.VarChar,500)
+                                     };
+           parameters[0].Value = model.NavigationName;
+           parameters[1].Value = model.ParentId;
+           parameters[2].Value = model.NavIcon;
+           parameters[3].Value = model.NavUrl;
+           parameters[4].Value = model.NavState;
+           parameters[5].Value = model.NavLayer;
+           parameters[6].Value = model.Reamrks;
+           int number = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+           return number;
+       }
         #endregion
         #region 修改
+       /// <summary>
+       /// 修改该菜单信息
+       /// </summary>
+       /// <param name="model"></param>
+       /// <returns></returns>
+       public int UpdateNavigation(sys_NavigationsModel model)
+       {
+           StringBuilder strSql = new StringBuilder();
+           strSql.Append("update sys_Navigations set ");
+           strSql.Append("NavigationName=@NavigationName,");
+           strSql.Append("ParentId=@ParentId,");
+           strSql.Append("NavIcon=@NavIcon,");
+           strSql.Append("NavUrl=@NavUrl,");
+           strSql.Append("NavState=@NavState,");
+           strSql.Append("NavLayer=@NavLayer,");
+           strSql.Append("Remarks=@Remarks ");
+           strSql.Append(" where NavigationId=@NavigationId ");
+           SqlParameter[] parameters ={
+                                          new SqlParameter("@NavigationName",SqlDbType.VarChar,100),
+                                          new SqlParameter("@ParentId",SqlDbType.Int,4),
+                                          new SqlParameter("@NavIcon",SqlDbType.VarChar,50),
+                                          new SqlParameter("@NavUrl",SqlDbType.VarChar,50),
+                                          new SqlParameter("@NavState",SqlDbType.Int,4),
+                                          new SqlParameter("@NavLayer",SqlDbType.Int,4),
+                                          new SqlParameter("@Remarks",SqlDbType.VarChar,500),
+                                          new SqlParameter("@NavigationId",SqlDbType.Int,4)
+                                     };
+           parameters[0].Value = model.NavigationName;
+           parameters[1].Value = model.ParentId;
+           parameters[2].Value = model.NavIcon;
+           parameters[3].Value = model.NavUrl;
+           parameters[4].Value = model.NavState;
+           parameters[5].Value = model.NavLayer;
+           parameters[6].Value = model.Reamrks;
+           parameters[7].Value = model.NavigationId;
+           int numebr = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+           return numebr;
+       }
         #endregion
         #region 删除
         #endregion
         #region 查询
+       public int GetNavLayer(int parentid)
+       {
+           string strSql = "select NavLayer from sys_Navigations where NavigationId="+parentid;
+           object obj = DbHelperSQL.GetSingle(strSql);
+           if (obj != null)
+           {
+               return Convert.ToInt32(obj) + 1;
+           }
+           else
+           {
+               return -1;
+           }
+
+       }
+
        /// <summary>
        /// 根据导航编号查询导航信息
        /// </summary>
@@ -31,7 +115,7 @@ namespace ThreeArriveAction.DAL
        public sys_NavigationsModel GetNavigationsByNavId(int navigationId)
        {
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("select top 1 NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NvaState,NavLayer,Remarks ");
+           strSql.Append("select top 1 NavigationId,NavigationName,ParentId,NavIcon,NavUrl,NavState,NavLayer,Remarks ");
            strSql.Append(" from sys_Navigations where NavigationId=@NavigationId ");
            SqlParameter[] parameters ={
                                           new SqlParameter("@NavigationId",SqlDbType.Int,4)
