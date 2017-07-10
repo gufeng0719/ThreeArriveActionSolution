@@ -72,6 +72,7 @@ namespace ThreeArriveAction.BLL
         /// <returns></returns>
         public string AddUser(sys_UsersModel userModel)
         {
+            userModel.UserState = 1;
             int rows = userDAL.AddUser(userModel);
             if (rows > 0)
             {
@@ -100,6 +101,18 @@ namespace ThreeArriveAction.BLL
         #endregion
 
         #region 删除
+        public string Delete(string userIds)
+        {
+            int number = userDAL.Delete(userIds);
+            if (number > 0)
+            {
+                return "{\"info\":\"用户删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"用户删除失败\",\"status\":\"n\"}";
+            }
+        }
         #endregion
 
         #region 查询
@@ -162,7 +175,7 @@ namespace ThreeArriveAction.BLL
         /// <param name="filedOrder">排序条件</param>
         /// <param name="recordCount">总记录数</param>
         /// <returns></returns>
-        public DataSet GetList(int pageSize,int PageIndex,string strWhere,string filedOrder,out int recordCount)
+        public DataSet GetList(int pageSize, int PageIndex, string strWhere, string filedOrder, out int recordCount)
         {
             DataSet ds = userDAL.GetList(pageSize, PageIndex, strWhere, filedOrder, out recordCount);
             return ds;

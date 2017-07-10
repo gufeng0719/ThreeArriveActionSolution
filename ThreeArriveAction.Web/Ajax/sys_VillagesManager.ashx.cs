@@ -44,8 +44,26 @@ namespace ThreeArriveAction.Web.Ajax
         /// <param name="context"></param>
         private void GetVillageTreeJson(HttpContext context)
         {
-            string result = villageBLL.GetListTreeJson(0);
-            context.Response.Write(result);
+            int parentId = 0;
+            //获取当前登录的操作者信息
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            if (model == null)
+            {
+                context.Response.Write("<script>parent.location.href='login.html'</script>");
+            }
+            else
+            {
+                if (model.OrganizationId == 1)
+                {
+                    parentId = 0;
+                }
+                else
+                {
+                    parentId = model.OrganizationId;
+                }
+                string result = villageBLL.GetListTreeJson(parentId);
+                context.Response.Write(result);
+            }
         }
 
         /// <summary>

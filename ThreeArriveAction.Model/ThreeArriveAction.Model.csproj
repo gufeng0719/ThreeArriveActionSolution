@@ -42,7 +42,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sys_config.cs" />
-    <Compile Include="sys_DictionairesModel.cs" />
+    <Compile Include="sys_DictionaryDataModel.cs" />
+    <Compile Include="sys_DictionaryTypeModel.cs" />
     <Compile Include="sys_IntegralInfoModel.cs" />
     <Compile Include="sys_InteractionLearnsModel.cs" />
     <Compile Include="sys_NavigationsModel.cs" />

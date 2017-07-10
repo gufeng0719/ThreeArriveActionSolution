@@ -24,18 +24,20 @@ namespace ThreeArriveAction.DAL
         public int AddVillage(sys_VillagesModel model)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("insert into sys_Villages (VillageName,VillageParId,VillageGrade,Remarks)  ");
-            strSql.Append(" values(@VillageName,@VillageParId,@VillageGrade,@Remarks) ");
+            strSql.Append("insert into sys_Villages (VillageName,VillageParId,VillageGrade,VillageState,Remarks)  ");
+            strSql.Append(" values(@VillageName,@VillageParId,@VillageGrade,@VillageState,@Remarks) ");
             SqlParameter[] parameters ={
                                           new SqlParameter("@VillageName",SqlDbType.VarChar,100),
                                           new SqlParameter("@VillageParId",SqlDbType.Int,4),
                                           new SqlParameter("@VillageGrade",SqlDbType.Int,4),
+                                          new SqlParameter("@VillageState",SqlDbType.Int,4),
                                           new SqlParameter("@Remarks",SqlDbType.VarChar,500)
                                       };
             parameters[0].Value = model.VillageName;
             parameters[1].Value = model.VillageParId;
             parameters[2].Value = model.VillageGrade;
-            parameters[3].Value = model.Remarks;
+            parameters[3].Value = model.VillageState;
+            parameters[4].Value = model.Remarks;
             int number = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
             return number;
         }
@@ -82,7 +84,7 @@ namespace ThreeArriveAction.DAL
         public int DeleteVillage(string ids)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sys_Villages where VillageId in ("+ids+") or VillagePadId in ("+ids+")");
+            strSql.Append("Update sys_Villages set VillageState=2 where VillageId in ("+ids+") or VillagePadId in ("+ids+")");
             int number = DbHelperSQL.ExecuteSql(strSql.ToString());
             return number;
         }
@@ -116,7 +118,7 @@ namespace ThreeArriveAction.DAL
         public sys_VillagesModel GetVillage(int villageId)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select top 1 VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
+            strSql.Append("select top 1 VillageId,VillageName,VillageParId,VillageGrade,VillageState,Remarks ");
             strSql.Append("from sys_Villages where VillageId=@VillageId ");
             SqlParameter[] parameters ={
                                           new SqlParameter("@VillageId",SqlDbType.Int,4)
@@ -142,6 +144,10 @@ namespace ThreeArriveAction.DAL
                 {
                     model.VillageGrade = int.Parse(ds.Tables[0].Rows[0]["VillageGrade"].ToString());
                 }
+                if (ds.Tables[0].Rows[0]["VillageState"] != null && ds.Tables[0].Rows[0]["VillageState"].ToString() != "")
+                {
+                    model.VillageState = int.Parse(ds.Tables[0].Rows[0]["VillageState"].ToString());
+                }
                 if (ds.Tables[0].Rows[0]["Remarks"].ToString() != "")
                 {
                     model.Remarks = ds.Tables[0].Rows[0]["Remarks"].ToString();
@@ -163,7 +169,7 @@ namespace ThreeArriveAction.DAL
         public DataTable GetVillageListByParId(int parId)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("select VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
+            strSql.Append("select VillageId,VillageName,VillageParId,VillageGrade,VillageState,Remarks ");
             strSql.Append("from sys_Villages ");
             strSql.Append("where VillageParId=@VillageParId ");
             SqlParameter[] parameter ={
@@ -184,7 +190,7 @@ namespace ThreeArriveAction.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append(" select VillageId,VillageName,VillageParId,VillageGrade,Remarks ");
-            strSql.Append(" from sys_Villages order by VillageId asc ");
+            strSql.Append(" from sys_Villages where VillageState=1 order by VillageId asc ");
             DataSet ds = DbHelperSQL.Query(strSql.ToString());
             DataTable oldData = ds.Tables[0] as DataTable;
             if (oldData == null)

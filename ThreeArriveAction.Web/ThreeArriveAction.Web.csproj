@@ -109,6 +109,8 @@
     <Content Include="admin\VillageEdit.html" />
     <Content Include="admin\VillageList.html" />
     <Content Include="admin\weixin\Sign.html" />
+    <Content Include="admin\weixin\SubFamilyEdit.html" />
+    <Content Include="admin\weixin\SubFamilyList.html" />
     <Content Include="admin\weixin\ThingRecord.html" />
     <Content Include="admin\weixin\WeekArrives.html" />
     <Content Include="css\css.css" />
@@ -1049,6 +1051,9 @@
     <Compile Include="Ajax\sys_SignManager.ashx.cs">
       <DependentUpon>sys_SignManager.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Ajax\sys_SubscriberFamiliesManager.ashx.cs">
+      <DependentUpon>sys_SubscriberFamiliesManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\sys_SubscriberFamilyManager.ashx.cs">
       <DependentUpon>sys_SubscriberFamilyManager.ashx</DependentUpon>
     </Compile>
@@ -1099,6 +1104,7 @@
     <Content Include="Ajax\sys_ThingRecordManager.ashx" />
     <Content Include="Ajax\sys_OrganizationsManager.ashx" />
     <Content Include="Ajax\weixinInfo.ashx" />
+    <Content Include="Ajax\sys_SubscriberFamiliesManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />

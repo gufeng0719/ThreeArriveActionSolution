@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using ThreeArriveAction.DBUtility;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Common;
 
 namespace ThreeArriveAction.DAL
 {
@@ -66,12 +67,35 @@ namespace ThreeArriveAction.DAL
                     subModel.SubscriberName = reader.GetString(1);
                     subModel.SubscriberPhone = reader.GetString(2);
                     subModel.SubscriberType = reader.GetInt32(3);
-                    subModel.FamilyAddress = reader.GetString(4);
-                    subModel.FamilyCoordinate = reader.GetString(5);
+                    try
+                    {
+                        subModel.FamilyAddress = reader.GetString(4);
+                    }
+                    catch
+                    {
+
+                        subModel.FamilyAddress=null;
+                    }
+                    try
+                    {
+                        subModel.FamilyCoordinate = reader.GetString(5);
+                    }
+                    catch
+                    {
+
+                        subModel.FamilyCoordinate=null;
+                    }
                     subModel.FamilyNumber = reader.GetInt32(6);
                     subModel.VillageId = reader.GetInt32(7);
                     subModel.UserId = reader.GetInt32(8);
-                    subModel.Reamarks = reader.GetString(9);
+                    try
+                    {
+                        subModel.Reamarks = reader.GetString(9);
+                    }
+                    catch
+                    {
+                        subModel.Reamarks = null;
+                    }
                 }
                 reader.Close();
                 reader.Dispose();
@@ -215,7 +239,54 @@ namespace ThreeArriveAction.DAL
             }
             return subList;
         }
+        /// <summary>
+        /// 查询前几行数据
+        /// </summary>
+        /// <param name="top"></param>
+        /// <param name="strWhere"></param>
+        /// <param name="filedOrder"></param>
+        /// <returns></returns>
+        public DataSet GetList(int top, string strWhere, string filedOrder)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select ");
+            strSql.Append(" top "+top.ToString());
+            strSql.Append(" SubscriberId,SubscriberName,SubscriberPhone,SubscriberType,FamilyAddess,");
+            strSql.Append(" FamilyCoordinate,FamilyNumber,VillageId,UserId,Remarks,VillageName,UserName,");
+            strSql.Append(" Dictdata_Name,Dict_name,Dict_value  ");
+            strSql.Append(" from v_SubscriberFamilyInfo ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            if (filedOrder.Trim() != "")
+            {
+                strSql.Append(" order by " + filedOrder);
+            }
+            return DbHelperSQL.Query(strSql.ToString());
+        }
 
+
+        /// <summary>
+        /// 分页查询七户信息
+        /// </summary>
+        /// <param name="pageSize">页面行数</param>
+        /// <param name="pageIndex">当前页面</param>
+        /// <param name="strWhere">查询条件</param>
+        /// <param name="filedOrder">排序条件</param>
+        /// <param name="recordCount">总记录数</param>
+        /// <returns></returns>
+        public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int totalCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select * from v_SubscriberFamilyInfo ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where  " + strWhere);
+            }
+            totalCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            return DbHelperSQL.Query(PagingHelper.CreatePagingSql(totalCount, pageSize, pageIndex, strSql.ToString(), filedOrder));
+        }
         #endregion
     }
 }

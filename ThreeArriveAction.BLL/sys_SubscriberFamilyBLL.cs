@@ -36,9 +36,22 @@ namespace ThreeArriveAction.BLL
         /// </summary>
         /// <param name="subId">客户编号</param>
         /// <returns></returns>
-        public sys_SubscriberFamilyModel GetSubcriberFamilyBySubId(int subId)
+        public sys_SubscriberFamilyModel GetSubscriberFamilyBySubId(int subId)
         {
             return subDAL.GetSubscriberFamilyBySubId(subId);
+        }
+
+        public string GetSubscriberFamilyJsonBySubId(int subId)
+        {
+            sys_SubscriberFamilyModel model = GetSubscriberFamilyBySubId(subId);
+            if (model != null)
+            {
+                return JsonHelper.ToJson(model);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         /// <summary>
@@ -72,6 +85,17 @@ namespace ThreeArriveAction.BLL
             {
                 return "";
             }
+        }
+
+        public DataSet GetList(int top,string strWhere,string filedOrder) 
+        {
+            return subDAL.GetList(top, strWhere, filedOrder);
+        }
+
+        public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int totalCount)
+        {
+            DataSet ds = subDAL.GetList(pageSize, pageIndex, strWhere, filedOrder, out totalCount);
+            return ds;
         }
         #endregion
     }

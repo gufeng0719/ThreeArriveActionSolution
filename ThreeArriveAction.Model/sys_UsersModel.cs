@@ -85,6 +85,17 @@ namespace ThreeArriveAction.Model
             get { return userPassword; }
             set { userPassword = value; }
         }
+
+        private int userState;
+        /// <summary>
+        /// 用户状态
+        /// </summary>
+        public int UserState
+        {
+            get { return userState; }
+            set { userState = value; }
+        }
+
         private string userRemark;
         /// <summary>
         /// 备注

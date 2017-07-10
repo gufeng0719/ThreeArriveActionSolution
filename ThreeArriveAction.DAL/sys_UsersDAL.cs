@@ -71,9 +71,9 @@ namespace ThreeArriveAction.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into sys_Users(");
-            strSql.Append("UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword)");
+            strSql.Append("UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword,UserState)");
             strSql.Append(" values (");
-            strSql.Append("@UserPhone,@UserName,@UserDuties,@OrganizationId,@VillageId,@UserBirthday,@UserPassword)");
+            strSql.Append("@UserPhone,@UserName,@UserDuties,@OrganizationId,@VillageId,@UserBirthday,@UserPassword,@UserState)");
             strSql.Append(";set @ReturnValue= @@IDENTITY");
             SqlParameter[] parameters = {
 					new SqlParameter("@UserPhone", SqlDbType.VarChar,11),
@@ -83,6 +83,7 @@ namespace ThreeArriveAction.DAL
 					new SqlParameter("@VillageId", SqlDbType.Int,4),
 					new SqlParameter("@UserBirthday", SqlDbType.NVarChar,50),
 					new SqlParameter("@UserPassword", SqlDbType.NVarChar,20),
+                    new SqlParameter("@UserState",SqlDbType.Int,4),
                     new SqlParameter("@ReturnValue",SqlDbType.Int)};
             parameters[0].Value = model.UserPhone;
             parameters[1].Value = model.UserName;
@@ -91,7 +92,8 @@ namespace ThreeArriveAction.DAL
             parameters[4].Value = model.VillageId;
             parameters[5].Value = model.UserBirthday;
             parameters[6].Value = model.UserPassword;
-            parameters[7].Direction = ParameterDirection.Output;
+            parameters[7].Value = model.UserState;
+            parameters[8].Direction = ParameterDirection.Output;
 
             List<CommandInfo> sqllist = new List<CommandInfo>();
             CommandInfo cmd = new CommandInfo(strSql.ToString(), parameters);
@@ -259,38 +261,14 @@ namespace ThreeArriveAction.DAL
         /// <summary>
         /// 删除一条数据
         /// </summary>
-        public bool Delete(int userId)
+        public int Delete(string userIds)
         {
             //删除附属数据
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("delete from sys_UsersInfo ");
-            strSql.Append(" where UserId=@UserId");
-            SqlParameter[] parameters = {
-					new SqlParameter("@UserId", SqlDbType.Int,4)};
-            parameters[0].Value = userId;
-            List<CommandInfo> sqlList = new List<CommandInfo>();
-            CommandInfo cmd = new CommandInfo(strSql.ToString(), parameters);
-            sqlList.Add(cmd);
-
-            StringBuilder strSql2 = new StringBuilder();
-            strSql2.Append("delete from sys_Users ");
-            strSql2.Append(" where UserId=@UserId ");
-            SqlParameter[] parameters2 ={
-                                           new SqlParameter("@UserId",SqlDbType.Int,4)
-                                       };
-            parameters2[0].Value = userId;
-            cmd = new CommandInfo(strSql2.ToString(), parameters2);
-            sqlList.Add(cmd);
-
-            int rows = DbHelperSQL.ExecuteSqlTran(sqlList);
-            if (rows > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            strSql.Append("update  sys_Users  set UserState=2");
+            strSql.Append(" where UserId in ("+userIds+") ");
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString());
+            return rows;
         }
         #endregion
 
@@ -303,7 +281,7 @@ namespace ThreeArriveAction.DAL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select  top 1 UserId,UserPhone,UserName,UserDuties,OrganizationId,");
-            strSql.Append("VillageId,UserBirthday,UserPassword,UserRemark from sys_Users ");
+            strSql.Append("VillageId,UserBirthday,UserPassword,UserState,UserRemark from sys_Users ");
             strSql.Append(" where UserId=@UserId");
             SqlParameter[] parameters = {
 					new SqlParameter("@UserId", SqlDbType.Int,4)};
@@ -331,6 +309,10 @@ namespace ThreeArriveAction.DAL
                 }
                 model.UserBirthday = ds.Tables[0].Rows[0]["UserBirthday"].ToString();
                 model.UserPassword = ds.Tables[0].Rows[0]["UserPassword"].ToString();
+                if (ds.Tables[0].Rows[0]["UserState"] != null && ds.Tables[0].Rows[0]["UserState"].ToString() != "")
+                {
+                    model.UserState = int.Parse(ds.Tables[0].Rows[0]["UserState"].ToString());
+                }
                 model.UserRemark = ds.Tables[0].Rows[0]["UserRemark"].ToString();
                 #endregion
 
@@ -350,7 +332,7 @@ namespace ThreeArriveAction.DAL
             StringBuilder strSql = new StringBuilder();
 
             strSql.Append("select UserId,UserPhone,UserName,UserDuties,OrganizationId,");
-            strSql.Append(" VillageId,UserBirthday,UserPassword,UserRemark from sys_Users");
+            strSql.Append(" VillageId,UserBirthday,UserPassword,UserState,UserRemark from sys_Users");
             strSql.Append(" where UserPhone=@UserPhone ");
             SqlParameter[] parameters = {
                     new SqlParameter("@UserPhone", SqlDbType.NVarChar,11)};
@@ -376,9 +358,10 @@ namespace ThreeArriveAction.DAL
                         userModel.UserBirthday = "不详";
                     }
                     userModel.UserPassword = reader.GetString(7);
+                    userModel.UserState = reader.GetInt32(8);
                     try
                     {
-                        userModel.UserRemark = reader.GetString(8);
+                        userModel.UserRemark = reader.GetString(9);
                     }
                     catch
                     {
@@ -406,11 +389,11 @@ namespace ThreeArriveAction.DAL
             {
                 strSql.Append(" top " + Top.ToString());
             }
-            strSql.Append(" UserId,UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword,UserRemark ");
+            strSql.Append(" UserId,UserPhone,UserName,UserDuties,OrganizationId,VillageId,UserBirthday,UserPassword,UserState,UserRemark ");
             strSql.Append(" FROM sys_Users ");
             if (strWhere.Trim() != "")
             {
-                strSql.Append(" where " + strWhere);
+                strSql.Append(" where UserState =1 and " + strWhere);
             }
             if (filedOrder.Trim() != "")
             {
@@ -428,7 +411,7 @@ namespace ThreeArriveAction.DAL
             strSql.Append("select * from v_UsersInfo ");
             if (strWhere.Trim() != "")
             {
-                strSql.Append(" where  " + strWhere);
+                strSql.Append(" where UserState=1 and  " + strWhere);
             }
             recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
             return DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), filedOrder));

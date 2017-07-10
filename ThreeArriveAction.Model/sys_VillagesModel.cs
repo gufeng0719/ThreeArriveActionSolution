@@ -49,6 +49,17 @@ namespace ThreeArriveAction.Model
             get { return villageGrade; }
             set { villageGrade = value; }
         }
+
+        private int villageState;
+        /// <summary>
+        /// 村居状态
+        /// </summary>
+        public int VillageState
+        {
+            get { return villageState; }
+            set { villageState = value; }
+        }
+
         private string remarks;
         /// <summary>
         /// 备注

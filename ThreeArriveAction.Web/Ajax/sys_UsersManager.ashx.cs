@@ -44,6 +44,12 @@ namespace ThreeArriveAction.Web.Ajax
                 case "signInPhone":
                     SignInPhone(context);
                     break;
+                case "del":
+                    DeleteUser(context);
+                    break;
+                case "select":
+                    GetUserTreeJson(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -165,7 +171,7 @@ namespace ThreeArriveAction.Web.Ajax
             userModel.VillageId = int.Parse(MXRequest.GetFormString("villageid").ToString());
             userModel.UserBirthday = MXRequest.GetFormString("userbirthday").ToString();
             userModel.UserPassword = MXRequest.GetFormString("userpassword").ToString();
-            
+
             string action = MXRequest.GetFormString("action");
             bool blinfo = false;
             infoModel.UserPhoto = MXRequest.GetFormString("userphoto");
@@ -249,6 +255,63 @@ namespace ThreeArriveAction.Web.Ajax
             model.UserRemark = context.Request["openid"];
             context.Response.Write(model.ToJson());
             return;
+        }
+        #endregion
+
+        #region 删除用户
+        private void DeleteUser(HttpContext context)
+        {
+            string userIds = MXRequest.GetFormString("str");
+            string result = usersBLL.Delete(userIds);
+            context.Response.Write(result);
+        }
+        #endregion
+
+        #region 用户数据用于下拉
+        private void GetUserTreeJson(HttpContext context)
+        {
+            string villid = MXRequest.GetQueryString("villid");
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            StringBuilder strJson = new StringBuilder();
+            if (model == null)
+            {
+                context.Response.Write("<script>parent.location.href='login.html'</script>");
+            }
+            else
+            {
+                if (model.OrganizationId == 4)
+                {
+                    strJson.Append("{\"total\":1,\"rows\":[{\"UserId\":" + model.UserId + ",\"UserName\":" + model.UserName + "}]}");
+                }
+                else
+                {
+                    StringBuilder strWhere = new StringBuilder();
+                    if (villid != "")
+                    {
+                        strWhere.Append("VillageId in (select VillageId from sys_Villages where VillageId=" + villid + " or VillageParId=" + villid + ")");
+                    }
+                    else
+                    {
+                        if (model.OrganizationId != 1)
+                        {
+                            strWhere.Append("VillageId in (select VillageId from sys_Villages where VillageId=" + model.VillageId + " or VillageParId=" + model.VillageId + ")");
+                        }
+                    }
+                    DataSet ds = usersBLL.GetList(0, strWhere.ToString(), " UserId asc ");
+                    strJson.Append("{\"total\":" + ds.Tables[0].Rows.Count + ",\"rows\":");
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+
+                        strJson.Append(JsonHelper.ToJson(ds.Tables[0]));
+                    }
+                    else
+                    {
+                        strJson.Append("[]");
+                    }
+                    strJson.Append("}");
+                }
+                context.Response.Write(strJson.ToString());
+            }
         }
         #endregion
 

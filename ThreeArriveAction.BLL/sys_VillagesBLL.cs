@@ -20,6 +20,7 @@ namespace ThreeArriveAction.BLL
        /// <returns></returns>
        public string AddVillage(sys_VillagesModel model)
        {
+           model.VillageState = 1;
            model.VillageGrade = GetVillageGrade(model.VillageParId);
            int number = villageDAL.AddVillage(model);
            if (number > 0)
