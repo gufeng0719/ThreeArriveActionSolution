@@ -118,8 +118,7 @@
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "";
                         s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" + msg.rows[i].SubscriberId + "\" type=\"checkbox\"  enabled='enabled' /> </span>";
-                        s += "<input type=\"hidden\" id=\"subscriberid" + i + "\" value=\"" + msg.rows[i].SubscriberId + "\" />";
+                        s += "<input id=\"chkId" + msg.rows[i].SubscriberId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].SubscriberId + "\" /> </span>";
                         s += "</td>";
                         s += "<td><a href='SubFamilyEdit.html?type=edit&subid=" + msg.rows[i].SubscriberId + "'>" + msg.rows[i].SubscriberName + "</a></td>";
                         s += "<td>" + msg.rows[i].SubscriberPhone + "</td>";
@@ -149,13 +148,13 @@
                     str += $(this).val() + ",";
                 });
                 str = str.substring(0, str.length - 1);
-                $.post("../Ajax/sys_UsersManager.ashx?type=del", { str: str }, function (msg) {
+                $.post("../../Ajax/sys_SubscriberFamiliesManager.ashx?type=del", { str: str }, function (msg) {
                     var result = $.parseJSON(msg);
                     console.info(result);
                     if (result.status == "y") {
-                        jsdialog("系统提示", result.info, "UsersList.html", "Success");
+                        jsdialog("系统提示", result.info, "SubFamilyList.html", "Success");
                     } else {
-                        jsdialog("系统提示", result.info, "UsersList.html", "");
+                        jsdialog("系统提示", result.info, "SubFamilyList.html", "");
                     }
                 });
             });

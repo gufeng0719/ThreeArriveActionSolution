@@ -12,10 +12,44 @@ namespace ThreeArriveAction.BLL
     {
         private readonly sys_SubscriberFamilyDAL subDAL = new sys_SubscriberFamilyDAL();
         #region 添加
-
+        /// <summary>
+        /// 添加七户信息
+        /// </summary>
+        /// <param name="subModel">七户实体信息</param>
+        /// <returns></returns>
+        public string AddSubscriberFamily(sys_SubscriberFamilyModel subModel)
+        {
+            int numbers = subDAL.AddSubscriberFamily(subModel);
+            if (numbers > 0)
+            {
+                return "{\"info\":\"七户添加成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"七户添加失败\",\"status\":\"n\"}";
+            }
+        }
         #endregion
 
         #region 修改
+        /// <summary>
+        /// 根据七户编号，修改该七户信息
+        /// </summary>
+        /// <param name="subModel">七户实体信息</param>
+        /// <returns></returns>
+        public string UpdateSubscriberFamily(sys_SubscriberFamilyModel subModel)
+        {
+            int numbers = subDAL.UpdateSubscriberFamily(subModel);
+            if (numbers > 0)
+            {
+                return "{\"info\":\"七户修改成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"七户修改失败\",\"status\":\"n\"}";
+            }
+        }
+
         /// <summary>
         /// 根据户号编号，修改该户的坐标
         /// </summary>
@@ -28,6 +62,24 @@ namespace ThreeArriveAction.BLL
         #endregion
 
         #region 删除
+        /// <summary>
+        /// 根据编号字符串，删除七户信息
+        /// </summary>
+        /// <param name="subids">编号</param>
+        /// <returns></returns>
+        public string DeleteSubscriberFamily(string subids)
+        {
+            int numbers = subDAL.DeleteSubscriberFamily(subids);
+            if (numbers > 0)
+            {
+                return "{\"info\":\"七户信息删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"七户信息删除失败\",\"status\":\"n\"}";
+            }
+        }
+
         #endregion
 
         #region 查询
