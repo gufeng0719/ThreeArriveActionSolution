@@ -28,14 +28,15 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
             }
 
-            
+
         }
 
         public void AddWeekArrives(HttpContext context)
         {
             //获取当前登录的操作者信息
             sys_UsersModel model = new ManagePage().GetUsersinfo();
-            if (model == null)
+            var openId = context.Request.Form["openId"];
+            if (model == null && openId.IsNullOrEmpty())
             {
                 context.Response.Write("<script>parent.location.href='login.html'</script>");
             }
@@ -47,7 +48,7 @@ namespace ThreeArriveAction.Web.Ajax
                 wmodel.ThingMessage = context.Request.Form["ThingMessage"].ToString();
                 wmodel.ThingResult = context.Request.Form["ThingResult"].ToString();
                 wmodel.ThingImgUrl = context.Request.Form["txtImgUrl"].ToString();
-                wmodel.UserId = model.UserId;
+                wmodel.UserId = model == null ? GetUserIdByOpenId(openId) : model.UserId;
                 wmodel.WeekArriveState = 1;
 
                 string xpoint = context.Request.Form["xpoint"].ToString();
@@ -55,6 +56,22 @@ namespace ThreeArriveAction.Web.Ajax
                 wmodel.Remarks = xpoint + "," + ypoint;
                 string result = weekBLL.AddWeekArrives(wmodel);
                 context.Response.Write(result);
+            }
+        }
+
+        public int GetUserIdByOpenId(string openId)
+        {
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("UserRemark", openId, RelationEnum.Like);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                LogHelper.Log("根据OpenId(" + openId + ")未能查询到人员信息");
+                return 0;
+            }
+            else
+            {
+                return model.UserId;
             }
         }
 

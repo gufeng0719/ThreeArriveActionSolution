@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.SessionState;
 using ThreeArriveAction.Common;
@@ -25,6 +23,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "get": //获取对应七户信息
                     GetSubcriberFamilyByUserId(context);
                     break;
+                case "getsubfamily":
+                    GetSubfamily(context);
+                    break;
 
             }
         }
@@ -43,6 +44,32 @@ namespace ThreeArriveAction.Web.Ajax
                 context.Response.Write(result);
             }
         }
+
+
+        public void GetSubfamily(HttpContext context)
+        {
+            var value = context.Request["value"];
+            var openId = context.Request["openId"];
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("UserRemark", openId);
+            var user = sh.Select().FirstOrDefault();
+            if (user == null)
+            {
+                LogHelper.Log("sys_SubscriberFamilyManager-->GetSubfamily-->opneId(" + openId + ")未能查询到用户信息");
+                return;
+            }
+            var sh1 = new SqlHelper<sys_SubscriberFamilyModel>(new sys_SubscriberFamilyModel());
+            sh1.AddWhere("SubscriberType", value);
+            sh1.AddWhere("UserId", user.UserId);
+            context.Response.Write(
+                sh1.Select()
+                    .Select(x => new
+                    {
+                        key = x.SubscriberId,
+                        value = x.SubscriberName + "---" + x.SubscriberPhone
+                    }).ToJson());
+        }
+
 
         public bool IsReusable
         {
