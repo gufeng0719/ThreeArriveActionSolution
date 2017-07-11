@@ -108,6 +108,7 @@
     <Content Include="admin\UsersList.html" />
     <Content Include="admin\VillageEdit.html" />
     <Content Include="admin\VillageList.html" />
+    <Content Include="admin\weixin\ButySetting.html" />
     <Content Include="admin\weixin\Sign.html" />
     <Content Include="admin\weixin\SubFamilyEdit.html" />
     <Content Include="admin\weixin\SubFamilyList.html" />
@@ -1045,6 +1046,9 @@
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Ajax\sys_OnButysManager.ashx.cs">
+      <DependentUpon>sys_OnButysManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\sys_OrganizationsManager.ashx.cs">
       <DependentUpon>sys_OrganizationsManager.ashx</DependentUpon>
     </Compile>
@@ -1105,6 +1109,7 @@
     <Content Include="Ajax\sys_OrganizationsManager.ashx" />
     <Content Include="Ajax\weixinInfo.ashx" />
     <Content Include="Ajax\sys_SubscriberFamiliesManager.ashx" />
+    <Content Include="Ajax\sys_OnButysManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
