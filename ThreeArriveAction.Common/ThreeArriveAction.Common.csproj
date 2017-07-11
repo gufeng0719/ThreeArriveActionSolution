@@ -78,6 +78,8 @@
     <Compile Include="XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Reference\Dapper.dll" />
+    <Content Include="Reference\Dapper.xml" />
     <Content Include="Reference\Senparc.Weixin.dll" />
     <Content Include="Reference\Senparc.Weixin.MP.dll" />
     <Content Include="Reference\SqlHelper.dll" />

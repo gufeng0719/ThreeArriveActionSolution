@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\ThreeArriveAction.Common\Reference\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="LitJson, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LitJson.0.7.0\lib\LitJson.dll</HintPath>
       <Private>True</Private>
@@ -1027,6 +1030,9 @@
     <Content Include="scripts\swfupload\swfupload.js" />
     <Content Include="scripts\swfupload\swfupload.queue.js" />
     <Content Include="scripts\swfupload\swfupload.swf" />
+    <Content Include="scripts\vue\vue.js" />
+    <Content Include="scripts\vue\vue.min.js" />
+    <Content Include="scripts\weixin\imageTemplate.js" />
     <Content Include="scripts\weixin\index.js" />
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />

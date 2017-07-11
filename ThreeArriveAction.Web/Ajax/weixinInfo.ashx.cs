@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.SessionState;
 using ThreeArriveAction.Common;
+using System.Drawing;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -32,6 +35,10 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == "getJsapiTicket")
             {
                 GetJsapiTicket(context);
+            }
+            else if (type == "downFile")
+            {
+                FileDown(context);
             }
             else
             {
@@ -65,58 +72,37 @@ namespace ThreeArriveAction.Web.Ajax
 
         public void GetJsapiTicket(HttpContext context)
         {
-            var url = "";
             var openId = context.Request["openid"];
-            var jModel = CacheHelper.Get<Token>(openId + "_JsapiTicket");
-            if (jModel != null && !jModel.Value.IsNullOrEmpty() && jModel.Time.AddHours(2) >= DateTime.Now)
+            var jModel = CacheHelper.Get<Token>("_JsapiTicket");
+            if (!(jModel != null && !jModel.Value.IsNullOrEmpty() && jModel.Time.AddHours(2) >= DateTime.Now))
             {
-                context.Response.Write(GetJDKConfig(jModel.Value, context));
-                return;
-            }
-            else
-            {
-                var aModel = CacheHelper.Get<Token>(openId + "_AccessToken");
+                var aModel = CacheHelper.Get<Token>("_AccessToken");
                 if (aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now)
                 {
-                    url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
-                                        aModel.Value);
-                    var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
-                    LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间", LogTypeEnum.Info);
-                    CacheHelper.Insert(openId + "_JsapiTicket",
-                        new Token
-                        {
-                            Time = DateTime.Now,
-                            Value = jticket.ticket
-                        });
-                    context.Response.Write(GetJDKConfig(jticket.ticket, context));
-                    return;
+                    jModel = GetJModel(aModel.Value, openId);
                 }
                 else
                 {
-                    url = string.Format(ConfigurationManager.AppSettings["WeixinAccessToken"],
-                                       ConfigurationManager.AppSettings["AppId"],
-                                       ConfigurationManager.AppSettings["AppSecret"]);
-                    var accessToken = new HttpHelper().HttpGet(url).JsonToObject<AccessToken>();
-                    LogHelper.Log("获取access_token:" + accessToken.access_token + " \r\n    openid:" + openId, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
-                    CacheHelper.Insert(openId + "_AccessToken",
-                        new Token
-                        {
-                            Time = DateTime.Now,
-                            Value = accessToken.access_token
-                        });
-                    url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
-                                        accessToken.access_token);
-                    var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
-                    CacheHelper.Insert(openId + "_JsapiTicket",
-                        new Token
-                        {
-                            Time = DateTime.Now,
-                            Value = jticket.ticket
-                        });
-                    context.Response.Write(GetJDKConfig(jticket.ticket, context));
-                    return;
+                    aModel = GetAModel(openId);
+                    jModel = GetJModel(aModel.Value, openId);
                 }
             }
+            context.Response.Write(GetJDKConfig(jModel.Value, context));
+            return;
+        }
+
+        public void FileDown(HttpContext context)
+        {
+            var mediaId = context.Request["mediaId"];
+            var openId = context.Request["openId"] ?? "";
+            var aModel = CacheHelper.Get<Token>("_AccessToken");
+            if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
+            {
+                aModel = GetAModel(openId);
+            }
+            var path = SaveFile(aModel.Value, mediaId);
+            context.Response.Write(path);
+            return;
         }
 
         private string GetJDKConfig(string ticket, HttpContext context)
@@ -126,7 +112,8 @@ namespace ThreeArriveAction.Web.Ajax
             var str = "jsapi_ticket=" + ticket
                 + "&noncestr=" + nonceStr
                 + "&timestamp=" + timestamp
-                + "&url=" + context.Request.Url.ToString();
+                + "&url=" + context.Request["url"];
+            LogHelper.Log(str, "signature", LogTypeEnum.Info);
             return new JDKConfig
             {
                 jsApiList = new List<string>
@@ -199,6 +186,61 @@ namespace ThreeArriveAction.Web.Ajax
             var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
             LogHelper.Log("获取access_token:" + response.access_token + " \r\n    openid:" + response.openid, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
             return response;
+        }
+
+        private Token GetAModel(string openId)
+        {
+            var url = string.Format(ConfigurationManager.AppSettings["WeixinAccessToken"],
+                                        ConfigurationManager.AppSettings["AppId"],
+                                        ConfigurationManager.AppSettings["AppSecret"]);
+            var accessToken = new HttpHelper().HttpGet(url).JsonToObject<AccessToken>();
+            LogHelper.Log("获取access_token:" + accessToken.access_token + " \r\n    openid:" + openId, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+            var m = new Token
+            {
+                Time = DateTime.Now,
+                Value = accessToken.access_token
+            };
+            CacheHelper.Insert("_AccessToken", m);
+            return m;
+        }
+
+        private Token GetJModel(string token, string openId)
+        {
+            var url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
+                                        token);
+            var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
+            LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间", LogTypeEnum.Info);
+            var m = new Token
+            {
+                Time = DateTime.Now,
+                Value = jticket.ticket
+            };
+            CacheHelper.Insert("_JsapiTicket", m);
+            return m;
+        }
+
+        private string SaveFile(string token, string mediaId)
+        {
+            try
+            {
+                var url = string.Format(ConfigurationManager.AppSettings["WeixinFileDown"], token, mediaId);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.Method = "GET";
+                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                Image image = Image.FromStream(webResponse.GetResponseStream());
+                var path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\upload\\" + DateTime.Now.ToString("yyyyMMdd");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                path += "//" + DateTime.Now.ToString("yyyyMMddhhmmssffff") + "." + webResponse.ContentType.Split('/')[1];
+                image.Save(path);
+                return path;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex.Message, "微信图片保存到服务器失败");
+                return "";
+            }
+
         }
 
         public bool IsReusable
