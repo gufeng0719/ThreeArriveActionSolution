@@ -1032,13 +1032,14 @@
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\vue\vue.js" />
     <Content Include="scripts\vue\vue.min.js" />
-    <Content Include="scripts\weixin\imageTemplate.js" />
-    <Content Include="scripts\weixin\index.js" />
+    <Content Include="scripts\weixin\open.js" />
+    <Content Include="scripts\weixin\thing.js" />
+    <Content Include="scripts\weixin\week.js" />
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
     <Content Include="weixin\main.html" />
-    <Content Include="weixin\main.js" />
+    <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1209,6 +1210,7 @@
     <None Include="scripts\lhgdialog\skins\igreen\ie6\vssver2.scc" />
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
+    <Content Include="weixin\open.html" />
     <Content Include="weixin\redirect_uri.html" />
     <Content Include="weixin\sign.html" />
     <Content Include="weixin\thing.html" />
