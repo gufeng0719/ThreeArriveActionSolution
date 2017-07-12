@@ -29,6 +29,12 @@ namespace ThreeArriveAction.Web.Ajax
                 case "edit":
                     GetSubscriberFamily(context);
                     break;
+                case "save":
+                    SaveSubscriberFamily(context);
+                    break;
+                case "del":
+                    DeleteSubscriberFamily(context);
+                    break;
             }
         }
 
@@ -106,6 +112,43 @@ namespace ThreeArriveAction.Web.Ajax
         {
             int subid = int.Parse(MXRequest.GetQueryString("subid"));
             string result = subBLL.GetSubscriberFamilyJsonBySubId(subid);
+            context.Response.Write(result);
+        }
+        #endregion
+
+        #region 保存七户信息
+        private void SaveSubscriberFamily(HttpContext context)
+        {
+            sys_SubscriberFamilyModel subModel = new sys_SubscriberFamilyModel();
+            subModel.SubscriberName = MXRequest.GetFormString("subname");
+            subModel.SubscriberPhone = MXRequest.GetFormString("subphone");
+            subModel.SubscriberType = int.Parse(MXRequest.GetFormString("subtype"));
+            subModel.FamilyAddress = MXRequest.GetFormString("address");
+            subModel.FamilyNumber = int.Parse(MXRequest.GetFormString("famnumber"));
+            subModel.Reamarks = MXRequest.GetFormString("remarks");
+            subModel.VillageId = int.Parse(MXRequest.GetFormString("villageid"));
+            subModel.UserId = int.Parse(MXRequest.GetFormString("userid"));
+            string action = MXRequest.GetFormString("action");
+            string result = "";
+            if (action == "add")
+            {
+                result = subBLL.AddSubscriberFamily(subModel);
+            }
+            else
+            {
+                subModel.SubscriberId = int.Parse(MXRequest.GetFormString("subid"));
+                result = subBLL.UpdateSubscriberFamily(subModel);
+            }
+            context.Response.Write(result);
+
+        }
+        #endregion
+
+        #region 删除七户信息
+        private void DeleteSubscriberFamily(HttpContext context)
+        {
+            string str = MXRequest.GetFormString("str");
+            string result = subBLL.DeleteSubscriberFamily(str);
             context.Response.Write(result);
         }
         #endregion

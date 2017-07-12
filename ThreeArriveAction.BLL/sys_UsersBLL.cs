@@ -181,6 +181,41 @@ namespace ThreeArriveAction.BLL
             return ds;
         }
 
+        /// <summary>
+        /// 根据村居编号，查询村居改天是否有值班信息与人员列表
+        /// </summary>
+        /// <param name="strWhere">查询条件</param>
+        /// <param name="villageId">村居编号</param>
+        /// <returns></returns>
+        public string GetButyUsers(string strWhere,int villageId)
+        {
+            //获取该村所有的用户
+            DataSet ds = GetList(0, strWhere, "UserId asc");
+            //获取今天是否已经设置值班信息
+            sys_OnButysBLL butyBLL = new sys_OnButysBLL();
+            bool bl = butyBLL.ExisByVillageId(villageId,DateTime.Now);
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{");
+            if (bl)
+            {
+                strJson.Append("\"buty\":true");
+            }
+            else
+            {
+                strJson.Append("\"buty\":false");
+            }
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            strJson.Append("}");
+            return strJson.ToString();
+        }
+
         #endregion
     }
 }

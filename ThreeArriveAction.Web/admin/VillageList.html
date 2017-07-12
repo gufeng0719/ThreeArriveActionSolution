@@ -65,8 +65,7 @@
                     for (var i = 0; i < msg.total; i++) {
                         var s = "";
                         s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" + msg.rows[i].VillageId + "\" type=\"checkbox\"  enabled='enabled' /> </span>";
-                        s += "<input type=\"hidden\" id=\"villageid" + i + "\" value=\"" + msg.rows[i].VillageId + "\" />";
+                        s += "<input id=\"chkId" + msg.rows[i].VillageId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].VillageId + "\" /> </span>";
                         s += "</td>";
                         s += "<td style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">" + msg.rows[i].VillageId + "</td>";
                         s += "<td style=\"white-space:nowrap;word-break:break-all;overflow:hidden;\">";

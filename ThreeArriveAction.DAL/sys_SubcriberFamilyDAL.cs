@@ -16,9 +16,84 @@ namespace ThreeArriveAction.DAL
     public partial class sys_SubscriberFamilyDAL
     {
         #region 添加
+        /// <summary>
+        /// 添加七户信息
+        /// </summary>
+        /// <param name="subModel">七户实体信息</param>
+        /// <returns></returns>
+        public int AddSubscriberFamily(sys_SubscriberFamilyModel subModel)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into sys_SubscriberFamily (SubscriberName,SubscriberPhone,");
+            strSql.Append("SubscriberType,FamilyAddress,FamilyNumber,VillageId,UserId,Remarks) ");
+            strSql.Append("values (@SubscriberName,@SubscriberPhone,@SubscriberType,@FamilyAddress,");
+            strSql.Append("@FamilyNumber,@VillageId,@UserId,@Remarks)");
+            SqlParameter[] parameters ={
+                                           new SqlParameter("@SubscriberName",SqlDbType.VarChar,20),
+                                           new SqlParameter("@SubscriberPhone",SqlDbType.VarChar,12),
+                                           new SqlParameter("@SubscriberType",SqlDbType.Int,4),
+                                           new SqlParameter("@FamilyAddress",SqlDbType.VarChar,200),
+                                           new SqlParameter("@FamilyNumber",SqlDbType.Int,4),
+                                           new SqlParameter("@VillageId",SqlDbType.Int,4),
+                                           new SqlParameter("@UserId",SqlDbType.Int,4),
+                                           new SqlParameter("@Remarks",SqlDbType.VarChar,5000)
+                                      };
+            parameters[0].Value = subModel.SubscriberName;
+            parameters[1].Value = subModel.SubscriberPhone;
+            parameters[2].Value = subModel.SubscriberType;
+            parameters[3].Value = subModel.FamilyAddress;
+            parameters[4].Value = subModel.FamilyNumber;
+            parameters[5].Value = subModel.VillageId;
+            parameters[6].Value = subModel.UserId;
+            parameters[7].Value = subModel.Reamarks;
+            int number = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
+            return number;
+        }
         #endregion
 
         #region 修改
+        /// <summary>
+        /// 根据七户编号，修改该七户信息
+        /// </summary>
+        /// <param name="subModel">七户实体信息</param>
+        /// <returns></returns>
+        public int UpdateSubscriberFamily(sys_SubscriberFamilyModel subModel)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update sys_SubscriberFamily set SubscriberName=@SubscriberName,");
+            strSql.Append("SubscriberPhone=@SubscriberPhone,");
+            strSql.Append("SubscriberType=@SubscriberType,");
+            strSql.Append("FamilyAddress=@FamilyAddress,");
+            strSql.Append("FamilyNumber=@FamilyNumber,");
+            strSql.Append("VillageId=@VillageId,");
+            strSql.Append("UserId=@UserId,");
+            strSql.Append("Remarks=@Remarks ");
+            strSql.Append(" where SubscriberId=@SubscriberId ");
+            SqlParameter[] parameters ={
+                                           new SqlParameter("@SubscriberName",SqlDbType.VarChar,20),
+                                           new SqlParameter("@SubscriberPhone",SqlDbType.VarChar,12),
+                                           new SqlParameter("@SubscriberType",SqlDbType.Int,4),
+                                           new SqlParameter("@FamilyAddress",SqlDbType.VarChar,200),
+                                           new SqlParameter("@FamilyNumber",SqlDbType.Int,4),
+                                           new SqlParameter("@VillageId",SqlDbType.Int,4),
+                                           new SqlParameter("@UserId",SqlDbType.Int,4),
+                                           new SqlParameter("@Remarks",SqlDbType.VarChar,2000),
+                                           new SqlParameter("@SubscriberId",SqlDbType.Int,4)
+                                      };
+            parameters[0].Value = subModel.SubscriberName;
+            parameters[1].Value = subModel.SubscriberPhone;
+            parameters[2].Value = subModel.SubscriberType;
+            parameters[3].Value = subModel.FamilyAddress;
+            parameters[4].Value = subModel.FamilyNumber;
+            parameters[5].Value = subModel.VillageId;
+            parameters[6].Value = subModel.UserId;
+            parameters[7].Value = subModel.Reamarks;
+            parameters[8].Value = subModel.SubscriberId;
+            int numbers = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            return numbers;
+        }
+
+
         /// <summary>
         /// 根据户号编号，修改该户的坐标
         /// </summary>
@@ -39,6 +114,18 @@ namespace ThreeArriveAction.DAL
         #endregion
 
         #region 删除
+        /// <summary>
+        /// 根据编号字符串，删除七户信息
+        /// </summary>
+        /// <param name="subids">编号</param>
+        /// <returns></returns>
+        public int DeleteSubscriberFamily(string subids)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from sys_SubscriberFamily where SubscriberId in ("+subids+")");
+            int numbers = DbHelperSQL.ExecuteSql(strSql.ToString());
+            return numbers;
+        }
         #endregion
 
         #region 查询

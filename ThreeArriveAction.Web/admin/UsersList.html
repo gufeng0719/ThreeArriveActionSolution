@@ -101,8 +101,8 @@
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "";
                         s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" + msg.rows[i].UserId + "\" type=\"checkbox\"  enabled='enabled' /> </span>";
-                        s += "<input type=\"hidden\" id=\"userid" + i + "\" value=\"" + msg.rows[i].UserId + "\" />";
+                        s += "<input id=\"chkId" + msg.rows[i].UserId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].UserId + "\" /> </span>";
+                       
                         s += "</td>";
                         s += "<td>" + msg.rows[i].UserPhone + "</td>";
                         s += "<td><a href='UsersEdit.html?type=edit&userid=" + msg.rows[i].UserId + "'>" + msg.rows[i].UserName + "</a></td>";

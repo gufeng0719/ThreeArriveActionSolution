@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>值班人员设置</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+    <!--导航栏-->
+    <div class="location">
+        <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+        <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>值班人员设置</span>
+    </div>
+    <!--/导航栏-->
+    <!--工具栏-->
+    <div class="toolbar-wrap">
+        <div id="floatHead" class="toolbar">
+            <div class="r-list">
+                <input type="text" class="keyword" id="keywords" />
+                <input type="button" id="btnSearch" class="btn-search" value="查询" />
+            </div>
+        </div>
+    </div>
+    <!--/工具栏-->
+    <!--列表-->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+        <thead>
+            <tr>
+                <th align="left" width="10%">
+                    人员名称
+                </th>
+                <th align="left" width="12%">
+                    手机号
+                </th>
+                <th align="left" width="11%">
+                    职务
+                </th>
+                <th width="8%">
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+        <!--/列表-->
+    </table>
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Load();
+            $("#btnSearch").click(function () {
+                Load();
+            });
+        });
+
+        function Load(page) {
+            var key = $("#keywords").val();
+            //加载列表
+            $.getJSON("../../Ajax/sys_UsersManager.ashx?type=buty", { "keywords": key }, function (msg) {
+                $("#tbody").html("");
+                if (msg.rows.length > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr>";
+                        s += "<td>" + msg.rows[i].UserName + "</td>";
+                        s += "<td>" + msg.rows[i].UserPhone + "</td>";
+                        s += "<td>" + msg.rows[i].UserDuties + "</td>";
+                        if (msg.buty) {
+                            s += "<td align=\"center\">今天已设置</a></td>";
+                        } else {
+                            s += "<td align=\"center\"><a href=\"javascript:SetButy(" + msg.rows[i].UserId + ","+msg.rows[i].VillageId+")\">设置值班</a></td>";
+                            
+                        }
+                        s += "</tr>";
+                        $("#tbody").append(s);
+                    }
+                }
+            });
+        }
+
+        function SetButy(userid, villageid) {
+            $.post("../../Ajax/sys_OnButysManager.ashx?type=set", { userid: userid, villageid: villageid }, function (msg) {
+                var result = $.parseJSON(msg);
+                if (result.status == "y") {
+                    jsdialog("系统提示", result.info, "ButySetting.html", "Success");
+                } else {
+                    jsdialog("系统提示", result.info, "ButySetting.html", "");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

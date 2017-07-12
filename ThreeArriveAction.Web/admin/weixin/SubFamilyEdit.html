@@ -172,14 +172,14 @@
             },
             callback: function (form) {
                 $.ajax({
-                    url: '../../Ajax/sys_UsersManager.ashx?type=save',
+                    url: '../../Ajax/sys_SubscriberFamiliesManager.ashx?type=save',
                     type: 'post',
                     data: $("#form1").serializeArray(),
                     success: function (data, obj) {
                         var reg = $.parseJSON(data);
                         if (reg.status == "y") {
                             alert(reg.info);
-                            window.location.href = "UsersList.html";
+                            window.location.href = "SubFamilyList.html";
                         } else {
                             alert(reg.info);
                         }

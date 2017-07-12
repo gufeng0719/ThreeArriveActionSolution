@@ -50,6 +50,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "select":
                     GetUserTreeJson(context);
                     break;
+                case "buty":
+                    GetButyUsers(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -312,6 +315,32 @@ namespace ThreeArriveAction.Web.Ajax
                 }
                 context.Response.Write(strJson.ToString());
             }
+        }
+        #endregion
+
+        #region 获取设置值班人员数据
+        private void GetButyUsers(HttpContext context)
+        {//获取当前登录的操作者信息
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            if (model == null)
+            {
+                context.Response.Write("<script>parent.location.href='login.html'</script>");
+            }
+            else
+            {
+                string key = MXRequest.GetQueryString("keywords");
+                key = key.Replace("'", "");
+                StringBuilder strWhere = new StringBuilder();
+                strWhere.Append(" VillageId ="+model.VillageId );
+                strWhere.Append(" and UserState=1 ");
+                if (!string.IsNullOrEmpty(key))
+                {                    
+                    strWhere.Append(" and ( UserPhone like '%" + key + "%' or UserName like '%" + key + "%' or UserDuties like '%" + key + "%' ) ");
+                }
+                string result = usersBLL.GetButyUsers(strWhere.ToString(),model.VillageId);
+                context.Response.Write(result);
+            }
+
         }
         #endregion
 

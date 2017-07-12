@@ -78,8 +78,7 @@
                     for (var i = 0; i < msg.total; i++) {
                         var s = "";
                         s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" +i +"\" type=\"checkbox\"  enabled='enabled' value=" + msg.rows[i].OrganizationId + " /> </span>";
-                        s += "<input type=\"hidden\" id=\"orgId" + i + "\" value=\"" + msg.rows[i].OrganizationId + "\" />";
+                        s += "<input id=\"chkId" +i +"\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].OrganizationId + "\" /> </span>";
                         s += "</td>";
                         s += "<td><a href='OrganizationEdit.html?type=edit&orgId=" + msg.rows[i].OrganizationId + "'>" + msg.rows[i].OrganizationName + "</a></td>";
                         s += "<td>" + (msg.rows[i].OrganizationState == 1 ? "正常" : "停用") + "</td>";
