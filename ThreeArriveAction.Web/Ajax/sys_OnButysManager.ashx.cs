@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Text;
 using System.Web.SessionState;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Model;
@@ -12,7 +13,7 @@ namespace ThreeArriveAction.Web.Ajax
     /// <summary>
     /// sys_OnButysManager 的摘要说明
     /// </summary>
-    public class sys_OnButysManager : IHttpHandler,IRequiresSessionState
+    public class sys_OnButysManager : IHttpHandler, IRequiresSessionState
     {
         private readonly sys_OnButysBLL butyBLL = new sys_OnButysBLL();
 
@@ -23,6 +24,9 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 case "set":
                     AddButy(context);
+                    break;
+                case "buty":
+                    GetButyUserList(context);
                     break;
             }
         }
@@ -42,6 +46,36 @@ namespace ThreeArriveAction.Web.Ajax
         }
         #endregion
 
+        #region 查询值班人员
+        private void GetButyUserList(HttpContext context)
+        {
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryIntValue("page");
+            int town = MXRequest.GetQueryInt("town");
+            int vid = MXRequest.GetQueryInt("vid");
+            string butydate = MXRequest.GetQueryString("butydate");
+
+            StringBuilder strWhere =new StringBuilder();
+            if (town != 0)
+            {
+                if (vid == 0)
+                {
+                    strWhere.Append(" VillageParId =" + town);
+                }
+                else
+                {
+                    strWhere.Append("VillageId=" + vid);
+                }
+            }
+            else
+            {
+                strWhere.Append(" 1=1 ");
+            }
+            strWhere.Append(" and Convert(varchar(100),ButyDate,23)='"+butydate+"'");
+            string result = butyBLL.GetListJson(pageSize,pageIndex,strWhere.ToString(),"OnbutyId asc ");
+            context.Response.Write(result);
+        }
+        #endregion
         public bool IsReusable
         {
             get
