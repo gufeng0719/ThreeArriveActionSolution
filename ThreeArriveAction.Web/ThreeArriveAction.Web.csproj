@@ -117,6 +117,7 @@
     <Content Include="admin\weixin\SubFamilyList.html" />
     <Content Include="admin\weixin\ThingRecord.html" />
     <Content Include="admin\weixin\WeekArrives.html" />
+    <Content Include="css\bootstrap.min.css" />
     <Content Include="css\css.css" />
     <Content Include="css\image1.gif" />
     <Content Include="css\image2.gif" />
@@ -1019,6 +1020,7 @@
     <Content Include="scripts\lhgdialog\skins\igreen\igreen_s2.png" />
     <Content Include="scripts\lhgdialog\skins\jtop.css" />
     <Content Include="scripts\lhgdialog\skins\mac.css" />
+    <Content Include="scripts\lodash.min.js" />
     <Content Include="scripts\music\audio.js" />
     <Content Include="scripts\music\play.png" />
     <Content Include="scripts\music\stop.png" />
@@ -1035,6 +1037,7 @@
     <Content Include="scripts\vue\vue.min.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\open.js" />
+    <Content Include="scripts\weixin\openList.js" />
     <Content Include="scripts\weixin\thing.js" />
     <Content Include="scripts\weixin\week.js" />
     <Content Include="scripts\weixin\js-sdk-config.js" />
@@ -1060,6 +1063,9 @@
     </Compile>
     <Compile Include="Ajax\sys_OrganizationsManager.ashx.cs">
       <DependentUpon>sys_OrganizationsManager.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\sys_PublicMessagesManager.ashx.cs">
+      <DependentUpon>sys_PublicMessagesManager.ashx</DependentUpon>
     </Compile>
     <Compile Include="Ajax\sys_SignManager.ashx.cs">
       <DependentUpon>sys_SignManager.ashx</DependentUpon>
@@ -1119,6 +1125,7 @@
     <Content Include="Ajax\weixinInfo.ashx" />
     <Content Include="Ajax\sys_SubscriberFamiliesManager.ashx" />
     <Content Include="Ajax\sys_OnButysManager.ashx" />
+    <Content Include="Ajax\sys_PublicMessagesManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1218,6 +1225,7 @@
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
     <Content Include="weixin\open.html" />
+    <Content Include="weixin\openList.html" />
     <Content Include="weixin\redirect_uri.html" />
     <Content Include="weixin\sign.html" />
     <Content Include="weixin\thing.html" />

@@ -162,17 +162,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         private string GetToUrl(int page)
         {
-            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/";
-            switch (page)
-            {
-                case 0:
-                    toUrl += "sign.html";
-                    break;
-                // todo 根据 page 区分需要跳转的url
-                default:
-                    toUrl += "sign.html";
-                    break;
-            }
+            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/index.html";       
             return toUrl;
         }
 
@@ -221,6 +211,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         private string SaveFile(string token, string mediaId)
         {
+            var path = "";
             try
             {
                 var url = string.Format(ConfigurationManager.AppSettings["WeixinFileDown"], token, mediaId);
@@ -228,16 +219,17 @@ namespace ThreeArriveAction.Web.Ajax
                 webRequest.Method = "GET";
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
                 Image image = Image.FromStream(webResponse.GetResponseStream());
-                var path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\upload\\" + DateTime.Now.ToString("yyyyMMdd");
+                path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
-                path += "//" + DateTime.Now.ToString("yyyyMMddhhmmssffff") + "." + webResponse.ContentType.Split('/')[1];
+                var repath = "/upload/" + DateTime.Now.ToString("yyyyMMdd") + "/" + DateTime.Now.ToString("yyyyMMddhhmmssffff") + "." + webResponse.ContentType.Split('/')[1];
+                path += repath;
                 image.Save(path);
-                return path;
+                return repath;
             }
             catch (Exception ex)
             {
-                LogHelper.Log(ex.Message, "微信图片保存到服务器失败");
+                LogHelper.Log(ex.Message + "-----path:" + path, "微信图片保存到服务器失败");
                 return "";
             }
 

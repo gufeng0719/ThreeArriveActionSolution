@@ -7,8 +7,8 @@ function submitcontent() {
             data: {
                 opneId: localStorage.getItem("openId"),
                 slSubId: subfamily.val(),
-                ThingMessage: $("#thing").html(),
-                ThingResult: $("#result").html(),
+                ThingMessage: $("#thing").val(),
+                ThingResult: $("#result").val(),
                 txtImgUrl: paths[0],
                 xpoint: xpoint,
                 ypoint: ypoint

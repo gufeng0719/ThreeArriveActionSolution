@@ -29,7 +29,7 @@ namespace ThreeArriveAction.Common
             }
             catch (Exception ex)
             {
-                LogHelper.Log(ex.Message, o.ToString() + "int类型转换失败");
+                LogHelper.Log(ex.Message, o.ToString() + "int类型转换失败---VALUE:" + o.ToString());
                 return 0;
             }
         }

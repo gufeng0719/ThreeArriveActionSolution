@@ -148,10 +148,15 @@ require(["vue", "jweixin"],
         });
 
         submit = function (callback) {
+            if (needglocalId && vm.localIds.length <= 0) {
+                alert("请上传整体照片");
+                return;
+            }
             if (vm.localIds.length <= 0) {
                 alert("请上传照片");
                 return;
             }
+            
             var paths = [];
             vm.localIds.forEach((localId) => {
                 wx.uploadImage({
