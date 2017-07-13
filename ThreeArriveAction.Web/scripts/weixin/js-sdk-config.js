@@ -147,7 +147,7 @@ require(["vue", "jweixin"],
         });
 
         submit = function (callback) {
-            if (needglocalId && vm.localIds.length <= 0) {
+            if (typeof (needglocalId) != "undefined" && vm.localIds.length <= 0) {
                 alert("请上传整体照片");
                 return;
             }
