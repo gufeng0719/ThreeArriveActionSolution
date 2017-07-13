@@ -7,6 +7,7 @@ using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Web.UI;
 using ThreeArriveAction.Model;
+using System.Collections;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -19,7 +20,8 @@ namespace ThreeArriveAction.Web.Ajax
         public void ProcessRequest(HttpContext context)
         {
             string type = MXRequest.GetQueryString("type");
-            switch(type){
+            switch (type)
+            {
                 case "select":
                     GetVillageTreeJson(context);
                     break;
@@ -35,9 +37,13 @@ namespace ThreeArriveAction.Web.Ajax
                 case "del":
                     DeleteVillage(context);
                     break;
-                case "getpar":
+ case "getpar":
                     GetVillageByParId(context);
                     break;
+                     case "getAll":
+                    GetVillageAll(context);
+                    break;
+
 
             }
         }
@@ -134,6 +140,31 @@ namespace ThreeArriveAction.Web.Ajax
             string result = villageBLL.DeleteVillage(ids);
             context.Response.Write(result);
         }
+
+        private void GetVillageAll(HttpContext context)
+        {
+            var vList = DataConfig.GetVillages();
+            var list = new ArrayList();
+            foreach (var item in vList.Where(x => x.VillageParId == 1))
+            {
+                list.Add(new
+                {
+                    parent = new
+                    {
+                        value = item.VillageId,
+                        text = item.VillageName
+                    },
+                    child = vList.Where(x => x.VillageParId == item.VillageId)
+                    .Select(x => new
+                    {
+                        value = x.VillageId,
+                        text = x.VillageName
+                    })
+                });
+            }
+            context.Response.Write(list.ToJson());
+        }
+
         public bool IsReusable
         {
             get

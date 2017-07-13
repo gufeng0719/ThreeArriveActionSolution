@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <title>积分查询</title>
+    <style>
+        .integral {
+            color: aqua;
+        }
+
+        .index {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        td {
+            width: 45px;
+        }
+
+        tr {
+            height: 35px;
+        }
+    </style>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div class="banner">
+        <img src="../images/banner_heiban.jpg">
+    </div>
+    <div class="header">
+        <div class="crile">
+        </div>
+        <div class="text">
+            积分查询
+        </div>
+    </div>
+    <div class="container" id="app">
+        <div class="row">
+            <div style="text-align: left;">
+                <select>-选择城镇-</select>
+                <select>-选择乡村-</select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    积分排名
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <table style="margin-left:5%">
+                    <tr>
+                        <td style="width: 40px">
+                            <span class="index">1</span>
+                        </td>
+                        <td style="width: 60px;">张三</td>
+                        <td style="width: 140px;">淮城镇-成成村</td>
+                        <td style="width: 180px;">已获得<span class="">223</span>积分</td>
+                    </tr>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                上一页
+                            </td>
+                            <td colspan="2">
+                                下一页
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../scripts/require/r.js" data-main="/scripts/weixin/integral.js?r=70" type="text/javascript"></script>
+</body>
+</html>

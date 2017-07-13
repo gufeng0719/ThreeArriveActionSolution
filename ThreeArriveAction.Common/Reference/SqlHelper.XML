@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SqlHelper</name>
+    </assembly>
+    <members>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.SqlString">
+            <summary>
+            方便与排查异常
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.Alia">
+            <summary>
+            主表的别名 使用到AddJoin时,必选设置此属性
+            </summary>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.Delete(System.String)">
+            <summary>
+            删除
+            </summary>
+            <param name="where">where条件 以AND开头</param>
+            <returns></returns>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.AddJoin(ThreeArriveAction.Common.JoinEnum,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            添加表连接关系
+            </summary>
+            <param name="relationJoin">连接关系</param>
+            <param name="thatTable">另一个表</param>
+            <param name="thatAlia">另一个别名</param>
+            <param name="relationField">主关联字段</param>
+            <param name="thatRelationField">另一个关联字段</param>
+            <param name="where">链接之前的筛选(以AND开头)</param>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.RemoveStrModel(System.String)">
+            <summary>
+            移除 T 后面可能出现的个别字符串
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:ThreeArriveAction.Common.PageConfig.PageIndex">
+            <summary>
+            当前页
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.PageConfig.PageSize">
+            <summary>
+            页大小
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.PageConfig.PageSortField">
+            <summary>
+            分页关键排序
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.PageConfig.SortEnum">
+            <summary>
+            排序类型
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.RelationEnum">
+            <summary>
+            键值关系
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.Equal">
+            <summary>
+            等于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.NotEqual">
+            <summary>
+            不等于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.In">
+            <summary>
+            in
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.NotIn">
+            <summary>
+            NotIn
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.Greater">
+            <summary>
+            大于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.GreaterEqual">
+            <summary>
+            大于等于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.Less">
+            <summary>
+            小于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.LessEqual">
+            <summary>
+            小于等于
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.Like">
+            <summary>
+            匹配
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.RightLike">
+            <summary>
+            右匹配
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.LeftLike">
+            <summary>
+            左匹配
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.IsNull">
+            <summary>
+            是
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.RelationEnum.IsNotNull">
+            <summary>
+            不是
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.CoexistEnum">
+            <summary>
+            向前条件的并存关系
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.CoexistEnum.And">
+            <summary>
+            AND 关系
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.CoexistEnum.Or">
+            <summary>
+            OR 关系
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.SortEnum">
+            <summary>
+            排序关系
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.SortEnum.Asc">
+            <summary>
+            正序
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.SortEnum.Desc">
+            <summary>
+            倒序
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.JoinEnum">
+            <summary>
+            表链接 关系
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.JoinEnum.Join">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.JoinEnum.InnerJoin">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.JoinEnum.LeftJoin">
+            <summary>
+            左链接
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.JoinEnum.RightJoin">
+            <summary>
+            有链接
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.ErrorEnum">
+            <summary>
+            错误枚举
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.ErrorEnum.E1000">
+            <summary>
+            当前表结构缺少PrimaryKey
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.ErrorEnum.E1001">
+            <summary>
+            当前操作必须传入条件限制
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.ErrorEnum.E1002">
+            <summary>
+            当前操作必须传入UPDATE字段和值
+            </summary>
+        </member>
+        <member name="F:ThreeArriveAction.Common.ErrorEnum.E1003">
+            <summary>
+            当您尝试 JOIN 时,请先设置 Alia 值
+            </summary>
+        </member>
+        <member name="M:ThreeArriveAction.Common.DbClient.ExecuteQueryProc``1(System.String,System.Object)">
+            <summary>
+            执行带参数的存储过程(查询)
+            </summary>
+            <param name="strProcName"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ThreeArriveAction.Common.DbClient.ExecuteProc(System.String,System.Object)">
+            <summary>
+            执行带参数的存储过程
+            </summary>
+            <param name="strProcName"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

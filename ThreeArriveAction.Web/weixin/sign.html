@@ -10,32 +10,30 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/css.css">
     <style>
-        #times
-        {
-        	background-color:#FB9B2A;
-        	text-align:center;
-        	color:White;
-        	font-size:20px;
-        	font-weight:bold;
-        	padding:10px 0;
-        	line-height:150%;
-        	
+        #times {
+            background-color: #FB9B2A;
+            text-align: center;
+            color: White;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 0;
+            line-height: 150%;
         }
-        #endtimes
-        {
-        	text-align:center;
-        	font-size:20px;
-        	font-weight:bold;
-        	padding:10px 0;
-        	line-height:150%;
+
+        #endtimes {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px 0;
+            line-height: 150%;
         }
-        #endtimes span
-        {
-        	color:#FB9B2A;
-        	padding:0 5px;
-        	font-size:25px;
-        	font-weight:bolder;
-        }
+
+            #endtimes span {
+                color: #FB9B2A;
+                padding: 0 5px;
+                font-size: 25px;
+                font-weight: bolder;
+            }
     </style>
 </head>
 <body>
@@ -49,7 +47,8 @@
             <div class="crile">
             </div>
             <div class="text">
-                每日早报道</div>
+                每日早报道
+            </div>
         </div>
         <div class="container">
             <div class="row">
@@ -58,17 +57,17 @@
                 <div id="endtimes">
                 </div>
                 <div style="text-align:center;">
-                    <a>
+                    <a id="btnsign" onclick="addsign()" style="display:none;">
                         <img src="../images/nosign.png" style="width:150px;height:150px;" />
                         <br />
-                        签到
+                        <span id="txtsign">签到</span>
                     </a>
                 </div>
             </div>
         </div>
     </div>
     <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
-    <script src="../scripts/require/r.js" data-main="main"></script>
+    <script src="../scripts/require/r.js" data-main="/scripts/weixin/main.js?r=1"></script>
     <script src="../scripts/weixin/sign.js"></script>
 </body>
 </html>

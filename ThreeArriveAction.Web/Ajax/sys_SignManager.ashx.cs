@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using System.Web.SessionState;
+using System.Linq;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -36,76 +35,112 @@ namespace ThreeArriveAction.Web.Ajax
         #region 获取该人签到信息
         private void GetSignInfo(HttpContext context)
         {
+            var openId = context.Request["openId"];
             JsonMessage json = new JsonMessage();
             //获取本人信息
             sys_UsersModel model = new ManagePage().GetUsersinfo();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='../login.html'</script>");
-            }
-            else
-            {
-                //根据本人的编号与村居编号获取本人签到信息
-                if (onSignsBLL.ExistsByVillageId(model.VillageId))//是否开启签到
+                if (openId.IsNullOrEmpty())
                 {
-                    //签到已开启
-                    //查询本人是否开启签到
-                    if (signsBLL.Exists(model.UserId, DateTime.Now))
-                    {
-                        //本人已签到
-                        json.success = false;
-                        json.msg = "您今天已签到,不需再签到!";
-                    }
-                    else
-                    {
-                        DateTime onTime = onSignsBLL.GetOnSignsByVillageId(model.VillageId, DateTime.Now).OnTime;
-                        if (onTime.AddMinutes(5) <= DateTime.Now)
-                        {
-                            json.success = false;
-                            json.msg = "今天签到已结束,明天请提前!";
-
-                        }
-                        else
-                        {
-                            json.success = true;
-                            json.msg = "您今天还未签到,现在签到吧!";
-                            json.obj = onTime;
-                        }
-                    }
+                    context.Response.Write("<script>parent.location.href='../login.html'</script>");
+                    return;
                 }
                 else
                 {
-                    //签到未开启
-                    if (model.OrganizationId != 3)
+                    var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+                    sh.AddWhere("UserRemark", openId);
+                    model = sh.Select().FirstOrDefault();
+                    if (model == null)
+                    {
+                        context.Response.Write(new
+                        {
+                            success = false,
+                            msg = "个人信息异常"
+                        }.ToJson());
+                        return;
+                    }
+                }
+            }
+
+            //根据本人的编号与村居编号获取本人签到信息
+            if (onSignsBLL.ExistsByVillageId(model.VillageId))//是否开启签到
+            {
+                //签到已开启
+                //查询本人是否开启签到
+                if (signsBLL.Exists(model.UserId, DateTime.Now))
+                {
+                    //本人已签到
+                    json.success = false;
+                    json.msg = "您今天已签到,不需再签到!";
+                }
+                else
+                {
+                    DateTime onTime = onSignsBLL.GetOnSignsByVillageId(model.VillageId, DateTime.Now).OnTime;
+                    if (onTime.AddMinutes(5) <= DateTime.Now)
                     {
                         json.success = false;
-                        json.msg = "签到还没开启,请稍后!";
+                        json.msg = "今天签到已结束,明天请提前!";
 
                     }
                     else
                     {
                         json.success = true;
-                        json.msg = "签到还没开启,开启签到吧!";
+                        json.msg = "您今天还未签到,现在签到吧!";
+                        json.obj = onTime;
                     }
                 }
-                context.Response.Write(JsonHelper.ToJson(json));
             }
+            else
+            {
+                //签到未开启
+                if (model.OrganizationId != 3)
+                {
+                    json.success = false;
+                    json.msg = "签到还没开启,请稍后!";
+
+                }
+                else
+                {
+                    json.success = true;
+                    json.msg = "签到还没开启,开启签到吧!";
+                }
+            }
+            context.Response.Write(JsonHelper.ToJson(json));
         }
         #endregion
 
         #region 添加签到信息
         public void AddSignInfo(HttpContext context)
         {//获取本人信息
+            var openId = context.Request["openId"];
             sys_UsersModel model = new ManagePage().GetUsersinfo();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='../login.html'</script>");
+                if (openId.IsNullOrEmpty())
+                {
+                    context.Response.Write("<script>parent.location.href='../login.html'</script>");
+                    return;
+                }
+                else
+                {
+                    var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+                    sh.AddWhere("UserRemark", openId);
+                    model = sh.Select().FirstOrDefault();
+                    if (model == null)
+                    {
+                        context.Response.Write(new
+                        {
+                            success = false,
+                            msg = "个人信息异常"
+                        }.ToJson());
+                        return;
+                    }
+                }
             }
-            else
-            {
-                string result = signsBLL.AddSign(model.UserId, model.VillageId, model.OrganizationId);
-                context.Response.Write(result);
-            }
+
+            string result = signsBLL.AddSign(model.UserId, model.VillageId, model.OrganizationId);
+            context.Response.Write(result);
         }
         #endregion
 

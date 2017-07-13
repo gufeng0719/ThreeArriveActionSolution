@@ -39,6 +39,10 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SqlHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference\SqlHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -53,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheHelper.cs" />
+    <Compile Include="DataConfig.cs" />
     <Compile Include="EncryptHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
     <Compile Include="DESEncrypt.cs" />
@@ -86,6 +91,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ThreeArriveAction.Model\ThreeArriveAction.Model.csproj">
+      <Project>{949E40E6-A255-4E85-8CBA-B0E61FF66378}</Project>
+      <Name>ThreeArriveAction.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
