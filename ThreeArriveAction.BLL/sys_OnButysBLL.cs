@@ -62,6 +62,41 @@ namespace ThreeArriveAction.BLL
         {
             return butyDAL.GetButyList(seachTime);
         }
+
+        public DataTable GetList(int pageSize, int pageIndex, string strWhere, string fieldOrder, out int recordCount)
+        {
+            DataSet ds = butyDAL.GetList(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            return ds.Tables[0];
+        }
+
+        public string GetListJson(int pageSize, int pageIndex, string strWhere, string fieldOrder)
+        {
+            StringBuilder strJson = new StringBuilder();
+            int recordCount = 0;
+            DataTable  dt = GetList(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            strJson.Append("{\"total\":" + recordCount);
+            strJson.Append(",\"rows\":");
+            if (recordCount > 0)
+            {
+                strJson.Append(JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append("[]");
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+
+            strJson.Append("}");
+            return strJson.ToString();
+        }
         #endregion
     }
 }

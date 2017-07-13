@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>值班人员查询</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+    <style>
+        .div-content dl
+        {
+        	padding:5px 0;
+        	line-height:15px;
+        }
+        .div-content dt
+        {
+            font-size: 16px;
+            font-weight: bolder;
+            
+        }
+        .div-content dd
+        {
+            font-size: 14px;
+            font-weight: bold;
+            padding:0;
+        }
+    </style>
+</head>
+<body class="mainbody">
+    <form id="form1">
+    <!--导航栏-->
+    <div class="location">
+        <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+        <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>值班人员查询</span>
+    </div>
+    <!--/导航栏-->
+    <!--工具栏-->
+    <div class="toolbar-wrap">
+        <div id="floatHead" class="toolbar">
+            <div class="r-list">
+                <div class="menu-list" style="display: inline-block; float: left;">
+                    <div class="input-date">
+                        <input type="text" id="butydate" name="butydate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                            class="input date" />
+                        <i>日期</i>
+                    </div>
+                    <div class="single-select" id="divtown">
+                        <select id="town" name="town">
+                        </select>
+                    </div>
+                    <div class="single-select" id="divvillage">
+                        <select id="village" name="village">
+                        </select>
+                    </div>
+                </div>
+                <input type="button" id="btnSearch" class="btn-search" value="查询" />
+            </div>
+        </div>
+    </div>
+    <!--/工具栏-->
+    <!--图片列表-->
+    <div class="imgList">
+        <ul id="butyList">
+        </ul>
+    </div>
+    <!--内容底部-->
+    <div class="line20">
+    </div>
+    <div class="pagelist">
+        <div class="l-btns">
+            <span>显示</span>
+            <label class="pagenum">
+                20</label>
+            <span>条/页</span>
+        </div>
+        <div id="PageContent" class="default">
+        </div>
+    </div>
+    <!--/内容底部-->
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        Date.prototype.format = function (format) {
+            var args = { "M+": this.getMonth() + 1, "d+": this.getDate(), "h+": this.getHours(), "m+": this.getMinutes(), "s+": this.getSeconds(), "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds()
+            }; if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); for (var i in args) { var n = args[i]; if (new RegExp("(" + i + ")").test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length)); } return format;
+        };
+        $(function () {
+            $("#butydate").val(new Date().format("yyyy-MM-dd"));
+            //加载乡镇数据
+            
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
+                $("#town").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#town").append(s);
+                }
+                $("#divtown").ruleSingleSelect().addClass("rule-single-select");
+                LoadVillage(0);
+            });
+            //加载第一页值班人员信息
+            Load(1);
+            //乡镇下列列表改变事件
+            $("#town").change(function () {
+                LoadVillage($(this).val());
+            });
+            //搜索按钮事件
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+
+
+        });
+
+        //加载村居信息
+        function LoadVillage(parid) {
+            $("#village").html("");
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: parid }, function (msg) {
+                $("#village").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#village").append(s);
+                }
+                $("#divvillage").ruleSingleSelect().addClass("rule-single-select");
+            });
+        }
+
+        //加载值班列表信息
+        function Load(page) {
+            var town = $("#town").val();
+            var vid = $("#village").val();
+            var butydate = $("#butydate").val();
+            //加载列表
+            $.getJSON("../../Ajax/sys_OnButysManager.ashx?type=buty", { town: town, vid: vid, page: page, butydate: butydate }, function (msg) {
+                // console.info(msg);
+                $("#butyList").html("");
+                if (msg.rows.length > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "<li>";
+                        s += "<div class=\"details\">";
+                        s += "<div class=\"pic left\">";
+                        if (msg.rows.UserPhoto == undefined) {
+                            s += "<img src=\"../skin/default/noneimg.jpg\" style=\"width:100px;height:80px;\" data-original=\"\" />";
+                        } else {
+                            s += "<img src=\"" + msg.rows.UserPhoto + "\" style=\"width:100px;height:80px;\" data-original=\"\" />";
+                        }
+                        s += "</div>";
+                        s += "<div class=\"left div-content\">";
+                        s += "<dl>";
+                        s += "<dt>姓名:</dt>"
+                        s += "<dd>";
+                        s += msg.rows[i].UserName;
+                        s += "</dd>";
+                        s += "</dl>";
+                        s += "<dl>";
+                        s += "<dt>职务:</dt>";
+                        s += "<dd>";
+                        s += msg.rows[i].UserDuties;
+                        s += "</dd>";
+                        s += "</dl>";
+                        s += "<dl>";
+                        s += "<dt>联系方式:</dt>";
+                        s += "<dd>";
+                        s += msg.rows[i].UserPhone;
+                        s += "</dd>";
+                        s += "</dl>";
+                        s += "</div>";
+                        s += "</div>";
+                        s += "</li>";
+                        $("#butyList").append(s);
+                    }
+                } else {
+                    $("#butyList").html("<li><div align=\"center\" style=\"font-size:12px;line-height:30px;color:#666;\">暂无记录</div></li>");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -35,6 +35,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "del":
                     DeleteVillage(context);
                     break;
+                case "getpar":
+                    GetVillageByParId(context);
+                    break;
 
             }
         }
@@ -64,6 +67,21 @@ namespace ThreeArriveAction.Web.Ajax
                 string result = villageBLL.GetListTreeJson(parentId);
                 context.Response.Write(result);
             }
+        }
+
+        private void GetVillageByParId(HttpContext context)
+        {
+            int parentId = MXRequest.GetQueryIntValue("parid");
+            string result="";
+            if (parentId != 0)
+            {
+                result = villageBLL.GetVillageJsonByParId(parentId);
+            }
+            else
+            {
+                result = "{\"total\":0,\"rows\":[]}";
+            }
+            context.Response.Write(result);
         }
 
         /// <summary>

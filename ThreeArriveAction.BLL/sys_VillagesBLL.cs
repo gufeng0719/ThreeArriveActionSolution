@@ -112,6 +112,23 @@ namespace ThreeArriveAction.BLL
        {
            return villageDAL.GetVillageListByParId(parId);
        }
+       public string GetVillageJsonByParId(int parId)
+       {
+           DataTable dt = GetVillageListByParId(parId);
+           StringBuilder strJson = new StringBuilder();
+           strJson.Append("{\"total\":"+dt.Rows.Count);
+           strJson.Append(",\"rows\":");
+           if (dt.Rows.Count > 0)
+           {
+               strJson.Append(JsonHelper.ToJson(dt));
+           }
+           else
+           {
+               strJson.Append("[]");
+           }
+           strJson.Append("}");
+           return strJson.ToString();
+       }
 
        /// <summary>
        /// 取得所有村居列表
