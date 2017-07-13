@@ -37,10 +37,10 @@ namespace ThreeArriveAction.Web.Ajax
                 case "del":
                     DeleteVillage(context);
                     break;
- case "getpar":
+                case "getpar":
                     GetVillageByParId(context);
                     break;
-                     case "getAll":
+                case "getAll":
                     GetVillageAll(context);
                     break;
 
@@ -78,7 +78,7 @@ namespace ThreeArriveAction.Web.Ajax
         private void GetVillageByParId(HttpContext context)
         {
             int parentId = MXRequest.GetQueryIntValue("parid");
-            string result="";
+            string result = "";
             if (parentId != 0)
             {
                 result = villageBLL.GetVillageJsonByParId(parentId);
