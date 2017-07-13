@@ -6,14 +6,15 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data.Common;
 using System.Collections.Generic;
+using ThreeArriveAction.Common;
 
 namespace ThreeArriveAction.DBUtility
 {
     public abstract class DbHelperSQL
     {
-         //数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.		
+        //数据库连接字符串(web.config来配置)，可以动态更改connectionString支持多数据库.		
         public static string connectionString = ConfigurationManager.ConnectionStrings["DBString"].ConnectionString;
-        public DbHelperSQL(){ }
+        public DbHelperSQL() { }
 
         #region 公用方法
         /// <summary>
@@ -149,10 +150,11 @@ namespace ThreeArriveAction.DBUtility
                         int rows = cmd.ExecuteNonQuery();
                         return rows;
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
                         connection.Close();
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -176,10 +178,11 @@ namespace ThreeArriveAction.DBUtility
                     int rows = cmd.ExecuteNonQuery();
                     return rows;
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
                     //trans.Rollback();
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
             }
         }
@@ -197,10 +200,11 @@ namespace ThreeArriveAction.DBUtility
                         int rows = cmd.ExecuteNonQuery();
                         return rows;
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
                         connection.Close();
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -301,7 +305,7 @@ namespace ThreeArriveAction.DBUtility
                     tx.Commit();
                     return 1;
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
                     tx.Rollback();
                     throw e;
@@ -359,7 +363,7 @@ namespace ThreeArriveAction.DBUtility
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(SQLString, connection);
-                System.Data.SqlClient.SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@content", SqlDbType.NText);
+                SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@content", SqlDbType.NText);
                 myParameter.Value = content;
                 cmd.Parameters.Add(myParameter);
                 try
@@ -368,9 +372,10 @@ namespace ThreeArriveAction.DBUtility
                     int rows = cmd.ExecuteNonQuery();
                     return rows;
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 finally
                 {
@@ -390,14 +395,14 @@ namespace ThreeArriveAction.DBUtility
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(SQLString, connection);
-                System.Data.SqlClient.SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@content", SqlDbType.NText);
+                SqlParameter myParameter = new System.Data.SqlClient.SqlParameter("@content", SqlDbType.NText);
                 myParameter.Value = content;
                 cmd.Parameters.Add(myParameter);
                 try
                 {
                     connection.Open();
                     object obj = cmd.ExecuteScalar();
-                    if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                    if ((Equals(obj, null)) || (Equals(obj, DBNull.Value)))
                     {
                         return null;
                     }
@@ -406,9 +411,10 @@ namespace ThreeArriveAction.DBUtility
                         return obj;
                     }
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 finally
                 {
@@ -437,9 +443,10 @@ namespace ThreeArriveAction.DBUtility
                     int rows = cmd.ExecuteNonQuery();
                     return rows;
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 finally
                 {
@@ -464,7 +471,7 @@ namespace ThreeArriveAction.DBUtility
                     {
                         connection.Open();
                         object obj = cmd.ExecuteScalar();
-                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        if ((Equals(obj, null)) || (Equals(obj, DBNull.Value)))
                         {
                             return null;
                         }
@@ -473,10 +480,11 @@ namespace ThreeArriveAction.DBUtility
                             return obj;
                         }
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
                         connection.Close();
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -492,7 +500,7 @@ namespace ThreeArriveAction.DBUtility
                         connection.Open();
                         cmd.CommandTimeout = Times;
                         object obj = cmd.ExecuteScalar();
-                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        if ((Equals(obj, null)) || (Equals(obj, DBNull.Value)))
                         {
                             return null;
                         }
@@ -501,10 +509,11 @@ namespace ThreeArriveAction.DBUtility
                             return obj;
                         }
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
                         connection.Close();
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -524,9 +533,10 @@ namespace ThreeArriveAction.DBUtility
                 SqlDataReader myReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 return myReader;
             }
-            catch (System.Data.SqlClient.SqlException e)
+            catch (SqlException e)
             {
-                throw e;
+                LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                throw new Exception(e.Message + "---------SQL:" + SQLString);
             }
 
         }
@@ -547,9 +557,10 @@ namespace ThreeArriveAction.DBUtility
                     SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
                     command.Fill(ds, "ds");
                 }
-                catch (System.Data.SqlClient.SqlException ex)
+                catch (SqlException ex)
                 {
-                    throw new Exception(ex.Message);
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 return ds;
             }
@@ -567,9 +578,10 @@ namespace ThreeArriveAction.DBUtility
                     command.SelectCommand.CommandTimeout = Times;
                     command.Fill(ds, "ds");
                 }
-                catch (System.Data.SqlClient.SqlException ex)
+                catch (SqlException ex)
                 {
-                    throw new Exception(ex.Message);
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 return ds;
             }
@@ -591,9 +603,10 @@ namespace ThreeArriveAction.DBUtility
                 command.SelectCommand.Transaction = trans;
                 command.Fill(ds, "ds");
             }
-            catch (System.Data.SqlClient.SqlException ex)
+            catch (SqlException ex)
             {
-                throw new Exception(ex.Message);
+                LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                throw new Exception(e.Message + "---------SQL:" + SQLString);
             }
             return ds;
 
@@ -622,9 +635,10 @@ namespace ThreeArriveAction.DBUtility
                         cmd.Parameters.Clear();
                         return rows;
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -648,10 +662,11 @@ namespace ThreeArriveAction.DBUtility
                     cmd.Parameters.Clear();
                     return rows;
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
                     //trans.Rollback();
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
             }
         }
@@ -693,7 +708,7 @@ namespace ThreeArriveAction.DBUtility
         /// 执行多条SQL语句，实现数据库事务。
         /// </summary>
         /// <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
-        public static int ExecuteSqlTran(System.Collections.Generic.List<CommandInfo> cmdList)
+        public static int ExecuteSqlTran(List<CommandInfo> cmdList)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -763,7 +778,7 @@ namespace ThreeArriveAction.DBUtility
         /// 执行多条SQL语句，实现数据库事务。
         /// </summary>
         /// <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SqlParameter[]）</param>
-        public static void ExecuteSqlTranWithIndentity(System.Collections.Generic.List<CommandInfo> SQLStringList)
+        public static void ExecuteSqlTranWithIndentity(List<CommandInfo> SQLStringList)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -880,9 +895,10 @@ namespace ThreeArriveAction.DBUtility
                             return obj;
                         }
                     }
-                    catch (System.Data.SqlClient.SqlException e)
+                    catch (SqlException e)
                     {
-                        throw e;
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                 }
             }
@@ -913,10 +929,11 @@ namespace ThreeArriveAction.DBUtility
                         return obj;
                     }
                 }
-                catch (System.Data.SqlClient.SqlException e)
+                catch (SqlException e)
                 {
                     //trans.Rollback();
-                    throw e;
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
             }
         }
@@ -937,9 +954,10 @@ namespace ThreeArriveAction.DBUtility
                 cmd.Parameters.Clear();
                 return myReader;
             }
-            catch (System.Data.SqlClient.SqlException e)
+            catch (SqlException e)
             {
-                throw e;
+                LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                throw new Exception(e.Message + "---------SQL:" + SQLString);
             }
             //			finally
             //			{
@@ -968,9 +986,10 @@ namespace ThreeArriveAction.DBUtility
                         da.Fill(ds, "ds");
                         cmd.Parameters.Clear();
                     }
-                    catch (System.Data.SqlClient.SqlException ex)
+                    catch (SqlException ex)
                     {
-                        throw new Exception(ex.Message);
+                        LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                        throw new Exception(e.Message + "---------SQL:" + SQLString);
                     }
                     return ds;
                 }
@@ -996,10 +1015,11 @@ namespace ThreeArriveAction.DBUtility
                     da.Fill(ds, "ds");
                     cmd.Parameters.Clear();
                 }
-                catch (System.Data.SqlClient.SqlException ex)
+                catch (SqlException ex)
                 {
                     trans.Rollback();
-                    throw new Exception(ex.Message);
+                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + SQLString);
                 }
                 return ds;
             }
@@ -1017,8 +1037,6 @@ namespace ThreeArriveAction.DBUtility
             cmd.CommandType = CommandType.Text;//cmdType;
             if (cmdParms != null)
             {
-
-
                 foreach (SqlParameter parameter in cmdParms)
                 {
                     if ((parameter.Direction == ParameterDirection.InputOutput || parameter.Direction == ParameterDirection.Input) &&

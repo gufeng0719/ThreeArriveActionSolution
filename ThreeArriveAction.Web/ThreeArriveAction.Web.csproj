@@ -1033,12 +1033,14 @@
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\vue\vue.js" />
     <Content Include="scripts\vue\vue.min.js" />
+    <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\open.js" />
     <Content Include="scripts\weixin\thing.js" />
     <Content Include="scripts\weixin\week.js" />
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
+    <Content Include="weixin\integral.html" />
     <Content Include="weixin\main.html" />
     <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />

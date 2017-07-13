@@ -142,8 +142,8 @@ require(["vue", "jweixin"],
         var vm = new Vue({
             el: "#app",
             data: {
-                localIds: ["123"],
-                glocalId: ["456"] // 整体图只能有一个
+                localIds: [],
+                glocalId: [] // 整体图只能有一个
             },
         });
 
