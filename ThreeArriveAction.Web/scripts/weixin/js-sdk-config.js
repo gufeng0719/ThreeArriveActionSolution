@@ -24,7 +24,6 @@ require(["vue", "jweixin"],
                 var obj = JSON.parse(d);
                 console.log(obj);
                 wx.config({
-                    debug: true,
                     appId: obj.appId,
                     timestamp: obj.timestamp,
                     nonceStr: obj.nonceStr,
