@@ -445,8 +445,8 @@ namespace ThreeArriveAction.DBUtility
                 }
                 catch (SqlException e)
                 {
-                    LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
-                    throw new Exception(e.Message + "---------SQL:" + SQLString);
+                    LogHelper.Log("sql:" + strSQL + "; msg:" + e.Message, "执行SQL异常");
+                    throw new Exception(e.Message + "---------SQL:" + strSQL);
                 }
                 finally
                 {
@@ -535,8 +535,8 @@ namespace ThreeArriveAction.DBUtility
             }
             catch (SqlException e)
             {
-                LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
-                throw new Exception(e.Message + "---------SQL:" + SQLString);
+                LogHelper.Log("sql:" + strSQL + "; msg:" + e.Message, "执行SQL异常");
+                throw new Exception(e.Message + "---------SQL:" + strSQL);
             }
 
         }
@@ -557,7 +557,7 @@ namespace ThreeArriveAction.DBUtility
                     SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
                     command.Fill(ds, "ds");
                 }
-                catch (SqlException ex)
+                catch (SqlException e)
                 {
                     LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
                     throw new Exception(e.Message + "---------SQL:" + SQLString);
@@ -578,7 +578,7 @@ namespace ThreeArriveAction.DBUtility
                     command.SelectCommand.CommandTimeout = Times;
                     command.Fill(ds, "ds");
                 }
-                catch (SqlException ex)
+                catch (SqlException e)
                 {
                     LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
                     throw new Exception(e.Message + "---------SQL:" + SQLString);
@@ -603,7 +603,7 @@ namespace ThreeArriveAction.DBUtility
                 command.SelectCommand.Transaction = trans;
                 command.Fill(ds, "ds");
             }
-            catch (SqlException ex)
+            catch (SqlException e)
             {
                 LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
                 throw new Exception(e.Message + "---------SQL:" + SQLString);
@@ -986,7 +986,7 @@ namespace ThreeArriveAction.DBUtility
                         da.Fill(ds, "ds");
                         cmd.Parameters.Clear();
                     }
-                    catch (SqlException ex)
+                    catch (SqlException e)
                     {
                         LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
                         throw new Exception(e.Message + "---------SQL:" + SQLString);
@@ -1015,7 +1015,7 @@ namespace ThreeArriveAction.DBUtility
                     da.Fill(ds, "ds");
                     cmd.Parameters.Clear();
                 }
-                catch (SqlException ex)
+                catch (SqlException e)
                 {
                     trans.Rollback();
                     LogHelper.Log("sql:" + SQLString + "; msg:" + e.Message, "执行SQL异常");
