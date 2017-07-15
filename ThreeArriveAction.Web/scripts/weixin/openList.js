@@ -96,5 +96,14 @@ var vm = new Vue({
             }
         });
         this.getpage(1);
+        if (req["type"] == "1") {
+            $("#pagetitle").html("三到行动-党务公开");
+        }
+        if (req["type"] == "2") {
+            $("#pagetitle").html("三到行动-村务公开");
+        }
+        if (req["type"] == "3") {
+            $("#pagetitle").html("三到行动-财务公开");
+        }
     }
 });
