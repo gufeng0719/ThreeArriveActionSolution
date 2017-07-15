@@ -1,12 +1,12 @@
 ﻿
 function submitcontent() {
-    if ($("#subfamily").val()) {
+    if (!$("#subfamily").val()) {
         alert("请选择拜访户"); return;
     }
-    if ($("#thing").val()) {
+    if (!$("#thing").val()) {
         alert("请输入描述"); return;
     }
-    if ($("#thing").val()) {
+    if (!$("#thing").val()) {
         alert("请输入结果"); return;
     }
     submit(function (paths, xpoint, ypoint) {

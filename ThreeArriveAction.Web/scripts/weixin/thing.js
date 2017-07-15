@@ -1,17 +1,17 @@
 ﻿function submitcontent() {
-    if ($("#subfamily").val()) {
+    if (!$("#subfamily").val()) {
         alert("请选择拜访户");return;
     }
-    if ($("#title").val()) {
+    if (!$("#title").val()) {
         alert("请输入事件"); return;
     }
-    if ($("#thing").val()) {
+    if (!$("#thing").val()) {
         alert("请输入原因"); return;
     }
-    if ($("[name='thinghaving']").val()) {
+    if (!$("[name='thinghaving']").val()) {
         alert("请选择是否解决"); return;
     }
-    if ($("#Textarea1").val()) {
+    if (!$("#Textarea1").val()) {
         alert("请输入解决放方式"); return;
     }
     submit(function (paths) {

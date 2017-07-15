@@ -88,6 +88,7 @@
     <Content Include="Reference\Senparc.Weixin.dll" />
     <Content Include="Reference\Senparc.Weixin.MP.dll" />
     <Content Include="Reference\SqlHelper.dll" />
+    <Content Include="Reference\SqlHelper.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

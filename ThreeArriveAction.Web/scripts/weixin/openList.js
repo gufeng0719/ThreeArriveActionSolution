@@ -45,6 +45,16 @@ var vm = new Vue({
                     that.page = obj.page;
                     that.list = obj.list,
                     that.totle = obj.totle;
+                    if (that.page > 1) {
+                        $("#lastpage").attr("disabled", false);
+                    } else {
+                        $("#lastpage").attr("disabled", true);
+                    }
+                    if (that.page < (that.totle / that.size)) {
+                        $("#nextpage").attr("disabled", false);
+                    } else {
+                        $("#nextpage").attr("disabled", true);
+                    }
                 }
             });
         }
@@ -53,20 +63,6 @@ var vm = new Vue({
 
     },
     watch: {
-        "page": function (newValue) {
-            if (newValue > 1) {
-                $("#lastpage").attr("disabled", false);
-            } else {
-                $("#lastpage").attr("disabled", true);
-            }
-        },
-        "totle": function (newValue) {
-            if (this.page < newValue / this.size) {
-                $("#nextpage").attr("disabled", false);
-            } else {
-                $("#nextpage").attr("disabled", true);
-            }
-        },
         "ddltown": function (newValue) {
             if (newValue === -1) {
                 return;

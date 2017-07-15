@@ -16,7 +16,7 @@
             complete: function (d) {
                 if (d.responseText > 0) {
                     alert("保存成功");
-                    window.open("index.html", "_self");
+                    window.open("openList.html?type=" + $("[name='opentype']:checked").val(), "_self");
                 }
             }
         });
