@@ -1,4 +1,8 @@
 ﻿function submitcontent() {
+    if (!$("[name='opentype']:checked").val()) {
+        alert("请选择公开类型");
+        return;
+    }   
     submit(function (paths, x, y) {
         $.ajax({
             type: "post",

@@ -85,6 +85,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                         var obj = JSON.parse(d);
                         if (localStorage) {
                             localStorage.setItem("current_user", JSON.stringify(obj));
+                            localStorage.setItem("opneId", obj.UserRemark);
                         }
                         console.log(obj);
                         swal({

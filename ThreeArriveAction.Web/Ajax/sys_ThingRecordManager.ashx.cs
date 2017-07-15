@@ -30,7 +30,8 @@ namespace ThreeArriveAction.Web.Ajax
         {
             //获取当前登录的操作者信息
             sys_UsersModel model = new ManagePage().GetUsersinfo();
-            if (model == null)
+            var openId = context.Request.Form["openId"];
+            if (model == null && openId.IsNullOrEmpty())
             {
                 context.Response.Write("<script>parent.location.href='login.html'</script>");
             }
@@ -44,9 +45,25 @@ namespace ThreeArriveAction.Web.Ajax
                 thingModel.ThingHaving = MXRequest.GetFormString("thinghaving") == "" ? "否" : "是";
                 thingModel.ThingImgUrl = MXRequest.GetFormString("imgurl");
                 thingModel.SubcriberId = int.Parse(MXRequest.GetFormString("slSubId"));
-                thingModel.UserId = model.UserId;
+                thingModel.UserId = model == null ? GetUserIdByOpenId(openId) : model.UserId;
                 string result = thingBLL.AddThingRecord(thingModel);
                 context.Response.Write(result);
+            }
+        }
+
+        public int GetUserIdByOpenId(string openId)
+        {
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("UserRemark", openId, RelationEnum.Like);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                LogHelper.Log("根据OpenId(" + openId + ")未能查询到人员信息");
+                return 0;
+            }
+            else
+            {
+                return model.UserId;
             }
         }
 
