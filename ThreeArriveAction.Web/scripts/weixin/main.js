@@ -2,9 +2,9 @@
 function GetRequest() {
     var url = location.search; //获取url中"?"符后的字串
     var theRequest = new Object();
-    if (url.indexOf("?") != -1) {
+    if (url.indexOf("?") !== -1) {
         var str = url.substr(1);
-        strs = str.split("&");
+        var strs = str.split("&");
         for (var i = 0; i < strs.length; i++) {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
         }
@@ -20,7 +20,7 @@ require.config({
         '*': {
             'css': 'require/css'
         }
-    },
+    }
 });
 
 require(['/scripts/sweetalert/sweetalert.min.js',
@@ -29,7 +29,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
         $(function () {
             if (!localStorage) return;
             if (localStorage.getItem("current_user") != null
-                && JSON.parse(localStorage.getItem("current_user")).UserRemark == localStorage.getItem("openId")) return;
+                && JSON.parse(localStorage.getItem("current_user")).UserRemark === localStorage.getItem("openId")) return;
             signVerification();
         });
 
@@ -54,7 +54,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                         }, function (inputValue) {
                             if (inputValue.length !== 11) {
                                 swal.showInputError("请输入11位的手机号码");
-                                return false
+                                return false;
                             }
                             signIn(inputValue, localStorage.getItem("openId"));
                         });
@@ -67,7 +67,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                 error: function (d) {
                     console.log(d);
                 }
-            })
+            });
         }
 
         function signIn(phone, openId) {
@@ -99,7 +99,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                 error: function (d) {
                     console.log(d);
                 }
-            })
+            });
         }
     });
 

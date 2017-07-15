@@ -2,8 +2,8 @@
     if (!$("[name='opentype']:checked").val()) {
         alert("请选择公开类型");
         return;
-    }   
-    submit(function (paths, x, y) {
+    }
+    submit(function (paths) {
         $.ajax({
             type: "post",
             url: "../Ajax/sys_PublicMessagesManager.ashx?type=add",
@@ -14,7 +14,7 @@
                 msg: $("#msg").val()
             },
             complete: function (d) {
-
+                alert(d);
             }
         });
     });

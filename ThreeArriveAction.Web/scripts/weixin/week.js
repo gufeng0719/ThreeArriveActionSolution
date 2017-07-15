@@ -6,7 +6,7 @@ function submitcontent() {
             type: "post",
             data: {
                 opneId: localStorage.getItem("openId"),
-                slSubId: subfamily.val(),
+                slSubId: $("#subfamily").val(),
                 ThingMessage: $("#thing").val(),
                 ThingResult: $("#result").val(),
                 txtImgUrl: paths[0],

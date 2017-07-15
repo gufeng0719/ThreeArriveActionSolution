@@ -10,7 +10,7 @@ window.onload = function () {
         },
         success: function (d) {
             var obj = JSON.parse(d);
-            if (obj.success == "True") {
+            if (obj.success === "True") {
                 if (obj.obj == undefined || obj.obj == null) {
                     $("#txtsign").text("开启签到");
                     $("#endtimes").hide();
@@ -57,7 +57,6 @@ window.onload = function () {
             }, 1000);
         }
     }
-    var endStr;
 }
 
 function addsign() {
@@ -68,11 +67,11 @@ function addsign() {
             openId: localStorage.getItem("openId")
         },
         success: function (d) {
-            if (obj.success == "True") {
+            var obj = JSON.parse(d);
+            if (obj.success === "True") {
                 $("#endtimes").hide();
                 $("#btnsign").hide();
             }
-            var obj = JSON.parse(d);
             alert(obj.msg);
         }
     });

@@ -2,9 +2,9 @@
 function GetRequest() {
     var url = location.search; //获取url中"?"符后的字串
     var theRequest = new Object();
-    if (url.indexOf("?") != -1) {
+    if (url.indexOf("?") !== -1) {
         var str = url.substr(1);
-        strs = str.split("&");
+        var strs = str.split("&");
         for (var i = 0; i < strs.length; i++) {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
         }
@@ -55,25 +55,25 @@ var vm = new Vue({
     watch: {
         "page": function (newValue) {
             if (newValue > 1) {
-                $("#lastpage").attr("disabled", false)
+                $("#lastpage").attr("disabled", false);
             } else {
-                $("#lastpage").attr("disabled", true)
+                $("#lastpage").attr("disabled", true);
             }
         },
         "totle": function (newValue) {
             if (this.page < newValue / this.size) {
-                $("#nextpage").attr("disabled", false)
+                $("#nextpage").attr("disabled", false);
             } else {
-                $("#nextpage").attr("disabled", true)
+                $("#nextpage").attr("disabled", true);
             }
         },
         "ddltown": function (newValue) {
-            if (newValue == -1) {
+            if (newValue === -1) {
                 return;
             }
             var that = this;
             var child = _.find(that.allvillage, function (v) {
-                return v.parent.value == newValue
+                return v.parent.value == newValue;
             });
             if (child) {
                 that.villagelist = child.child;

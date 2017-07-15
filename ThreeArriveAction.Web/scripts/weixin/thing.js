@@ -1,5 +1,5 @@
 ﻿function submitcontent() {
-    submit(function (paths, x, y) {
+    submit(function (paths) {
         $.ajax({
             type: "post",
             data: {

@@ -29,7 +29,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
             else if (type == "getToUrl")
             {
-                context.Response.Write(GetToUrl(context.Request["page"].ToInt()));
+                context.Response.Write(GetToUrl());
                 context.Response.End();
             }
             else if (type == "getJsapiTicket")
@@ -61,7 +61,7 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetUserInfo(HttpContext context)
         {
             var response = GetAccessToken(context.Request["code"]);
-            var toUrl = GetToUrl(context.Request["page"].ToInt());
+            var toUrl = GetToUrl();
             context.Response.Write(new
             {
                 response.openid,
@@ -88,7 +88,6 @@ namespace ThreeArriveAction.Web.Ajax
                 }
             }
             context.Response.Write(GetJDKConfig(jModel.Value, context));
-            return;
         }
 
         public void FileDown(HttpContext context)
@@ -102,7 +101,6 @@ namespace ThreeArriveAction.Web.Ajax
             }
             var path = SaveFile(aModel.Value, mediaId);
             context.Response.Write(path);
-            return;
         }
 
         private string GetJDKConfig(string ticket, HttpContext context)
@@ -113,7 +111,7 @@ namespace ThreeArriveAction.Web.Ajax
                 + "&noncestr=" + nonceStr
                 + "&timestamp=" + timestamp
                 + "&url=" + context.Request["url"];
-            LogHelper.Log(str, "signature", LogTypeEnum.Info);
+            LogHelper.Log(str, "signature");
             return new JDKConfig
             {
                 jsApiList = new List<string>
@@ -160,9 +158,9 @@ namespace ThreeArriveAction.Web.Ajax
             }.ToJson();
         }
 
-        private string GetToUrl(int page)
+        private string GetToUrl()
         {
-            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/index.html";       
+            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/index.html";
             return toUrl;
         }
 
@@ -174,7 +172,7 @@ namespace ThreeArriveAction.Web.Ajax
                                         code);
 
             var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
-            LogHelper.Log("获取access_token:" + response.access_token + " \r\n    openid:" + response.openid, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+            LogHelper.Log("获取access_token:" + response.access_token + " \r\n    openid:" + response.openid, "记录每次调用access_token接口的时间");
             return response;
         }
 
@@ -184,7 +182,7 @@ namespace ThreeArriveAction.Web.Ajax
                                         ConfigurationManager.AppSettings["AppId"],
                                         ConfigurationManager.AppSettings["AppSecret"]);
             var accessToken = new HttpHelper().HttpGet(url).JsonToObject<AccessToken>();
-            LogHelper.Log("获取access_token:" + accessToken.access_token + " \r\n    openid:" + openId, "记录每次调用access_token接口的时间", LogTypeEnum.Info);
+            LogHelper.Log("获取access_token:" + accessToken.access_token + " \r\n    openid:" + openId, "记录每次调用access_token接口的时间");
             var m = new Token
             {
                 Time = DateTime.Now,
@@ -199,7 +197,7 @@ namespace ThreeArriveAction.Web.Ajax
             var url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
                                         token);
             var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
-            LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间", LogTypeEnum.Info);
+            LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间");
             var m = new Token
             {
                 Time = DateTime.Now,
@@ -211,7 +209,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         private string SaveFile(string token, string mediaId)
         {
-            var path = "";
+            var path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             try
             {
                 var url = string.Format(ConfigurationManager.AppSettings["WeixinFileDown"], token, mediaId);
@@ -219,17 +217,16 @@ namespace ThreeArriveAction.Web.Ajax
                 webRequest.Method = "GET";
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
                 Image image = Image.FromStream(webResponse.GetResponseStream());
-                path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
                 var repath = "/upload/" + DateTime.Now.ToString("yyyyMMdd") + "/" + DateTime.Now.ToString("yyyyMMddhhmmssffff") + "." + webResponse.ContentType.Split('/')[1];
+                if (!Directory.Exists(path + "/upload/" + DateTime.Now.ToString("yyyyMMdd")))
+                    Directory.CreateDirectory(path + "/upload/" + DateTime.Now.ToString("yyyyMMdd"));
                 path += repath;
                 image.Save(path);
                 return repath;
             }
             catch (Exception ex)
             {
-                LogHelper.Log(ex.Message + "-----path:" + path, "微信图片保存到服务器失败");
+                LogHelper.Log(ex.Message + "-----path:" + path + ";mediaId:" + mediaId, "微信图片保存到服务器失败");
                 return "";
             }
 
