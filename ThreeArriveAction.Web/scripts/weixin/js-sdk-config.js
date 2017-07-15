@@ -24,7 +24,6 @@ $.ajax({
         var obj = JSON.parse(d);
         console.log(obj);
         wx.config({
-            debug: true,
             appId: obj.appId,
             timestamp: obj.timestamp,
             nonceStr: obj.nonceStr,
@@ -55,7 +54,7 @@ Vue.component("image-template", {
             '   <a @click="pz()">                                                               ' +
             '       <img :src="srcUrl" style="width: 32%;" />                                   ' +
             '   </a>                                                                            ' +
-            '</div>',
+            '</div>                                                                             ',
     props: ["local-ids", "is-more"],
     data: function () {
         return {
@@ -78,7 +77,7 @@ Vue.component("image-template", {
         },
         pz: function () {
             var that = this;
-            var count = that.isMore ? 9 - that.localIds.length : 1;
+            var count = that.isMore ? 9 - vm.localIds.length : 1;
             wx.chooseImage({
                 count: count,
                 sizeType: ['original', 'compressed'],
@@ -86,10 +85,14 @@ Vue.component("image-template", {
                 success: function (res) {
                     if (that.isMore) {
                         res.localIds.forEach((local) => {
-                            that.localIds.push(local);
+                            vm.localIds.push(local);
                         });
                     } else {
-                        that.localIds = res.localIds;
+                        if (typeof (needglocalId) != "undefined" && needglocalId == true) {
+                            vm.glocalId = res.localIds;
+                        } else {
+                            vm.localIds = res.localIds;
+                        }
                     }
 
                 }
@@ -190,6 +193,14 @@ submit = function (callback) {
                                             },
                                             success: function (gd) {
                                                 paths.push(gd);
+                                                wx.getLocation({
+                                                    type: 'wgs84',
+                                                    success: function (res) {
+                                                        callback(paths, res.latitude, res.longitude);
+                                                    }, error: function () {
+                                                        callback(paths, 0, 0);
+                                                    }
+                                                });
                                             },
                                             error: function (gd) {
                                                 console.log(gd);
@@ -197,13 +208,16 @@ submit = function (callback) {
                                         });
                                     }
                                 });
+                            } else {
+                                wx.getLocation({
+                                    type: 'wgs84',
+                                    success: function (res) {
+                                        callback(paths, res.latitude, res.longitude);
+                                    }, error: function () {
+                                        callback(paths, 0, 0);
+                                    }
+                                });
                             }
-                            wx.getLocation({
-                                type: 'wgs84',
-                                success: function (res) {
-                                    callback(paths, res.xpoint, res.ypoint);
-                                }
-                            });
                         }
                     }, error: function (d) {
                         console.log(d);

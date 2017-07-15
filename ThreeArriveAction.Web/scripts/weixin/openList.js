@@ -38,7 +38,7 @@ var vm = new Vue({
                     page: page,
                     size: that.size,
                     town: that.ddltown,
-                    village: that.dllvillage
+                    village: that.ddlvillage
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
@@ -80,10 +80,7 @@ var vm = new Vue({
             }
             that.ddlvillage = -1;
         },
-        "ddlvillage": function (newValue) {
-            if (newValue == -1) {
-                return;
-            }
+        "ddlvillage": function () {
             this.getpage(1);
         }
     },

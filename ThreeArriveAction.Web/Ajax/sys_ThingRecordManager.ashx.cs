@@ -39,12 +39,12 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 sys_ThingRecordsModel thingModel = new sys_ThingRecordsModel();
                 thingModel.ThingDate = DateTime.Now;
-                thingModel.ThingName = MXRequest.GetFormString("thingname");
-                thingModel.ThingReason = MXRequest.GetFormString("thingreason");
-                thingModel.ThingSolution = MXRequest.GetFormString("thingsolution");
+                thingModel.ThingName = MXRequest.GetFormString("thingname") ?? "";
+                thingModel.ThingReason = MXRequest.GetFormString("thingreason") ?? "";
+                thingModel.ThingSolution = MXRequest.GetFormString("thingsolution") ?? "";
                 thingModel.ThingHaving = MXRequest.GetFormString("thinghaving") == "" ? "否" : "是";
-                thingModel.ThingImgUrl = MXRequest.GetFormString("imgurl");
-                thingModel.SubcriberId = int.Parse(MXRequest.GetFormString("slSubId"));
+                thingModel.ThingImgUrl = MXRequest.GetFormString("imgurl") ?? "";
+                thingModel.SubcriberId = MXRequest.GetFormString("slSubId").ToInt();
                 thingModel.UserId = model == null ? GetUserIdByOpenId(openId) : model.UserId;
                 string result = thingBLL.AddThingRecord(thingModel);
                 context.Response.Write(result);

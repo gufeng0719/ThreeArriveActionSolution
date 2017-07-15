@@ -47,6 +47,7 @@
     <Compile Include="sys_OnSignsDAL.cs" />
     <Compile Include="sys_OrganizationAndNavigationsDAL.cs" />
     <Compile Include="sys_OrganizationsDAL.cs" />
+    <Compile Include="sys_PublicMessagesDAL.cs" />
     <Compile Include="sys_SignsDAL.cs" />
     <Compile Include="sys_SubcriberFamilyDAL.cs" />
     <Compile Include="sys_ThingRecordsDAL.cs" />

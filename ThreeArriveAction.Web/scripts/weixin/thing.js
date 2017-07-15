@@ -1,4 +1,19 @@
 ﻿function submitcontent() {
+    if ($("#subfamily").val()) {
+        alert("请选择拜访户");return;
+    }
+    if ($("#title").val()) {
+        alert("请输入事件"); return;
+    }
+    if ($("#thing").val()) {
+        alert("请输入原因"); return;
+    }
+    if ($("[name='thinghaving']").val()) {
+        alert("请选择是否解决"); return;
+    }
+    if ($("#Textarea1").val()) {
+        alert("请输入解决放方式"); return;
+    }
     submit(function (paths) {
         $.ajax({
             type: "post",
@@ -7,14 +22,15 @@
                 thingname: $("#title").val(),
                 thingreason: $("#thing").val(),
                 thingsolution: $("#Textarea1").val(),
-                thinghaving: $("[name='thinghaving']:checked").val() == "1" ? "1" : "" ,
+                thinghaving: $("[name='thinghaving']:checked").val() == "1" ? "1" : "",
                 imgurl: paths[0],
-                slSubId: $("#subfamily").val(),
+                slSubId: $("#subfamily").val()
             },
             url: "../Ajax/sys_ThingRecordManager.ashx?type=add",
             success: function (d) {
                 var obj = JSON.parse(d);
                 alert(obj.info);
+                window.open("index.html", "_self");
             },
             error: function (d) {
                 console.log(d);

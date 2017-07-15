@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
 
@@ -48,18 +49,19 @@ namespace ThreeArriveAction.Web.Ajax
                     imageUrl += path + ",";
                 }
             }
-            var line = new SqlHelper<sys_PublicMessagesModel>(new sys_PublicMessagesModel
+            var model = new sys_PublicMessagesModel
             {
+                ImageUrl = imageUrl,
                 PublicType = context.Request["openType"].ToInt(),
-                ImageUrl = imageUrl.TrimEnd(','),
                 PublishDate = DateTime.Now,
                 Remarks = context.Request["msg"],
                 ThumbnailUrl = thumbnailUrl,
                 UserId = user.UserId,
                 VillageId = user.VillageId
-            }).Insert();
+            };
+            LogHelper.Log(model.ToJson());
+            var line = new sys_PublicMessagesBLL().Add(model);
             context.Response.Write(line);
-            return;
         }
 
         public void OpenList(HttpContext context)

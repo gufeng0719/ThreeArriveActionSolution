@@ -28,6 +28,7 @@ window.onload = function () {
                 $("#endtimes").hide();
                 $("#btnsign").hide();
                 alert(obj.msg);
+                window.open("index.html", "_self");
             }
         }
     });
@@ -51,6 +52,7 @@ window.onload = function () {
         $("#endtimes").html("距离签到结束还有<span>" + __m + "" + "</span>分 <span>" + "" + __s + "" + "</span>秒");
         if (leftsecond <= 0) {
             $("#endtimes").html("今天签到已经结束");
+            window.open("index.html", "_self");
         } else {
             setTimeout(function () {
                 _fresh();
@@ -73,6 +75,7 @@ function addsign() {
                 $("#btnsign").hide();
             }
             alert(obj.msg);
+            window.open("index.html", "_self");
         }
     });
 }

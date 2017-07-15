@@ -14,7 +14,10 @@
                 msg: $("#msg").val()
             },
             complete: function (d) {
-                alert(d);
+                if (d.responseText > 0) {
+                    alert("保存成功");
+                    window.open("index.html", "_self");
+                }
             }
         });
     });

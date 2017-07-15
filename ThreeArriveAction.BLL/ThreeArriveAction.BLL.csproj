@@ -48,6 +48,7 @@
     <Compile Include="sys_OnSignsBLL.cs" />
     <Compile Include="sys_OrganizationAndNavigationsBLL.cs" />
     <Compile Include="sys_OrganizationsBLL.cs" />
+    <Compile Include="sys_PublicMessagesBLL.cs" />
     <Compile Include="sys_SignsBLL.cs" />
     <Compile Include="sys_SubscriberFamilyBLL.cs" />
     <Compile Include="sys_ThingRecordsBLL.cs" />
