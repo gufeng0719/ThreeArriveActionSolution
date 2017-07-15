@@ -21,7 +21,7 @@ namespace ThreeArriveAction.Web.Ajax
         {
             
             string type = context.Request.QueryString["type"].ToString();
-            switch (type)
+            switch (type)21
             {
                 case "get":
                     GetNavigationByOrgan(context);
