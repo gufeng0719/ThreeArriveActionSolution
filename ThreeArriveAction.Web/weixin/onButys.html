@@ -1,0 +1,60 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-值班人员查询</title>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+    <div class="container" id="app" style="margin-top: 18px;">
+        <div class="row">
+            <ddlvillage v-bind:ddlvillage="ddlvillage"></ddlvillage>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    值班人员
+                </div>
+            </div>
+            <table style="width: 90%; margin-left: 5%">
+                <template v-for="model in list">
+                    <tr>
+                        <td rowspan="3" style="padding-right: 25px; height: 95px; width: 140px;">
+                            <img v-bind:src="model.img == '' ? '../images/noneimg.jpg' : model.img" width="110" height="75" />
+                        </td>
+                        <td style="padding-top: 6px;">姓名 : {{model.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>区域 : {{model.village}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom: 6px;">联系方式 : {{model.phone}}</td>
+                    </tr>
+                </template>
+                <tr>
+                    <td colspan="2">
+                        <div style="margin-top: 15px; padding-bottom: 15px;">
+                            <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width: 45%">
+                            <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width: 45%; margin-left: 5%">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/weixin/ddlvillage.js"></script>
+    <script src="../scripts/weixin/onButys.js"></script>
+</body>
+</html>

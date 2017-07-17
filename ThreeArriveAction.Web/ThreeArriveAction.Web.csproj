@@ -1047,6 +1047,8 @@
     <Content Include="scripts\weixin\ddlvillage.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\integralInfo.js" />
+    <Content Include="scripts\weixin\onButys.js" />
+    <Content Include="scripts\weixin\onButysSet.js" />
     <Content Include="scripts\weixin\open.js" />
     <Content Include="scripts\weixin\openList.js" />
     <Content Include="scripts\weixin\thing.js" />
@@ -1244,6 +1246,8 @@
     <None Include="scripts\lhgdialog\skins\igreen\ie6\vssver2.scc" />
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
+    <Content Include="weixin\onButys.html" />
+    <Content Include="weixin\onButysSet.html" />
     <Content Include="weixin\open.html" />
     <Content Include="weixin\openList.html" />
     <Content Include="weixin\redirect_uri.html" />

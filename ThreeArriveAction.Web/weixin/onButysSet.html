@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-值班人员设置</title>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+    <div class="container" id="app" style="margin-top: 18px;">
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    {{town}}--{{village}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <select v-model="userValue" style="height: 30px; border: 1px solid rgb(238, 238, 238); padding-left: 5px; width: 40%;">
+                <option value="-1" selected>-请选择值班人员-</option>
+                <option v-for="model in list" v-bind:value="model.value">{{model.text}}</option>
+            </select>
+        </div>
+        <div class="row" style="margin-top: 50px">
+            <input type="button" class="btn" value="提交" @click="submitcontent()" id="btnSub" disabled />
+        </div>
+    </div>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/weixin/ddlvillage.js"></script>
+    <script src="../scripts/weixin/onButysSet.js"></script>
+</body>
+</html>

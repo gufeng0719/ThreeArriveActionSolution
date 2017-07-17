@@ -358,25 +358,9 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 return;
             }
-            var isEx = new SqlHelper<sys_OnButysModel>(new sys_OnButysModel());
-            isEx.AddWhere("VillageId", user.VillageId);
-            isEx.AddWhere("ButyDate", DateTime.Now.ToString("yyyy-MM-dd"), RelationEnum.Greater);
-            var exist = isEx.Select().Any();
-            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            var sh = new SqlHelper<sys_UsersModel>();
             sh.AddWhere("VillageId", user.VillageId);
-            var village = villageList.FirstOrDefault(x => x.VillageId == user.VillageId);
-            context.Response.Write(new
-            {
-                town = villageList.FirstOrDefault(x => x.VillageId == village?.VillageParId)?.VillageName ?? "淮安",
-                village = village?.VillageName,
-                villageId = user.VillageId,
-                exist,
-                list = sh.Select().Select(x => new
-                {
-                    value = x.UserId,
-                    text = x.UserName
-                })
-            }.ToJson());
+
         }
 
         #endregion
