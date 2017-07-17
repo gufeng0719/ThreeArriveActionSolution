@@ -1,24 +1,22 @@
-﻿
-var vm = new Vue({
+﻿var vm = new Vue({
     el: "#app",
     data: {
-        list: [],
-        page: 1,
-        size: 10,
+        ddlvillage: -1,
+        page: 0,
+        size: 5,
         totle: 0,
-        ddlvillage: -1
+        list: []
     },
     methods: {
         getpage: function (page) {
             var that = this;
             $.ajax({
                 type: "post",
-                url: "../Ajax/sys_UserIntegralsManager.ashx",
+                url: "../Ajax/sys_OnButysManager.ashx?type=getOnButysList",
                 data: {
-                    type: "integralList",
                     page: page,
                     size: that.size,
-                    ddlvillage: this.ddlvillage
+                    ddlvillage: that.ddlvillage
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
@@ -37,14 +35,6 @@ var vm = new Vue({
                     }
                 }
             });
-        },
-        minute: function (id) {
-            window.open("integralInfo.html?id=" + id, "_self");
-        }
-    },
-    watch: {
-        "ddlvillage": function () {
-            this.getpage(1);
         }
     },
     mounted: function () {

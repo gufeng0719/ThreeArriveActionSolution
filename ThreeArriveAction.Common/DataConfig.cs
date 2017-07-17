@@ -19,5 +19,15 @@ namespace ThreeArriveAction.Common
             }
             return list;
         }
+
+        public static List<sys_UsersModel> GetUsers(Dictionary<string, object> where)
+        {
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            foreach (var item in where)
+            {
+                sh.AddWhere(item.Key, item.Value);
+            }
+            return sh.Select().ToList();
+        }
     }
 }

@@ -11,7 +11,7 @@ function GetRequest() {
     }
     return theRequest;
 }
-var req = GetRequest();
+req = GetRequest();
 
 require.config({
     baseUrl: "/scripts/",
@@ -23,7 +23,7 @@ require.config({
     }
 });
 
-require(['/scripts/sweetalert/sweetalert.min.js',
+require(['/scripts/sweetalert/sweetalert.min.js', '/scripts/lodash.min.js',
     'css!/scripts/sweetalert/sweetalert.css'],
     function () {
         $(function () {
@@ -89,7 +89,7 @@ require(['/scripts/sweetalert/sweetalert.min.js',
                         }
                         console.log(obj);
                         swal({
-                            title: "注册成功!",
+                            title: "登陆成功!",
                             text: "",
                             timer: 800,
                             showConfirmButton: false

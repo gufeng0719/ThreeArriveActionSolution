@@ -13,7 +13,6 @@ namespace ThreeArriveAction.Web.Ajax
     /// </summary>
     public class sys_PublicMessagesManager : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
@@ -58,7 +57,6 @@ namespace ThreeArriveAction.Web.Ajax
                 UserId = user.UserId,
                 VillageId = user.VillageId
             };
-            LogHelper.Log(model.ToJson());
             var line = new sys_PublicMessagesBLL().Add(model);
             context.Response.Write(line);
         }
@@ -70,15 +68,17 @@ namespace ThreeArriveAction.Web.Ajax
             var size = context.Request["size"].ToInt();
             var village = context.Request["village"].ToInt();
 
-            var sh = new SqlHelper<sys_PublicMessagesModel>(new sys_PublicMessagesModel());
-
-            sh.PageConfig = new PageConfig
+            var sh = new SqlHelper<sys_PublicMessagesModel>(new sys_PublicMessagesModel())
             {
-                PageIndex = page == 0 ? 1 : page,
-                PageSize = size,
-                PageSortField = "PublishDate",
-                SortEnum = SortEnum.Desc
+                PageConfig = new PageConfig
+                {
+                    PageIndex = page == 0 ? 1 : page,
+                    PageSize = size,
+                    PageSortField = "PublishDate",
+                    SortEnum = SortEnum.Desc
+                }
             };
+
             sh.AddWhere("PublicType", openType);
             if (village > 0)
             {
@@ -93,8 +93,8 @@ namespace ThreeArriveAction.Web.Ajax
                 {
                     img = item.ThumbnailUrl,
                     date = item.PublishDate.ToString("yyyy-MM-dd"),
-                    village = villageModel.VillageName,
-                    town = villageList.FirstOrDefault(v => v.VillageId == villageModel.VillageParId).VillageName
+                    village = villageModel?.VillageName ?? "",
+                    town = villageList.FirstOrDefault(v => v.VillageId == villageModel?.VillageParId)?.VillageName
                 });
             }
 
@@ -104,7 +104,6 @@ namespace ThreeArriveAction.Web.Ajax
                 totle = sh.Total,
                 list
             }.ToJson());
-            return;
         }
 
 

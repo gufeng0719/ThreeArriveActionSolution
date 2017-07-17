@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
@@ -52,6 +53,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "buty":
                     GetButyUsers(context);
+                    break;
+                case "weixinGetButyUser":
+                    WeixinGetButyUser(context);
                     break;
                 default:
                     context.Response.Write("错误的请求");
@@ -331,17 +335,50 @@ namespace ThreeArriveAction.Web.Ajax
                 string key = MXRequest.GetQueryString("keywords");
                 key = key.Replace("'", "");
                 StringBuilder strWhere = new StringBuilder();
-                strWhere.Append(" VillageId ="+model.VillageId );
+                strWhere.Append(" VillageId =" + model.VillageId);
                 strWhere.Append(" and UserState=1 ");
                 if (!string.IsNullOrEmpty(key))
-                {                    
+                {
                     strWhere.Append(" and ( UserPhone like '%" + key + "%' or UserName like '%" + key + "%' or UserDuties like '%" + key + "%' ) ");
                 }
-                string result = usersBLL.GetButyUsers(strWhere.ToString(),model.VillageId);
+                string result = usersBLL.GetButyUsers(strWhere.ToString(), model.VillageId);
                 context.Response.Write(result);
             }
 
         }
+        #endregion
+
+        #region weixin获取值班人员信息
+
+        public void WeixinGetButyUser(HttpContext context)
+        {
+            var villageList = DataConfig.GetVillages();
+            var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserRemark", context.Request["openId"] } }).FirstOrDefault();
+            if (user == null)
+            {
+                return;
+            }
+            var isEx = new SqlHelper<sys_OnButysModel>(new sys_OnButysModel());
+            isEx.AddWhere("VillageId", user.VillageId);
+            isEx.AddWhere("ButyDate", DateTime.Now.ToString("yyyy-MM-dd"), RelationEnum.Greater);
+            var exist = isEx.Select().Any();
+            var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            sh.AddWhere("VillageId", user.VillageId);
+            var village = villageList.FirstOrDefault(x => x.VillageId == user.VillageId);
+            context.Response.Write(new
+            {
+                town = villageList.FirstOrDefault(x => x.VillageId == village?.VillageParId)?.VillageName ?? "淮安",
+                village = village?.VillageName,
+                villageId = user.VillageId,
+                exist,
+                list = sh.Select().Select(x => new
+                {
+                    value = x.UserId,
+                    text = x.UserName
+                })
+            }.ToJson());
+        }
+
         #endregion
 
         public bool IsReusable

@@ -1,0 +1,61 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-积分详细</title>
+    <style>
+        li {
+        }
+    </style>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+<div class="container" id="app" style="margin-top: 18px;">
+    <div class="row">
+        <div style="width: 90%;margin-left: 5%">
+            <label style="margin-top: 10px">姓名 : {{name}}</label><br>
+            <label style="margin-top: 10px">区域 : {{village}}</label><br>
+            <label style="margin-top: 10px">分值 : {{score}}</label><br>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 25px;">
+        <table style="width: 90%;margin-left: 5%">
+            <thead>
+            <tr style="border-bottom: #d2d2d2 1px solid;border-top: #d2d2d2 1px solid;height: 35px">
+                <td style="text-align: center;width: 15%">分数</td>
+                <td style="text-align: center;width: 25%">时间</td>
+                <td style="text-align: center">来源</td>
+            </tr>
+            </thead>
+            <tr v-for="data in list" style="border-bottom: 1px solid #d2d2d2;height: 35px">
+                <td style="text-align: center;width: 15%">{{data.score}}</td>
+                <td style="text-align: center;width: 25%">{{data.time}}</td>
+                <td style="text-align: center">{{data.type}}</td>
+            </tr>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div style="margin-top:15px;padding-bottom:15px;">
+                        <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
+                        <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script src="../scripts/vue/vue.js"></script>
+<script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+<script src="../scripts/weixin/integralInfo.js"></script>
+</body>
+</html>

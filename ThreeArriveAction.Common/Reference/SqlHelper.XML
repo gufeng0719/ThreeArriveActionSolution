@@ -4,6 +4,72 @@
         <name>SqlHelper</name>
     </assembly>
     <members>
+        <member name="T:ThreeArriveAction.Common.SqlHelper`1">
+            <summary>
+            sql  帮助类 方便sql 的增删改查 操作
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.#ctor">
+            <summary>
+            初始化实例
+            </summary>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.#ctor(`0)">
+            <summary>
+            初始化实例(需要 实例对象)
+            </summary>
+            <param name="t"></param>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.#ctor(`0,System.String)">
+            <summary>
+            初始化实例(需要 实例对象，主键)
+            </summary>
+            <param name="t"></param>
+            <param name="primaryKey"></param>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.#ctor(`0,System.String,System.String)">
+            <summary>
+            初始化实例(需要 实例对象，主键，自增键)
+            </summary>
+            <param name="t"></param>
+            <param name="primaryKey"></param>
+            <param name="identityKey"></param>
+        </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.#ctor(`0,System.String,System.String,System.String)">
+            <summary>
+            初始化实例(需要 实例对象，主键，自增键，表名)
+            </summary>
+            <param name="t"></param>
+            <param name="primaryKey"></param>
+            <param name="identityKey"></param>
+            <param name="tableName"></param>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.IdentityKey">
+            <summary>
+            获取自增键
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.PrimaryKey">
+            <summary>
+            获取主键
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.Top">
+            <summary>
+            获取或设置 top 值
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.PageConfig">
+            <summary>
+            需要分页时的配置
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.SqlHelper`1.Total">
+            <summary>
+            获取分页数据总数
+            </summary>
+        </member>
         <member name="P:ThreeArriveAction.Common.SqlHelper`1.SqlString">
             <summary>
             方便与排查异常
@@ -38,6 +104,11 @@
             </summary>
             <param name="name"></param>
             <returns></returns>
+        </member>
+        <member name="T:ThreeArriveAction.Common.PageConfig">
+            <summary>
+            分页配置
+            </summary>
         </member>
         <member name="P:ThreeArriveAction.Common.PageConfig.PageIndex">
             <summary>
@@ -207,6 +278,11 @@
         <member name="F:ThreeArriveAction.Common.ErrorEnum.E1003">
             <summary>
             当您尝试 JOIN 时,请先设置 Alia 值
+            </summary>
+        </member>
+        <member name="T:ThreeArriveAction.Common.DbClient">
+            <summary>
+            数据库操作类
             </summary>
         </member>
         <member name="M:ThreeArriveAction.Common.DbClient.ExecuteQueryProc``1(System.String,System.Object)">

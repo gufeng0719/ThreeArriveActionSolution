@@ -1050,7 +1050,11 @@
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\vue\vue.js" />
     <Content Include="scripts\vue\vue.min.js" />
+    <Content Include="scripts\weixin\ddlvillage.js" />
     <Content Include="scripts\weixin\integral.js" />
+    <Content Include="scripts\weixin\integralInfo.js" />
+    <Content Include="scripts\weixin\onButys.js" />
+    <Content Include="scripts\weixin\onButysSet.js" />
     <Content Include="scripts\weixin\open.js" />
     <Content Include="scripts\weixin\openList.js" />
     <Content Include="scripts\weixin\thing.js" />
@@ -1060,6 +1064,7 @@
     <Content Include="scripts\weixin\sign.js" />
     <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
+    <Content Include="weixin\integralInfo.html" />
     <Content Include="weixin\main.html" />
     <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
@@ -1071,6 +1076,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\sys_IntegralInfoManager.ashx.cs">
+      <DependentUpon>sys_IntegralInfoManager.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\sys_UserIntegralsManager.ashx.cs">
+      <DependentUpon>sys_UserIntegralsManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
     </Compile>
@@ -1142,6 +1153,8 @@
     <Content Include="Ajax\sys_SubscriberFamiliesManager.ashx" />
     <Content Include="Ajax\sys_OnButysManager.ashx" />
     <Content Include="Ajax\sys_PublicMessagesManager.ashx" />
+    <Content Include="Ajax\sys_UserIntegralsManager.ashx" />
+    <Content Include="Ajax\sys_IntegralInfoManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1240,6 +1253,8 @@
     <None Include="scripts\lhgdialog\skins\igreen\ie6\vssver2.scc" />
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
+    <Content Include="weixin\onButys.html" />
+    <Content Include="weixin\onButysSet.html" />
     <Content Include="weixin\open.html" />
     <Content Include="weixin\openList.html" />
     <Content Include="weixin\redirect_uri.html" />
@@ -1254,7 +1269,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="scripts\datepicker\skin\whyGreen\" />
-    <Folder Include="upload\201706\22\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

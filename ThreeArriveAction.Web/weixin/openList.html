@@ -10,14 +10,6 @@
     <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <title id="pagetitle"></title>
-    <style>
-        select {
-            height: 30px;
-            border: 1px solid #eeeeee;
-            padding-left: 5px;
-            width: 40%;
-        }
-    </style>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <div class="banner">
@@ -25,16 +17,7 @@
     </div>
     <div class="container" id="app" style="margin-top: 18px;">
         <div class="row">
-            <div style="text-align: left;">
-                <select v-model="ddltown">
-                    <option value="-1">-请选择-</option>
-                    <option v-for="t in townlist" v-bind:value="t.value">{{t.text}}</option>
-                </select>
-                <select v-model="ddlvillage">
-                    <option value="-1">-请选择-</option>
-                    <option v-for="v in villagelist" v-bind:value="v.value">{{v.text}}</option>
-                </select>
-            </div>
+            <ddlvillage v-bind:ddlvillage.sync="ddlvillage"></ddlvillage>
         </div>
         <div class="row">
             <div class="header">
@@ -55,7 +38,7 @@
                         </tr>
                         <tr style="height: 30px; ">
                             <td colspan="2">
-                                <div style="border-top: #d2d2d2 1px solid;width: 109%" ></div>
+                                <div style="border-top: #d2d2d2 1px solid;width: 109%"></div>
                             </td>
                         </tr>
                     </template>
@@ -80,6 +63,7 @@
     <script src="../scripts/vue/vue.min.js"></script>
     <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/weixin/ddlvillage.js"></script>
     <script src="../scripts/weixin/openList.js"></script>
 </body>
 </html>
