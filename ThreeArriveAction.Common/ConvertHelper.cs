@@ -1,6 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace ThreeArriveAction.Common
 {
@@ -29,7 +28,7 @@ namespace ThreeArriveAction.Common
             }
             catch (Exception ex)
             {
-                LogHelper.Log(ex.Message, o.ToString() + "int类型转换失败---VALUE:" + o.ToString());
+                LogHelper.Log(ex.Message, o + "int类型转换失败---VALUE:" + o);
                 return 0;
             }
         }
@@ -42,13 +41,8 @@ namespace ThreeArriveAction.Common
         /// <returns></returns>  
         public static string GetTimeStamp(bool bflag = true)
         {
-            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            string ret = string.Empty;
-            if (bflag)
-                ret = Convert.ToInt64(ts.TotalSeconds).ToString();
-            else
-                ret = Convert.ToInt64(ts.TotalMilliseconds).ToString();
-
+            var ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            var ret = bflag ? Convert.ToInt64(ts.TotalSeconds).ToString() : Convert.ToInt64(ts.TotalMilliseconds).ToString();
             return ret;
         }
 
@@ -59,10 +53,10 @@ namespace ThreeArriveAction.Common
         /// <returns></returns>
         public static string GetNonce(int length)
         {
-            var n = "qwertyuioplkjhgfdsazxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM";
+            const string n = "qwertyuioplkjhgfdsazxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM";
             var s = "";
             var r = new Random();
-            for (int i = 0; i < length; i++)
+            for (var i = 0; i < length; i++)
             {
                 s += n[r.Next(0, n.Length)];
             }

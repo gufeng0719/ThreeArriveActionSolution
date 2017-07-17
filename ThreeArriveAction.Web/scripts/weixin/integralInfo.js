@@ -11,35 +11,37 @@ function GetRequest() {
     }
     return theRequest;
 }
-var req = GetRequest();
+req = GetRequest();
 
 var vm = new Vue({
     el: "#app",
     data: {
+        name: "",
+        village: "",
+        score: 0,
         list: [],
         page: 1,
-        size: 5,
+        size: 10,
         totle: 0,
-        ddlvillage: -1,
+        userId: 0
     },
     methods: {
         getpage: function (page) {
             var that = this;
             $.ajax({
                 type: "post",
-                url: "../Ajax/sys_PublicMessagesManager.ashx",
+                url: "../Ajax/sys_IntegralInfoManager.ashx",
                 data: {
-                    type: "openList",
-                    openType: req["type"],
+                    type: "integralInfoList",
                     page: page,
                     size: that.size,
-                    village: that.ddlvillage
+                    userId: that.userId
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
                     that.page = obj.page;
-                    that.list = obj.list,
                     that.totle = obj.totle;
+                    that.list = obj.list;
                     if (that.page > 1) {
                         $("#lastpage").attr("disabled", false);
                     } else {
@@ -52,23 +54,29 @@ var vm = new Vue({
                     }
                 }
             });
-        }
-    },
-    watch: {
-        "ddlvillage": function () {
-            this.getpage(1);
+        },
+        getmodel: function () {
+            var that = this;
+            $.ajax({
+                type: "post",
+                url: "../Ajax/sys_UserIntegralsManager.ashx",
+                data: {
+                    type: "getModel",
+                    id: req["id"]
+                },
+                complete: function (d) {
+                    var obj = JSON.parse(d.responseText);
+                    that.name = obj.name;
+                    that.village = obj.village;
+                    that.score = obj.score;
+                    that.userId = obj.userId;
+                    that.getpage(1);
+                }
+            });
         }
     },
     mounted: function () {
-        this.getpage(1);
-        if (req["type"] == "1") {
-            $("#pagetitle").html("三到行动-党务公开");
-        }
-        if (req["type"] == "2") {
-            $("#pagetitle").html("三到行动-村务公开");
-        }
-        if (req["type"] == "3") {
-            $("#pagetitle").html("三到行动-财务公开");
-        }
+        this.getmodel();
     }
+
 });

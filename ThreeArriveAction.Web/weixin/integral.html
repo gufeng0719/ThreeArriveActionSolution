@@ -8,10 +8,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <title>积分查询</title>
     <style>
         .integral {
-            color: aqua;
+            color: chocolate;
+            font-weight: bold;
         }
 
         .index {
@@ -19,31 +21,20 @@
             font-size: 18px;
         }
 
-        td {
-            width: 45px;
-        }
 
         tr {
-            height: 35px;
+            height: 48px;
         }
     </style>
     <meta charset="utf-8" />
 </head>
-<body>
+<body style="width: 94%; margin-left: 3%">
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="header">
-        <div class="text">
-            积分查询
-        </div>
-    </div>
-    <div class="container" id="app">
+    <div class="container" id="app" style="margin-top: 18px;">
         <div class="row">
-            <div style="text-align: left;">
-                <select>-选择城镇-</select>
-                <select>-选择乡村-</select>
-            </div>
+            <ddlvillage v-bind:ddlvillage="ddlvillage"></ddlvillage>
         </div>
         <div class="row">
             <div class="header">
@@ -52,22 +43,27 @@
                 </div>
             </div>
             <div style="text-align: left;">
-                <table style="margin-left:5%">
-                    <tr>
+                <table style="margin-left: 5%;width: 90%;">
+                    <tr v-for="(model,index) in list" @click="minute(model.id)" style="border-bottom: solid 1px #d2d2d2">
                         <td style="width: 40px">
-                            <span class="index">1</span>
+                            <span class="index">{{(page - 1) * size + (index + 1)}}</span>
                         </td>
-                        <td style="width: 60px;">张三</td>
-                        <td style="width: 140px;">淮城镇-成成村</td>
-                        <td style="width: 180px;">已获得<span class="">223</span>积分</td>
+                        <td style="width: 80px;">{{model.name}}</td>
+                        <td style="width: 160px;">{{model.village}}</td>
+                        <td style="width: 180px;">已获得<span class="integral">{{model.integra}}</span>积分</td>
+                    </tr>
+                    <tr v-if="list.length <= 0">
+                        <td colspan="4" style="text-align:center">
+                            <b>暂无数据</b>
+                        </td>
                     </tr>
                     <tfoot>
                         <tr>
-                            <td colspan="2">
-                                上一页
-                            </td>
-                            <td colspan="2">
-                                下一页
+                            <td colspan="4">
+                                <div style="margin-top:15px;padding-bottom:15px;">
+                                    <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
+                                    <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
+                                </div>
                             </td>
                         </tr>
                     </tfoot>
@@ -75,6 +71,10 @@
             </div>
         </div>
     </div>
-    <script src="../scripts/require/r.js" data-main="/scripts/weixin/integral.js?r=70" type="text/javascript"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/weixin/ddlvillage.js"></script>
+    <script src="../scripts/weixin/integral.js"></script>
 </body>
 </html>
