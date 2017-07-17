@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>淮安区组织部微信平台</title>
-    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="admin/skin/default/style.css" rel="stylesheet" type="text/css" />
     <style>
     form label.error {
 		display: block;
@@ -13,7 +13,7 @@
 	}
     </style>
 </head>
-<body style="background: url('skin/default/thumb_540497848dab9.jpg') repeat;">
+<body style="background: url('admin/skin/default/thumb_540497848dab9.jpg') repeat;">
     <form id="form1">
     <div class="login-screen">
         <div class="login-form">
@@ -42,8 +42,8 @@
         <i class="arrow">箭头</i>
     </div>
     </form>
-    <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="../scripts/jquery/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="scripts/jquery/jquery.validate.min.js" type="text/javascript"></script>
     <script>
         $(function () {
             //检测IE
@@ -71,10 +71,10 @@
                 var vali = $("#form1").valid();
                 if (vali) {
                     var data = $("#form1").serialize();
-                    $.post('../Ajax/sys_UsersManager.ashx?type=login', data, function (msg) {
+                    $.post('Ajax/sys_UsersManager.ashx?type=login', data, function (msg) {
                         var result = $.parseJSON(msg);
                         if (result && result.success) {
-                            window.location.href = "index.html"
+                            window.location.href = "admin/index.html"
                         } else {
                             alert(result.msg);
                         }

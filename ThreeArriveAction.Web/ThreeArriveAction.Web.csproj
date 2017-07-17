@@ -80,7 +80,13 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
-    <Content Include="admin\login.html" />
+    <Content Include="images\weixin\buty.png" />
+    <Content Include="images\weixin\cadre.png" />
+    <Content Include="images\weixin\finance.png" />
+    <Content Include="images\weixin\intergal.png" />
+    <Content Include="images\weixin\party.png" />
+    <Content Include="images\weixin\village.png" />
+    <Content Include="login.html" />
     <Content Include="admin\NavigationsEdit.html" />
     <Content Include="admin\NavigationsList.html" />
     <Content Include="admin\OrganizationEdit.html" />
@@ -1052,6 +1058,7 @@
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
+    <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\main.html" />
     <Content Include="scripts\weixin\main.js" />
