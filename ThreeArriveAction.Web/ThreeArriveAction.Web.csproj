@@ -1053,6 +1053,7 @@
     <Content Include="scripts\weixin\ddlvillage.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\integralInfo.js" />
+    <Content Include="scripts\weixin\login.js" />
     <Content Include="scripts\weixin\onButys.js" />
     <Content Include="scripts\weixin\onButysSet.js" />
     <Content Include="scripts\weixin\open.js" />
@@ -1065,7 +1066,7 @@
     <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />
-    <Content Include="weixin\main.html" />
+    <Content Include="weixin\login.html" />
     <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1261,6 +1262,7 @@
     <Content Include="weixin\sign.html" />
     <Content Include="weixin\thing.html" />
     <Content Include="weixin\week.html" />
+    <Content Include="weixin\weekEdit.html" />
     <Content Include="xmlconfig\site.config" />
     <Content Include="Ajax\sys_VillagesManager.ashx" />
   </ItemGroup>

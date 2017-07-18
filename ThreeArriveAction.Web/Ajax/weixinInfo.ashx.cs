@@ -27,11 +27,6 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetUserInfo(context);
             }
-            else if (type == "getToUrl")
-            {
-                context.Response.Write(GetToUrl());
-                context.Response.End();
-            }
             else if (type == "getJsapiTicket")
             {
                 GetJsapiTicket(context);
@@ -61,11 +56,9 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetUserInfo(HttpContext context)
         {
             var response = GetAccessToken(context.Request["code"]);
-            var toUrl = GetToUrl();
             context.Response.Write(new
             {
                 response.openid,
-                toUrl
             }.ToJson());
             context.Response.End();
         }
@@ -156,12 +149,6 @@ namespace ThreeArriveAction.Web.Ajax
                 signature = DESEncrypt.Sha1(str),
                 timestamp = timestamp
             }.ToJson();
-        }
-
-        private string GetToUrl()
-        {
-            var toUrl = ConfigurationManager.AppSettings["Localhost"] + "/weixin/index.html";
-            return toUrl;
         }
 
         private OpenIdModel GetAccessToken(string code)
