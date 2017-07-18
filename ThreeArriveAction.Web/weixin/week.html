@@ -27,16 +27,6 @@
         <div class="row">
             <div class="header">
                 <div class="text">
-                    照片
-                </div>
-            </div>
-            <div style="text-align: left;" id="app">
-                <image-template v-bind:local-ids.sync="localIds" v-bind:is-more="false"></image-template>
-            </div>
-        </div>
-        <div class="row">
-            <div class="header">
-                <div class="text">
                     选择拜访户
                 </div>
             </div>
@@ -52,6 +42,16 @@
                     <option value="7">信访户</option>
                 </select>
                 <select id="subfamily"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    照片
+                </div>
+            </div>
+            <div style="text-align: left;" id="app">
+                <image-template v-bind:local-ids.sync="localIds" v-bind:is-more="false"></image-template>
             </div>
         </div>
         <div class="row">

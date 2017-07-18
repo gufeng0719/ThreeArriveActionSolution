@@ -45,7 +45,7 @@ namespace ThreeArriveAction.Model
             get { return subscriberType; }
             set { subscriberType = value; }
         }
-        private string familyCoordinate;
+        private string familyCoordinate = string.Empty;
         /// <summary>
         /// 七户家庭坐标
         /// </summary>
@@ -95,7 +95,7 @@ namespace ThreeArriveAction.Model
         /// <summary>
         /// 备注
         /// </summary>
-        public string Reamarks
+        public string Remarks
         {
             get { return reamarks; }
             set { reamarks = value; }

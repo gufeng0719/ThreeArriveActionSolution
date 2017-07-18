@@ -80,6 +80,7 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
+    <Content Include="editor\plugins\baidumap\weixinIndex.html" />
     <Content Include="images\weixin\buty.png" />
     <Content Include="images\weixin\cadre.png" />
     <Content Include="images\weixin\finance.png" />
@@ -1051,6 +1052,7 @@
     <Content Include="scripts\vue\vue.js" />
     <Content Include="scripts\vue\vue.min.js" />
     <Content Include="scripts\weixin\ddlvillage.js" />
+    <Content Include="scripts\weixin\familyEdit.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\integralInfo.js" />
     <Content Include="scripts\weixin\login.js" />
@@ -1262,7 +1264,7 @@
     <Content Include="weixin\sign.html" />
     <Content Include="weixin\thing.html" />
     <Content Include="weixin\week.html" />
-    <Content Include="weixin\weekEdit.html" />
+    <Content Include="weixin\familyEdit.html" />
     <Content Include="xmlconfig\site.config" />
     <Content Include="Ajax\sys_VillagesManager.ashx" />
   </ItemGroup>

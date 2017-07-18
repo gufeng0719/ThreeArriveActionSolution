@@ -45,7 +45,7 @@ namespace ThreeArriveAction.DAL
             parameters[4].Value = subModel.FamilyNumber;
             parameters[5].Value = subModel.VillageId;
             parameters[6].Value = subModel.UserId;
-            parameters[7].Value = subModel.Reamarks;
+            parameters[7].Value = subModel.Remarks;
             int number = DbHelperSQL.ExecuteSql(strSql.ToString(),parameters);
             return number;
         }
@@ -87,7 +87,7 @@ namespace ThreeArriveAction.DAL
             parameters[4].Value = subModel.FamilyNumber;
             parameters[5].Value = subModel.VillageId;
             parameters[6].Value = subModel.UserId;
-            parameters[7].Value = subModel.Reamarks;
+            parameters[7].Value = subModel.Remarks;
             parameters[8].Value = subModel.SubscriberId;
             int numbers = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
             return numbers;
@@ -177,11 +177,11 @@ namespace ThreeArriveAction.DAL
                     subModel.UserId = reader.GetInt32(8);
                     try
                     {
-                        subModel.Reamarks = reader.GetString(9);
+                        subModel.Remarks = reader.GetString(9);
                     }
                     catch
                     {
-                        subModel.Reamarks = null;
+                        subModel.Remarks = null;
                     }
                 }
                 reader.Close();
@@ -250,7 +250,7 @@ namespace ThreeArriveAction.DAL
                     }
                     if (dr["Remarks"] != null)
                     {
-                        model.Reamarks = dr["Remarks"].ToString();
+                        model.Remarks = dr["Remarks"].ToString();
                     }
                     subList.Add(model);
                 }
@@ -319,7 +319,7 @@ namespace ThreeArriveAction.DAL
                     }
                     if (dr["Remarks"] != null)
                     {
-                        model.Reamarks = dr["Remarks"].ToString();
+                        model.Remarks = dr["Remarks"].ToString();
                     }
                     subList.Add(model);
                 }

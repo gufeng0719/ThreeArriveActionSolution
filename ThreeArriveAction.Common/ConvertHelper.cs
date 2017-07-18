@@ -33,6 +33,18 @@ namespace ThreeArriveAction.Common
             }
         }
 
+        public static double ToDouble(this string str)
+        {
+            try
+            {
+                return Convert.ToDouble(str);
+            }
+            catch (Exception e)
+            {
+                LogHelper.Log(" ToDouble Error " + e.Message);
+                return 0;
+            }
+        }
 
         /// <summary>  
         /// 获取当前时间戳  

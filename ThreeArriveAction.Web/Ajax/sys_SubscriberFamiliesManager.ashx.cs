@@ -125,7 +125,7 @@ namespace ThreeArriveAction.Web.Ajax
             subModel.SubscriberType = int.Parse(MXRequest.GetFormString("subtype"));
             subModel.FamilyAddress = MXRequest.GetFormString("address");
             subModel.FamilyNumber = int.Parse(MXRequest.GetFormString("famnumber"));
-            subModel.Reamarks = MXRequest.GetFormString("remarks");
+            subModel.Remarks = MXRequest.GetFormString("remarks");
             subModel.VillageId = int.Parse(MXRequest.GetFormString("villageid"));
             subModel.UserId = int.Parse(MXRequest.GetFormString("userid"));
             string action = MXRequest.GetFormString("action");
