@@ -19,7 +19,14 @@ namespace ThreeArriveAction.Common
             str.AppendLine("内容:" + msg);
             str.AppendLine("类型:" + type.ToString());
             str.AppendLine("----------------------------------------------------------\r\n\r\n");
-            File.AppendAllText(path, str.ToString(), Encoding.UTF8);
+            try
+            {
+                File.AppendAllText(path, str.ToString(), Encoding.UTF8);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
     }
 

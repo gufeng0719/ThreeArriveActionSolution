@@ -37,6 +37,11 @@
             });
         }
     },
+    watch: {
+        ddlvillage: function() {
+            this.getpage(1);
+        }
+    },
     mounted: function () {
         this.getpage(1);
     }

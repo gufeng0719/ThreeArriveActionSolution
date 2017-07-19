@@ -1,6 +1,13 @@
-﻿
+﻿var vm = new Vue({
+    el: "#app",
+    data: {
+        localIds: [],
+        family: -1
+    }
+});
+
 function submitcontent() {
-    if (!$("#subfamily").val()) {
+    if (vm.family === -1) {
         alert("请选择拜访户"); return;
     }
     if (!$("#thing").val()) {
@@ -15,7 +22,7 @@ function submitcontent() {
             type: "post",
             data: {
                 openId: localStorage.getItem("openId"),
-                slSubId: $("#subfamily").val(),
+                slSubId: vm.family,
                 ThingMessage: $("#thing").val(),
                 ThingResult: $("#result").val(),
                 txtImgUrl: paths[0],

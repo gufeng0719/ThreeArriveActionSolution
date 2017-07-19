@@ -23,7 +23,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container">
+    <div class="container" id="app">
         <div class="row">
             <div class="header">
                 <div class="text">
@@ -31,17 +31,7 @@
                 </div>
             </div>
             <div style="text-align: left;">
-                <select id="subtype" onchange="getsubfamily()">
-                    <option value="-1">-请选择-</option>
-                    <option value="1">留守老人户</option>
-                    <option value="2">重大病户</option>
-                    <option value="3">五保户</option>
-                    <option value="4">低保户</option>
-                    <option value="5">离任村干部户</option>
-                    <option value="6">老党员户</option>
-                    <option value="7">信访户</option>
-                </select>
-                <select id="subfamily"><option selected="" value="2">王殿法---13083558818</option></select>
+                <ddlsee v-bind:family.sync="family"></ddlsee>
             </div>
         </div>
         <div class="row">
@@ -91,7 +81,7 @@
                     照片
                 </div>
             </div>
-            <div style="text-align: left;" id="app">
+            <div style="text-align: left;">
                 <image-template v-bind:local-ids.sync="localIds" v-bind:is-more="false"></image-template>
             </div>
         </div>
@@ -99,11 +89,14 @@
             <input type="button" class="btn" value="提交" onclick="submitcontent()" />
         </div>
     </div>
-    <script> var submit, getsubfamily;</script>
     <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="../scripts/vue/vue.min.js"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/vue/weixinTemplate.js"></script>
     <script src="../scripts/weixin/main.js"></script>
-    <script src="../scripts/require/r.js" data-main="/scripts/weixin/login.js?r=3"></script>
+    <link href="../scripts/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="../scripts/sweetalert/sweetalert.min.js"></script>
+    <script src="../scripts/weixin/login.js"></script>
     <script src="../scripts/weixin/jweixin-1.2.0.js"></script>
     <script src="../scripts/weixin/js-sdk-config.js"></script>
     <script src="../scripts/weixin/thing.js"></script>

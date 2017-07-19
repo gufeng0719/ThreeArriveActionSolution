@@ -1051,7 +1051,7 @@
     <Content Include="scripts\swfupload\swfupload.swf" />
     <Content Include="scripts\vue\vue.js" />
     <Content Include="scripts\vue\vue.min.js" />
-    <Content Include="scripts\weixin\ddlvillage.js" />
+    <Content Include="scripts\vue\weixinTemplate.js" />
     <Content Include="scripts\weixin\familyEdit.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\integralInfo.js" />

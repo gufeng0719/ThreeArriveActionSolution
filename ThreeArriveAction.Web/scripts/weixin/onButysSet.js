@@ -49,6 +49,8 @@
                 that.exist = obj.exist;
                 if (that.exist) {
                     $("#btnSub").attr("disabled", true);
+                    alert("今天已经设置过值班人员");
+                    window.open("index.html", "_self");
                 } else {
                     $("#btnSub").attr("disabled", false);
                 }
