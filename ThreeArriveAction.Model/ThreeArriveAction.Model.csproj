@@ -46,6 +46,7 @@
     <Compile Include="sys_DictionaryTypeModel.cs" />
     <Compile Include="sys_IntegralInfoModel.cs" />
     <Compile Include="sys_InteractionLearnsModel.cs" />
+    <Compile Include="sys_LeaveMessageModel.cs" />
     <Compile Include="sys_NavigationsModel.cs" />
     <Compile Include="sys_OnButysModel.cs" />
     <Compile Include="sys_OnlineInteractionsModel.cs" />

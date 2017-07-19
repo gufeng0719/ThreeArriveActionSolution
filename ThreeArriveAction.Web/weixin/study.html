@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-在线学习</title>
+    <style>
+        select, input {
+            height: 30px;
+            border: 1px solid #eeeeee;
+            padding-left: 5px;
+            width: 40%;
+        }
+
+        div.type {
+            background-color: #FFFFCC;
+            padding: 3px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        div.title {
+        }
+
+        table tr {
+            border-top: #d2d2d2 1px solid;
+            height: 48px;
+        }
+
+    </style>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+    <div class="container" id="app">
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    类型
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <select v-model="type">
+                    <option value="-1">-请选择-</option>
+                    <option value="1">最新政策</option>
+                    <option value="2">法律常识</option>
+                    <option value="3">学习视频</option>
+                    <option value="4">案例</option>
+                    <option value="5">考试题库</option>
+                    <option value="6">三到之星</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    标题
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <div style="width: 100%;margin-top: -20px;">
+                    <input type="text" v-model="title" style="width: 60%" placeholder="输入关键字, 多个关键字可用逗号隔开"/>
+                    <input type="button" class="btn" value="检索" 
+                           @click="getpage(1)" style="width: 19%;margin: 4%;height: 31px;" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table style="width: 90%;margin-left: 5%">
+                <tr v-for="model in list">
+                    <td style="width: 78%">
+                        <div class="title">{{model.context}}</div>
+                    </td>
+                    <td>
+                        <div class="type">{{model.type}}</div>
+                    </td>
+                </tr>
+                <tr v-if="list.length <= 0">
+                    <td colspan="3" style="text-align:center">
+                        <b>暂无数据</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div style="margin-top:15px;padding-bottom:15px;">
+                            <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
+                            <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/weixin/main.js"></script>
+    <script src="../scripts/weixin/study.js"></script>
+</body>
+</html>

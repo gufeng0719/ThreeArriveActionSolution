@@ -7,7 +7,10 @@ namespace ThreeArriveAction.Common
     {
         public static bool IsNullOrEmpty(this string s)
         {
-            return string.IsNullOrEmpty(s);
+            if (s == null) return true;
+            if (s.Trim() == string.Empty) return true;
+            return false;
+
         }
 
         public static string ToJson(this object obj)

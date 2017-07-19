@@ -1,30 +1,30 @@
-﻿
-var vm = new Vue({
+﻿var vm = new Vue({
     el: "#app",
     data: {
         list: [],
         page: 1,
-        size: 5,
+        size: 10,
         totle: 0,
-        ddlvillage: -1,
+        type: -1,
+        title: ""
     },
     methods: {
         getpage: function (page) {
             var that = this;
             $.ajax({
                 type: "post",
-                url: "../Ajax/sys_PublicMessagesManager.ashx",
+                url: "../Ajax/sys_InteractionLearnsManager.ashx",
                 data: {
-                    type: "openList",
-                    openType: req["type"],
+                    type: "getPageList",
                     page: page,
                     size: that.size,
-                    village: that.ddlvillage
+                    pageType: that.type,
+                    title: that.title
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
+                    that.list = obj.list;
                     that.page = obj.page;
-                    that.list = obj.list,
                     that.totle = obj.totle;
                     if (that.page > 1) {
                         $("#lastpage").attr("disabled", false);
@@ -41,21 +41,24 @@ var vm = new Vue({
         }
     },
     watch: {
-        "ddlvillage": function () {
+        type: function () {
             this.getpage(1);
         }
     },
-    mounted: function () {
+    mounted: function() {
         this.getpage(1);
-        if (req["type"] == "1") {
-            $("#pagetitle").html("三到行动-党务公开");
-        }
-        if (req["type"] == "2") {
-            $("#pagetitle").html("三到行动-村务公开");
-        }
-        if (req["type"] == "3") {
-            $("#pagetitle").html("三到行动-财务公开");
-        }
     }
 });
 
+function submitcontent() {
+    $.ajax({
+        type: "post",
+        url: "",
+        data: {
+
+        },
+        complete: function (d) {
+            //d.responseText
+        }
+    });
+}

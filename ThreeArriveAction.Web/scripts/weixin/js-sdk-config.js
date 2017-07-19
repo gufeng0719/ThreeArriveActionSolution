@@ -4,7 +4,7 @@ function submit(callback) {
         alert("请上传整体照片");
         return;
     }
-    if (vm.localIds.length <= 0) {
+    if ((vm.needlocalIds !== false) && vm.localIds.length <= 0) {
         alert("请上传照片");
         return;
     }
@@ -74,6 +74,9 @@ function submit(callback) {
             }
         });
     });
+    if (vm.needlocalIds === false && vm.localIds.length <= 0) {
+        callback([], 0, 0);
+    }
 };
 
 $(function () {

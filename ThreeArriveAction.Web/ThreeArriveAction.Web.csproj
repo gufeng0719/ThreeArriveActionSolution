@@ -1055,11 +1055,14 @@
     <Content Include="scripts\weixin\familyEdit.js" />
     <Content Include="scripts\weixin\integral.js" />
     <Content Include="scripts\weixin\integralInfo.js" />
+    <Content Include="scripts\weixin\interact.js" />
+    <Content Include="scripts\weixin\interactEdit.js" />
     <Content Include="scripts\weixin\login.js" />
     <Content Include="scripts\weixin\onButys.js" />
     <Content Include="scripts\weixin\onButysSet.js" />
     <Content Include="scripts\weixin\open.js" />
     <Content Include="scripts\weixin\openList.js" />
+    <Content Include="scripts\weixin\study.js" />
     <Content Include="scripts\weixin\thing.js" />
     <Content Include="scripts\weixin\week.js" />
     <Content Include="scripts\weixin\js-sdk-config.js" />
@@ -1068,6 +1071,8 @@
     <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />
+    <Content Include="weixin\interact.html" />
+    <Content Include="weixin\interactEdit.html" />
     <Content Include="weixin\login.html" />
     <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
@@ -1081,6 +1086,12 @@
   <ItemGroup>
     <Compile Include="Ajax\sys_IntegralInfoManager.ashx.cs">
       <DependentUpon>sys_IntegralInfoManager.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\sys_InteractionLearnsManager.ashx.cs">
+      <DependentUpon>sys_InteractionLearnsManager.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\sys_LeaveMessageManager.ashx.cs">
+      <DependentUpon>sys_LeaveMessageManager.ashx</DependentUpon>
     </Compile>
     <Compile Include="Ajax\sys_UserIntegralsManager.ashx.cs">
       <DependentUpon>sys_UserIntegralsManager.ashx</DependentUpon>
@@ -1158,6 +1169,8 @@
     <Content Include="Ajax\sys_PublicMessagesManager.ashx" />
     <Content Include="Ajax\sys_UserIntegralsManager.ashx" />
     <Content Include="Ajax\sys_IntegralInfoManager.ashx" />
+    <Content Include="Ajax\sys_InteractionLearnsManager.ashx" />
+    <Content Include="Ajax\sys_LeaveMessageManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1262,6 +1275,7 @@
     <Content Include="weixin\openList.html" />
     <Content Include="weixin\redirect_uri.html" />
     <Content Include="weixin\sign.html" />
+    <Content Include="weixin\study.html" />
     <Content Include="weixin\thing.html" />
     <Content Include="weixin\week.html" />
     <Content Include="weixin\familyEdit.html" />
