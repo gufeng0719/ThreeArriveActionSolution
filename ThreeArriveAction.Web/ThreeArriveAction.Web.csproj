@@ -52,6 +52,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Senparc.Weixin">
+      <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.dll</HintPath>
+    </Reference>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.MP.dll</HintPath>
+    </Reference>
     <Reference Include="SqlHelper">
       <HintPath>..\ThreeArriveAction.Common\Reference\SqlHelper.dll</HintPath>
     </Reference>
@@ -80,6 +86,8 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
+    <Content Include="admin\weixin\addNews.html" />
+    <Content Include="admin\weixin\subscribe.html" />
     <Content Include="images\weixin\buty.png" />
     <Content Include="images\weixin\cadre.png" />
     <Content Include="images\weixin\finance.png" />
@@ -1112,11 +1120,17 @@
     <Compile Include="Ajax\sys_WeekArrivesManager.ashx.cs">
       <DependentUpon>sys_WeekArrivesManager.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Ajax\token_ajax.ashx.cs">
+      <DependentUpon>token_ajax.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\upload_ajax.ashx.cs">
       <DependentUpon>upload_ajax.ashx</DependentUpon>
     </Compile>
     <Compile Include="Ajax\weixinInfo.ashx.cs">
       <DependentUpon>weixinInfo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\wxrequestRulesManager.ashx.cs">
+      <DependentUpon>wxrequestRulesManager.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ajax\sys_VillagesManager.ashx.cs">
@@ -1140,6 +1154,10 @@
       <Project>{F909338A-1711-4131-958B-12E8F110EB00}</Project>
       <Name>ThreeArriveAction.Web.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.WeiXinComm\ThreeArriveAction.WeiXinComm.csproj">
+      <Project>{1f4a282f-6634-4cba-afe4-d9eb4c1214b1}</Project>
+      <Name>ThreeArriveAction.WeiXinComm</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ajax\sys_NavigationsManager.ashx" />
@@ -1155,6 +1173,8 @@
     <Content Include="Ajax\sys_PublicMessagesManager.ashx" />
     <Content Include="Ajax\sys_UserIntegralsManager.ashx" />
     <Content Include="Ajax\sys_IntegralInfoManager.ashx" />
+    <Content Include="Ajax\wxrequestRulesManager.ashx" />
+    <Content Include="Ajax\token_ajax.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1268,7 +1288,9 @@
     <Content Include="Ajax\sys_UsersManager.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="log\" />
     <Folder Include="scripts\datepicker\skin\whyGreen\" />
+    <Folder Include="upload\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

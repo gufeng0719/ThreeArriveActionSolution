@@ -48,8 +48,8 @@
                         </div>
                         <ul class="drop-item">
                             <!--<li><a target="_self" href="#">淮安区“三到行动”信息化平台</a></li>-->
-                            <li><a href="" target="mainframe">管理中心</a></li>
-                            <li><a onclick="linkMenuTree(false, '');" href="" target="mainframe">修改密码</a></li>
+                            <li><a href="#" target="mainframe">管理中心</a></li>
+                            <li><a onclick="linkMenuTree(false, '');" href="javascript:void(0);" target="mainframe">修改密码</a></li>
                             <li><a href="javascript:Exit()">注销登录</a> </li>
                         </ul>
                     </div>
@@ -353,7 +353,7 @@
             $.post('../Ajax/sys_UsersManager.ashx?type=exit', function (msg) {
                 var res = $.parseJSON(msg);
                 if (res && res.success) {
-                    window.location.href = "login.html";
+                   window.location.href = "../login.html";
                 }
             });
         }

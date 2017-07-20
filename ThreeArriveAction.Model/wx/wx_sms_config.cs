@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MxWeiXinPF.Model
+namespace ThreeArriveAction.Model
 {
 	/// <summary>
 	/// 短信配置

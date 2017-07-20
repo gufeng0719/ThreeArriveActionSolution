@@ -43,7 +43,7 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 if (openId.IsNullOrEmpty())
                 {
-                    context.Response.Write("<script>parent.location.href='../login.html'</script>");
+                    context.Response.Write("<script>parent.location.href=http://'" + HttpContext.Current.Request.Url.Authority + "/login.html'</script>");
                     return;
                 }
                 else
@@ -119,7 +119,8 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 if (openId.IsNullOrEmpty())
                 {
-                    context.Response.Write("<script>parent.location.href='../login.html'</script>");
+                    context.Response.Write("<script>parent.location.href=http://'" + HttpContext.Current.Request.Url.Authority + "/login.html'</script>");
+                    
                     return;
                 }
                 else

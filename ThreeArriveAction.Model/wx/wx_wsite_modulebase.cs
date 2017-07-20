@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MxWeiXinPF.Model
+namespace ThreeArriveAction.Model
 {
 	/// <summary>
 	/// 微网站组件基本表

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MxWeiXinPF.Model
+namespace ThreeArriveAction.Model
 {
 	/// <summary>
 	/// 微帐号的模版表

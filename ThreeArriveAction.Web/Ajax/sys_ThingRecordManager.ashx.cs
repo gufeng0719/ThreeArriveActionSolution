@@ -33,7 +33,8 @@ namespace ThreeArriveAction.Web.Ajax
             var openId = context.Request.Form["openId"];
             if (model == null && openId.IsNullOrEmpty())
             {
-                context.Response.Write("<script>parent.location.href='login.html'</script>");
+                context.Response.Write("<script>parent.location.href=http://'" + HttpContext.Current.Request.Url.Authority + "/login.html'</script>");
+                return;
             }
             else
             {

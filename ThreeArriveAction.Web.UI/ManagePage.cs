@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Model;
 
 namespace ThreeArriveAction.Web.UI
 {
@@ -174,30 +175,25 @@ namespace ThreeArriveAction.Web.UI
                 }
             }
             return false;
-        }
+        }*/
 
         /// <summary>
         /// 取得当前微信帐号信息
         /// </summary>
-        public Model.wx_userweixin GetWeiXinCode()
+        public wx_userweixin GetWeiXinCode()
         {
-            if (IsWeiXinCode())
-            {
-                Model.wx_userweixin model = Session["nowweixin"] as Model.wx_userweixin;
-                if (model != null)
-                {
-                    return model;
-                }
-            }
-            else
-            {
-                Response.Write("<script>parent.location.href='http://" + HttpContext.Current.Request.Url.Authority + "/admin/weixin/myweixinlist.aspx'</script>");
-                Response.End();
-            }
-            return null;
+            wx_userweixin weixin = new wx_userweixin();
+            weixin.id = 1;
+            weixin.wxName = "淮安区三到行动";
+            weixin.wxId = "gh_9d7c970705cb";
+            weixin.weixinCode = "haqsdxd";
+            weixin.wxToken = "Token2017";
+            weixin.AppId = "wx7c32c023241aba89";
+            weixin.AppSecret = "ed9fa9aaf2c12f9e110a12b83f8d9d08";
+            return weixin;
         }
 
-        */
+        
 
     }
 }

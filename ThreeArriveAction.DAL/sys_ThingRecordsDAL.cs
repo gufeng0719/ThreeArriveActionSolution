@@ -97,7 +97,7 @@ namespace ThreeArriveAction.DAL
                                        };
                             parameters4[0].Value = integralId;
                             parameters4[1].Value = thingModel.UserId;
-                            parameters4[2].Value = 2;
+                            parameters4[2].Value = 3;
                             parameters4[3].Value = 3;
                             parameters4[4].Value = DateTime.Now;
                             parameters4[5].Value = thingId;

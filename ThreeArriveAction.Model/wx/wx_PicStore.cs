@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MxWeiXinPF.Model
+namespace ThreeArriveAction.Model
 {	/// <summary>
     /// 微信平台的图片仓库表
     /// </summary>

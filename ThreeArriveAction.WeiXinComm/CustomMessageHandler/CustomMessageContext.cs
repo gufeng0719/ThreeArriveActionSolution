@@ -16,7 +16,7 @@ using System.Text;
 using Senparc.Weixin.Context;
 using Senparc.Weixin.MP.Entities;
 
-namespace ThreeArriveAction.WeiXinCommon.CustomMessageHandler
+namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
     public class CustomMessageContext : MessageContext<IRequestMessageBase,IResponseMessageBase>
     {

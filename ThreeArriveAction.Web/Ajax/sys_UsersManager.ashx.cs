@@ -104,7 +104,7 @@ namespace ThreeArriveAction.Web.Ajax
             sys_UsersModel model = new ManagePage().GetUsersinfo();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='login.html'</script>");
+                context.Response.Write("<script>parent.location.href='http://wx.haqdj.gov.cn'</script>");
             }
             else
             {
@@ -282,7 +282,7 @@ namespace ThreeArriveAction.Web.Ajax
             StringBuilder strJson = new StringBuilder();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='login.html'</script>");
+                context.Response.Write("<script>parent.location.href='http://wx.haqdj.gov.cn'</script>");
             }
             else
             {
@@ -328,7 +328,7 @@ namespace ThreeArriveAction.Web.Ajax
             sys_UsersModel model = new ManagePage().GetUsersinfo();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='login.html'</script>");
+                context.Response.Write("<script>parent.location.href='http://wx.haqdj.gov.cn'</script>");
             }
             else
             {

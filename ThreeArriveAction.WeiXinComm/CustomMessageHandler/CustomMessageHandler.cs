@@ -32,8 +32,9 @@ using ThreeArriveAction.WeiXinComm.Utilities;
 using Senparc.Weixin;
 using Senparc.Weixin.MP;
 using ThreeArriveAction.WeiXinComm;
+using ThreeArriveAction.WeiXinComm.CustomMessageHandler;
 
-namespace ThreeArriveAction.WeiXinCommon.CustomMessageHandler
+namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
     /// <summary>
     /// 自定义MessageHandler
@@ -48,19 +49,19 @@ namespace ThreeArriveAction.WeiXinCommon.CustomMessageHandler
          */
 
 
-#if DEBUG
+        #if DEBUG
         string agentUrl = "http://localhost:12222/App/Weixin/4";
         string agentToken = "27C455F496044A87";
         string wiweihiKey = "CNadjJuWzyX5bz5Gn+/XoyqiqMa5DjXQ";
-#else
+        #else
         //下面的Url和Token可以用其他平台的消息，或者到www.weiweihi.com注册微信用户，将自动在“微信营销工具”下得到
         private string agentUrl = WebConfigurationManager.AppSettings["WeixinAgentUrl"];//这里使用了www.weiweihi.com微信自动托管平台
         private string agentToken = WebConfigurationManager.AppSettings["WeixinAgentToken"];//Token
         private string wiweihiKey = WebConfigurationManager.AppSettings["WeixinAgentWeiweihiKey"];//WeiweihiKey专门用于对接www.Weiweihi.com平台，获取方式见：http://www.weiweihi.com/ApiDocuments/Item/25#51
-#endif
+        #endif
 
-        private string appId = WebConfigurationManager.AppSettings["WeixinAppId"];
-        private string appSecret = WebConfigurationManager.AppSettings["WeixinAppSecret"];
+        private string appId = WebConfigurationManager.AppSettings["AppId"];
+        private string appSecret = WebConfigurationManager.AppSettings["AppSecret"];
 
         /// <summary>
         /// 模板消息集合（Key：checkCode，Value：OpenId）
