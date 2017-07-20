@@ -62,6 +62,7 @@
     <Compile Include="ConvertHelper.cs" />
     <Compile Include="DESEncrypt.cs" />
     <Compile Include="DTEnums.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="JsonMessage.cs" />

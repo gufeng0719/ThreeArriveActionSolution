@@ -40,11 +40,11 @@ namespace ThreeArriveAction.Web.Ajax
             int userid = MXRequest.GetFormInt("userid");
             int villageid = MXRequest.GetFormInt("villageid");
             sys_OnButysModel butyMode = new sys_OnButysModel
-                                        {
-                                            VillageId = villageid,
-                                            UserId = userid,
-                                            ButyDate = DateTime.Now
-                                        };
+            {
+                VillageId = villageid,
+                UserId = userid,
+                ButyDate = DateTime.Now
+            };
             string result = butyBLL.AddOnButys(butyMode);
             context.Response.Write(result);
 
@@ -102,9 +102,10 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 sh.AddWhere("VillageId", ddlvillage);
             }
+            var list = sh.Select();
             context.Response.Write(new
             {
-                list = sh.Select().Select(x => new
+                list = list.Select(x => new
                 {
                     img = x.UserPhoto,
                     name = x.UserName,
@@ -112,7 +113,8 @@ namespace ThreeArriveAction.Web.Ajax
                     phone = x.UserPhoto
                 }),
                 page,
-                totle = sh.Total
+                totle = sh.Total,
+                sql = sh.SqlString.ToString()
             }.ToJson());
 
         }

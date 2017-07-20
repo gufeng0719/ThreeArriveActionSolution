@@ -1,5 +1,13 @@
-﻿function submitcontent() {
-    if (!$("#subfamily").val()) {
+﻿var vm = new Vue({
+    el: "#app",
+    data: {
+        localIds: [],
+        family: -1
+    }
+});
+
+function submitcontent() {
+    if (vm.family === -1) {
         alert("请选择拜访户");return;
     }
     if (!$("#title").val()) {
@@ -24,7 +32,7 @@
                 thingsolution: $("#Textarea1").val(),
                 thinghaving: $("[name='thinghaving']:checked").val() == "1" ? "1" : "",
                 imgurl: paths[0],
-                slSubId: $("#subfamily").val()
+                slSubId: vm.family
             },
             url: "../Ajax/sys_ThingRecordManager.ashx?type=add",
             success: function (d) {

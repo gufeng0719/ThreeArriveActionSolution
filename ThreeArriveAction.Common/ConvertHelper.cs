@@ -7,7 +7,10 @@ namespace ThreeArriveAction.Common
     {
         public static bool IsNullOrEmpty(this string s)
         {
-            return string.IsNullOrEmpty(s);
+            if (s == null) return true;
+            if (s.Trim() == string.Empty) return true;
+            return false;
+
         }
 
         public static string ToJson(this object obj)
@@ -33,6 +36,18 @@ namespace ThreeArriveAction.Common
             }
         }
 
+        public static double ToDouble(this string str)
+        {
+            try
+            {
+                return Convert.ToDouble(str);
+            }
+            catch (Exception e)
+            {
+                LogHelper.Log(" ToDouble Error " + e.Message);
+                return 0;
+            }
+        }
 
         /// <summary>  
         /// 获取当前时间戳  

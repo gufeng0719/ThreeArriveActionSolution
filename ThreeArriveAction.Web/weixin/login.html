@@ -10,28 +10,25 @@
     <script src="../scripts/weixin/main.js"></script>
     <script>
         $(function () {
-            getOpenInfo();
+            getToUrl();
         });
 
-        function getOpenInfo() {
+        function getToUrl() {
             $.ajax({
                 type: "post",
                 data: {
-                    type: "getOpenInfo",
-                    code: req["code"]
+                    type: "getCodeUrl",
+                    page: req["page"]
                 },
                 url: "../Ajax/weixinInfo.ashx",
                 success: function (d) {
-                    var obj = JSON.parse(d);
-                    localStorage.setItem("openId", obj.openid);
-                    window.open(decodeURIComponent(req["page"]), "_self");
+                    window.open(d, "_self");
                 },
                 error: function (d) {
                     console.log(d);
                 }
             });
         }
-
     </script>
 </body>
 </html>

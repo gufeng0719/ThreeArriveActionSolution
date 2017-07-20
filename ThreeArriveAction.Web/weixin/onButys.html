@@ -15,7 +15,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" style="margin-top: 18px;">
+    <div class="container" id="app" v-cloak style="margin-top: 18px;">
         <div class="row">
             <ddlvillage v-bind:ddlvillage="ddlvillage"></ddlvillage>
         </div>
@@ -51,10 +51,11 @@
             </table>
         </div>
     </div>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="../scripts/vue/vue.js"></script>
-    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script src="../scripts/lodash.min.js"></script>
-    <script src="../scripts/weixin/ddlvillage.js"></script>
+    <script src="../scripts/vue/weixinTemplate.js"></script>
+    <script src="../scripts/weixin/main.js"></script>
     <script src="../scripts/weixin/onButys.js"></script>
 </body>
 </html>

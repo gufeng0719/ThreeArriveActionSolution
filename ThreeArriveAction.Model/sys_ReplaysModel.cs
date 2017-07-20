@@ -40,6 +40,13 @@ namespace ThreeArriveAction.Model
             set { replayContent = value; }
         }
         private int replayerId;
+
+        public int ReplayerId
+        {
+            get { return replayerId; }
+            set { replayerId = value; }
+        }
+
         private DateTime repalyDate;
         /// <summary>
         /// 回复日期
@@ -65,7 +72,14 @@ namespace ThreeArriveAction.Model
             get { return remarks; }
             set { remarks = value; }
         }
-        
+
+        public int reToplayerId;
+
+        public int ReToplayerId
+        {
+            get { return reToplayerId; }
+            set { reToplayerId = value; }
+        }
     }
     #endregion
 }

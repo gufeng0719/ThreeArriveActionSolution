@@ -74,6 +74,9 @@ function addsign() {
                 $("#endtimes").hide();
                 $("#btnsign").hide();
             }
+            if (obj.msg === "个人信息异常") {
+                localStorage.clear();
+            }
             alert(obj.msg);
             window.open("index.html", "_self");
         }

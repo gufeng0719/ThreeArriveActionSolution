@@ -1,34 +1,31 @@
-﻿
-
-var vm = new Vue({
+﻿var vm = new Vue({
     el: "#app",
     data: {
-        name: "",
-        village: "",
-        score: 0,
         list: [],
         page: 1,
         size: 10,
         totle: 0,
-        userId: 0
+        type: -1,
+        title: ""
     },
     methods: {
         getpage: function (page) {
             var that = this;
             $.ajax({
                 type: "post",
-                url: "../Ajax/sys_IntegralInfoManager.ashx",
+                url: "../Ajax/sys_InteractionLearnsManager.ashx",
                 data: {
-                    type: "integralInfoList",
+                    type: "getPageList",
                     page: page,
                     size: that.size,
-                    userId: that.userId
+                    pageType: that.type,
+                    title: that.title
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
+                    that.list = obj.list;
                     that.page = obj.page;
                     that.totle = obj.totle;
-                    that.list = obj.list;
                     if (that.page > 1) {
                         $("#lastpage").attr("disabled", false);
                     } else {
@@ -41,29 +38,27 @@ var vm = new Vue({
                     }
                 }
             });
-        },
-        getmodel: function () {
-            var that = this;
-            $.ajax({
-                type: "post",
-                url: "../Ajax/sys_UserIntegralsManager.ashx",
-                data: {
-                    type: "getModel",
-                    id: req["id"]
-                },
-                complete: function (d) {
-                    var obj = JSON.parse(d.responseText);
-                    that.name = obj.name;
-                    that.village = obj.village;
-                    that.score = obj.score;
-                    that.userId = obj.userId;
-                    that.getpage(1);
-                }
-            });
         }
     },
-    mounted: function () {
-        this.getmodel();
+    watch: {
+        type: function () {
+            this.getpage(1);
+        }
+    },
+    mounted: function() {
+        this.getpage(1);
     }
-
 });
+
+function submitcontent() {
+    $.ajax({
+        type: "post",
+        url: "",
+        data: {
+
+        },
+        complete: function (d) {
+            //d.responseText
+        }
+    });
+}

@@ -1,4 +1,14 @@
-﻿function submitcontent() {
+﻿var vm = new Vue({
+    el: "#app",
+    data: {
+        localIds: [],
+        glocalId: [], // 整体图只能有一个
+        needglocalId: true,
+        family: -1
+    }
+});
+
+function submitcontent() {
     if (!$("[name='opentype']:checked").val()) {
         alert("请选择公开类型");
         return;

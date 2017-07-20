@@ -26,6 +26,12 @@ namespace ThreeArriveAction.Web.Ajax
                 case "getsubfamily":
                     GetSubfamily(context);
                     break;
+                case "getSubfamilyModel":
+                    GetSubfamilyModel(context);
+                    break;
+                case "addSubfamily":
+                    AddSubfamily(context);
+                    break;
 
             }
         }
@@ -46,13 +52,12 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-
         public void GetSubfamily(HttpContext context)
         {
             var value = context.Request["value"];
             var openId = context.Request["openId"];
             var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
-            sh.AddWhere("UserRemark", openId);
+            sh.AddWhere(" AND UserRemark='" + openId + "'");
             var user = sh.Select().FirstOrDefault();
             if (user == null)
             {
@@ -71,6 +76,61 @@ namespace ThreeArriveAction.Web.Ajax
                     }).ToJson());
         }
 
+        public void GetSubfamilyModel(HttpContext context)
+        {
+            var id = context.Request["id"].ToInt();
+            var sh = new SqlHelper<sys_SubscriberFamilyModel>(new sys_SubscriberFamilyModel());
+            sh.AddWhere("SubscriberId", id);
+            var model = sh.Select().FirstOrDefault();
+            if (model != null)
+            {
+                var arr = model.FamilyCoordinate.Split(',');
+                var x = 33.5226;
+                var y = 119.156456;
+                if (arr.Length == 2)
+                {
+                    x = arr[0].ToDouble();
+                    y = arr[1].ToDouble();
+                }
+                context.Response.Write(new
+                {
+                    name = model.SubscriberName,
+                    phone = model.SubscriberPhone ?? "",
+                    address = model.FamilyAddress ?? "",
+                    msg = model.Remarks ?? "",
+                    number = model.FamilyNumber,
+                    x,
+                    y
+                }.ToJson());
+                return;
+            }
+            context.Response.Write("未能查询到七户信息 Id:" + id);
+        }
+
+        public void AddSubfamily(HttpContext context)
+        {
+            var id = context.Request["family"].ToInt();
+            var name = context.Request["name"];
+            var phone = context.Request["phone"];
+            var address = context.Request["address"];
+            var msg = context.Request["msg"];
+            var number = context.Request["number"].ToInt();
+            var x = context.Request["x"].ToDouble();
+            var y = context.Request["y"].ToDouble();
+            var sh = new SqlHelper<sys_SubscriberFamilyModel>(new sys_SubscriberFamilyModel());
+            sh.AddWhere("SubscriberId", id);
+            sh.AddUpdate("SubscriberName", name);
+            sh.AddUpdate("SubscriberPhone", phone);
+            sh.AddUpdate("FamilyAddress", address);
+            sh.AddUpdate("Remarks", msg);
+            sh.AddUpdate("FamilyNumber", number);
+            sh.AddUpdate("FamilyCoordinate", x + "," + y);
+            var line = sh.Update();
+            context.Response.Write(new
+                                   {
+                line
+            }.ToJson());
+        }
 
         public bool IsReusable
         {
