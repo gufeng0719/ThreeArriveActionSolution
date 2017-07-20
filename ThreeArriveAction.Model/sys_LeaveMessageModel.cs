@@ -14,5 +14,6 @@ namespace ThreeArriveAction.Model
         public int VillageId { get; set; }
         public DateTime LeaveDateTime { get; set; } = DateTime.Now;
         public int LeavePraiseNumber { get; set; }
+        public  string LeavePraiseUserIds { get; set; } = string.Empty;
     }
 }

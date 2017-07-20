@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-互动学习</title>
+    <style>
+        .span-praise {
+            padding: 4px;
+            font-weight: 100;
+            font-size: 13px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .praise {
+            background-color: #16a0d3;
+        }
+
+        .yet-praise {
+            background-color: #FF6600;
+        }
+
+        select, input {
+            height: 30px;
+            border: 1px solid #eeeeee;
+            padding-left: 5px;
+            width: 75%;
+        }
+
+        .btn {
+            height: 31px;
+            width: 20%;
+            margin-top: -3px;
+            margin-left: 8px;
+        }
+
+        .userName {
+            color: darkblue;
+        }
+
+        .div-img img {
+            width: 20%;
+        }
+    </style>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+    <div class="container" id="app" v-cloak>
+        <div class="row">
+            <div class="header">
+                <div class="text">
+                    留言详细
+                </div>
+            </div>
+        </div>
+        <div class="row" v-if="imgs.length > 0">
+            <div class="div-img">
+                <img v-for="img in imgs" v-bind:src="'../'+img" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="div-content">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{content}}
+            </div>
+        </div>
+        <div class="row">
+            <div style="font-size: 12px; font-weight: 700; text-align: right;height: 24px;">
+                by:{{userName}}&nbsp;&nbsp;发布时间:{{time}}&nbsp;&nbsp;
+                <span v-bind:class="yetPraise ? 'span-praise yet-praise' : 'span-praise praise'"
+                      @click="pushPraise()">{{yetPraise  ? "已赞" : "赞"}}:{{praise}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="row">
+            <div style="margin-top: 8px">
+                <input type="text" v-bind:placeholder="'回复：'+userName" v-model="reContent" />
+                <input type="button" value="回复" class="btn" @click="comment(userId)" />
+            </div>
+        </div>
+        <div class="row" style="margin-bottom: -11px;">
+            <div class="header">
+                <div class="text">
+                    回复
+                </div>
+            </div>
+        </div>
+        <div class="row" v-for="model in list" @click="commentToOther(model.playerId,model.player)">
+            <div style="border-bottom: 1px solid #d2d2d2; margin-top: 10px; margin-left: 15px;padding-bottom: 5px">
+                <span class="userName">{{model.player}}</span>&nbsp;&nbsp;回复&nbsp;&nbsp;<span class="userName">{{model.toPlayer}}</span>： {{model.content}}
+            </div>
+        </div>
+    </div>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/weixin/main.js"></script>
+    <link href="../scripts/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="../scripts/sweetalert/sweetalert.min.js"></script>
+    <script src="../scripts/weixin/login.js"></script>
+    <script src="../scripts/weixin/interactInfo.js?v=1"></script>
+</body>
+</html>

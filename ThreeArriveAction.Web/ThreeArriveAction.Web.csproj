@@ -1057,6 +1057,7 @@
     <Content Include="scripts\weixin\integralInfo.js" />
     <Content Include="scripts\weixin\interact.js" />
     <Content Include="scripts\weixin\interactEdit.js" />
+    <Content Include="scripts\weixin\interactInfo.js" />
     <Content Include="scripts\weixin\login.js" />
     <Content Include="scripts\weixin\onButys.js" />
     <Content Include="scripts\weixin\onButysSet.js" />
@@ -1073,6 +1074,7 @@
     <Content Include="weixin\integralInfo.html" />
     <Content Include="weixin\interact.html" />
     <Content Include="weixin\interactEdit.html" />
+    <Content Include="weixin\interactInfo.html" />
     <Content Include="weixin\login.html" />
     <Content Include="scripts\weixin\main.js" />
     <Content Include="Web.config" />
@@ -1092,6 +1094,9 @@
     </Compile>
     <Compile Include="Ajax\sys_LeaveMessageManager.ashx.cs">
       <DependentUpon>sys_LeaveMessageManager.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\sys_ReplaysManager.ashx.cs">
+      <DependentUpon>sys_ReplaysManager.ashx</DependentUpon>
     </Compile>
     <Compile Include="Ajax\sys_UserIntegralsManager.ashx.cs">
       <DependentUpon>sys_UserIntegralsManager.ashx</DependentUpon>
@@ -1171,6 +1176,7 @@
     <Content Include="Ajax\sys_IntegralInfoManager.ashx" />
     <Content Include="Ajax\sys_InteractionLearnsManager.ashx" />
     <Content Include="Ajax\sys_LeaveMessageManager.ashx" />
+    <Content Include="Ajax\sys_ReplaysManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />

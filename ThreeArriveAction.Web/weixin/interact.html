@@ -15,7 +15,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app">
+    <div class="container" id="app" v-cloak>
         <div class="row" style="text-align: right;">
             <a class="btn" href="interactEdit.html" style="margin-right: 11px;width: 71px;height: 34px;margin-top: 19px;">去留言</a>
         </div>
@@ -30,16 +30,16 @@
                     <template v-for="model in list">
                         <tr @click="select(model.id)">
                             <td rowspan="2" v-if="model.img">
-                                <img name="img" v-bind:src="model.img" height="60" width="80" style="margin-right: 15px" />
+                                <img name="img" v-bind:src="model.img" height="45" width="60" style="margin-right: 15px;margin-bottom: 11px;" />
                             </td>
                             <td v-bind:colspan="model.img ? 1 : 2">
                                 {{model.content}}
                             </td>
                         </tr>
-                        <tr style="border-bottom: #d2d2d2 1px solid;width: 100%">
+                        <tr style="border-bottom: #d2d2d2 1px solid;width: 120%">
                             <td v-bind:colspan="model.img ? 1 : 2"
-                                style="font-size: 12px; font-weight: 700;text-align: right">
-                                发布时间:{{model.time}}  赞:{{model.praise}}  评论:{{model.comment}}
+                                style="font-size: 12px; font-weight: 700; text-align: right;height: 24px;">
+                                by:{{model.userName}}&nbsp;&nbsp;发布时间:{{model.time}}&nbsp;&nbsp;赞:{{model.praise}}&nbsp;&nbsp;评论:{{model.comment}}
                             </td>
                         </tr>
                         <tr style="height: 15px;">

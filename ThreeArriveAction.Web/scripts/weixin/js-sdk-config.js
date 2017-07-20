@@ -92,7 +92,6 @@ $(function () {
             var obj = JSON.parse(d);
             console.log(obj);
             window.wx.config({
-                debug: true,
                 appId: obj.appId,
                 timestamp: obj.timestamp,
                 nonceStr: obj.nonceStr,

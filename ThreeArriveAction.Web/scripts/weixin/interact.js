@@ -6,15 +6,10 @@
         page: 1,
         size: 6,
         tbfoot: false,
-        tbfootMsg: "",
-        notMore: false
+        tbfootMsg: ""
     },
     methods: {
         getpage: function (page) {
-            if (this.notMore) {
-                return;
-            }
-            $(window).scroll(function () { });
             var that = this;
             $.ajax({
                 type: "post",
@@ -29,6 +24,7 @@
                     that.list = obj.list;
                     that.totle = obj.totle;
                     that.page = obj.page;
+
                     if (that.page > 1) {
                         $("#lastpage").attr("disabled", false);
                     } else {
@@ -41,6 +37,9 @@
                     }
                 }
             });
+        },
+        select: function (id) {
+            window.open("interactInfo.html?id=" + id, "_self");
         }
     },
     watch: {
