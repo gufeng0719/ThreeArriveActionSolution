@@ -131,13 +131,14 @@
             //获取url路径
             var url = window.location.href;
             var urlStr = url.substring(url.indexOf('?') + 1)
+            $("#lblact").text(urlStr.split('=')[1]);
             $.getJSON('../../Ajax/wxrequestRulesManager.ashx?type=search&' + urlStr, function (msg) {
                 if (msg) {
                     //console.info("ces");
                     $("#postion").text(msg.reqestText);
                     $("#postion2").text(msg.reqestText);
                     $("input[name='rblResponseType']:checked").val(msg.responseType);
-                    $("#lblreqestType").val(msg.reqestType);
+                    $("#lblreqestType").text(msg.reqestType);
                     $("#hidId").val(msg.rId);
                     if (msg.responseType == 0) {
                         $("#txtContent").val(msg.txtContent);
@@ -147,7 +148,7 @@
                             $("#var_box").html("");
                             for (var i = 0; i < msg.rows.length; i++) {
                                 var str = "<tr>";
-                                str += "<td><img id='img" + i + "' stryle='max-height:50px;max-width:100px;' src='" + msg.rows[i].picUrl + "' /></td>";
+                                str += "<td><img id='img" + i + "' width='50px' height='50px' stryle='max-height:50px;max-width:100px; width:50px;height:50px;' src='" + msg.rows[i].picUrl + "' /></td>";
                                 str += "<td>" + msg.rows[i].rContent + "</td>";
                                 str += "<td>" + msg.rows[i].detailUrl + "</td>";
                                 str += "<td>" + msg.rows[i].seq + "</td>";
@@ -228,7 +229,7 @@
 
                 }
                 var data = {
-                    requestType: $("#lblreqestType").val(),
+                    requestType: $("#lblreqestType").text(),
                     txtContent: $("#txtContent").val(),
                     txtMusicTitle : $("#txtMusicTitle").val(),
                     txtMusicFile :$("#txtMusicFile").val(),
@@ -259,7 +260,7 @@
         function showGuiZeDialog(id) {
 
             var rid = $("#hidId").val();
-            var act = $("#lblact").text();
+            var act = $("#lblreqestType").text();
 
             var contenturl = "";
             if (id == 0) {

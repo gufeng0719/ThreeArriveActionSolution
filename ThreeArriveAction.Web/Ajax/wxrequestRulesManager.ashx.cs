@@ -32,6 +32,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "delete":
                     DeleteRequestRule(context);
                     break;
+                case "get":
+                    GetRequestContent(context);
+                    break;
 
             }
 
@@ -144,10 +147,11 @@ namespace ThreeArriveAction.Web.Ajax
                 rule.reqestType = requestType;
                 rule.isDefault = false;
                 rule.createDate = DateTime.Now;
-                wx_requestRuleContentModel rc = new wx_requestRuleContentModel();
+                wx_requestRuleContentModel rc ;
                 string responseType = MXRequest.GetFormString("responseType");
                 if (responseType == "0")
                 {//纯文本
+                    rc = new wx_requestRuleContentModel();
                     rule.responseType = 1;//回复类型:文本1,图文:2,语言:3,视频:4,第三方接口5
                     int rId = rBLL.Add(rule);
                     rc.rId = rId;
@@ -156,11 +160,25 @@ namespace ThreeArriveAction.Web.Ajax
                     rc.rContent = txtContent;
                     rc.createDate = DateTime.Now;
                     rcBLL.Add(rc);
+                    new ManagePage().AddAdminLog(MXEnums.ActionEnum.Edit.ToString(), "编辑" + ruleName); //记录日志
+                    json = "{\"info\":\"编辑" + ruleName + "成功！\",\"status\":\"y\"}";
                 }
                 else if (responseType == "1")
                 {//图文
                     rule.responseType = 2;
                     int rId = rBLL.Add(rule);
+                    rc = new wx_requestRuleContentModel();
+                    rc.rId = rId;
+                    rc.uId = usersModel.UserId;
+                    rc.rContent = MXRequest.GetFormString("txtTitle");
+                    rc.picUrl = MXRequest.GetFormString("txtImgUrl");
+                    rc.rContent2 = MXRequest.GetFormString("txtContent");
+                    rc.detailUrl = MXRequest.GetFormString("txtUrl");
+                    rc.seq = MXRequest.GetFormIntValue("txtSortId");
+                    rc.createDate = DateTime.Now;
+                    rcBLL.Add(rc);
+                    new ManagePage().AddAdminLog(MXEnums.ActionEnum.Edit.ToString(), "编辑" + ruleName); //记录日志
+                    json = "{\"info\":\"编辑" + ruleName + "成功！\",\"status\":\"y\"}";
                 }
                 else if (responseType == "3")
                 {
@@ -168,7 +186,7 @@ namespace ThreeArriveAction.Web.Ajax
                     //规则
                     rule.responseType = 3;//回复的类型:文本1，图文2，语音3，视频4,第三方接口5
                     int rId = rBLL.Add(rule);
-
+                    rc = new wx_requestRuleContentModel();
                     //内容
                     rc.rId = rId;
                     rc.uId = usersModel.UserId;
@@ -186,6 +204,13 @@ namespace ThreeArriveAction.Web.Ajax
                  json = "{\"info\":\"编辑" + ruleName + "失败！\",\"status\":\"n\"}";
             }
             context.Response.Write(json);
+        }
+
+        private void GetRequestContent(HttpContext context)
+        {
+            int id = MXRequest.GetQueryIntValue("id");
+            wx_requestRuleContentModel rc = rcBLL.GetModel(id);
+            context.Response.Write(rc.ToJson());
         }
 
         private void DeleteRequestRule(HttpContext context)
