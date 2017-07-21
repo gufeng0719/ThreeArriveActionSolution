@@ -27,7 +27,8 @@ namespace ThreeArriveAction.BLL
             //判断登录错误次数
             if (Session["AdminLoginSun"] != null && Convert.ToInt32(Session["AdminLoginSun"]) > 5)
             {
-                return "错误超过5次，关闭浏览器重新登录！"; ;
+                json.success = false;
+                json.msg = "错误超过5次，关闭浏览器重新登录！";
             }
 
             sys_UsersModel userModel = GetUsersModelByUserPhone(userPhone);

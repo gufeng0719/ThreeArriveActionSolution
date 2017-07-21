@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MxWeiXinPF.Model
+namespace ThreeArriveAction.Model
 {
 	/// <summary>
 	/// 用户的微信基本表

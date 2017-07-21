@@ -22,7 +22,7 @@ using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP;
 using ThreeArriveAction.WeiXinComm.Utilities;
 
-namespace ThreeArriveAction.WeiXinCommon.CustomMessageHandler
+namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
     /// <summary>
     /// 自定义MessageHandler

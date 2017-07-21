@@ -57,7 +57,8 @@ namespace ThreeArriveAction.Web.Ajax
             sys_UsersModel model = new ManagePage().GetUsersinfo();
             if (model == null)
             {
-                context.Response.Write("<script>parent.location.href='login.html'</script>");
+                context.Response.Write("<script>parent.location.href=http://'"+ HttpContext.Current.Request.Url.Authority+"/login.html'</script>");
+                return;
             }
             else
             {

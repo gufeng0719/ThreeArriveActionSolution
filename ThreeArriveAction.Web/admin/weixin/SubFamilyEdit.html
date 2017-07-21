@@ -7,238 +7,239 @@
 </head>
 <body class="mainbody">
     <form id="form1">
-    <!--导航栏-->
-    <div class="location">
-        <a href="SubFamilyList.html" class="back"><i></i><span>返回列表页</span></a> <a href="#"
-            class="home"><i></i><span>首页</span></a> <i class="arrow"></i><a href="SubFamilyList.html">
-                <span>七户列表</span></a> <i class="arrow"></i><span>编辑七户信息</span>
-    </div>
-    <div class="line10">
-    </div>
-    <!--/导航栏-->
-    <!--内容-->
-    <div class="content-tab-wrap">
-        <div id="floatHead" class="content-tab">
-            <div class="content-tab-ul-wrap">
-                <ul>
-                    <li><a href="javascript:;" onclick="tabs(this);" class="selected">七户基本信息</a></li>
-                </ul>
+        <!--导航栏-->
+        <div class="location">
+            <a href="SubFamilyList.html" class="back"><i></i><span>返回列表页</span></a> 
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><a href="SubFamilyList.html">
+                <span>七户列表</span>
+            </a> <i class="arrow"></i><span>编辑七户信息</span>
+        </div>
+        <div class="line10">
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabs(this);" class="selected">七户基本信息</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="tab-content">
-        <dl>
-            <dt>户主姓名</dt>
-            <dd>
-                <input type="text" id="subname" name="subname" class="input normal" datatype="*"
-                    sucmsg=" " errormsg="请输入用户名" />
-                <input type="hidden" id="action" name="action" />
-                <input type="hidden" id="subid" name="subid" />
-                <span class="Validform_checktip">*</span>
-            </dd>
-        </dl>
-        <dl>
-            <dt>户主手机号</dt>
-            <dd>
-                <input type="text" id="subphone" name="subphone" class="input normal" datatype="m"
-                    sucmsg=" " errormsg="请输入11位的电话号码" />
-                <span class="Validform_checktip">*</span>
-            </dd>
-        </dl>
-        <dl>
-            <dt>七户类型</dt>
-            <dd>
-                <div class="rule-single-select" id="stype">
-                    <select id="subtype" name="subtype" datatype="*" errormsg="请选择七户类型" sucmsg=" ">
-                        <option value="1">留守老人户</option>
-                        <option value="2">重大病户</option>
-                        <option value="3">五保户</option>
-                        <option value="4">低保户</option>
-                        <option value="5">离任村干部户</option>
-                        <option value="6">老党员户</option>
-                        <option value="7">信访户</option>
-                    </select>
-                </div>
-            </dd>
-        </dl>
-        <dl>
-            <dt>村居</dt>
-            <dd>
-                <div id="village" class="single-select">
-                    <select id="villageid" name="villageid" datatype="*" errormsg="请选择村居" sucmsg=" ">
-                    </select>
-                </div>
-            </dd>
-        </dl>
-        <dl>
-            <dt>责任干部</dt>
-            <dd>
-                <div id="user" class="single-select">
-                    <select id="userid" name="userid" datatype="*" errormsg="请选择责任干部" sucmsg=" ">
-                    </select>
-                </div>
-            </dd>
-        </dl>
-        <dl>
-            <dt>家庭住址</dt>
-            <dd>
-                <textarea id="address" name="address" rows="2" cols="20" class="input normal"></textarea>
-            </dd>
-        </dl>
-        <dl>
-            <dt>家庭人数</dt>
-            <dd>
-                <input id="famnumber" name="famnumber" class="input normal" datatype="n" sucmsg=" "
-                    errormsg="请输入一个数字" />
-                <span class="Validform_checktip">*</span>
-            </dd>
-        </dl>
-        <dl>
-            <dt>备注</dt>
-            <dd>
-                <textarea id="remarks" name="remarks" rows="2" cols="20" class="input normal"></textarea>
-            </dd>
-        </dl>
-    </div>
-    <!--/内容-->
-    <!--工具栏-->
-    <div class="page-footer">
-        <div class="btn-list">
-            <button type="submit" class="btn" id="btnSave">
-                提交保存</button>
-            <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+        <div class="tab-content">
+            <dl>
+                <dt>户主姓名</dt>
+                <dd>
+                    <input type="text" id="subname" name="subname" class="input normal" datatype="*"
+                           sucmsg=" " errormsg="请输入用户名" />
+                    <input type="hidden" id="action" name="action" />
+                    <input type="hidden" id="subid" name="subid" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>户主手机号</dt>
+                <dd>
+                    <input type="text" id="subphone" name="subphone" class="input normal" datatype="m"
+                           sucmsg=" " errormsg="请输入11位的电话号码" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>七户类型</dt>
+                <dd>
+                    <div class="rule-single-select" id="stype">
+                        <select id="subtype" name="subtype" datatype="*" errormsg="请选择七户类型" sucmsg=" ">
+                            <option value="1">留守老人户</option>
+                            <option value="2">重大病户</option>
+                            <option value="3">五保户</option>
+                            <option value="4">低保户</option>
+                            <option value="5">离任村干部户</option>
+                            <option value="6">老党员户</option>
+                            <option value="7">信访户</option>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>村居</dt>
+                <dd>
+                    <div id="village" class="single-select">
+                        <select id="villageid" name="villageid" datatype="*" errormsg="请选择村居" sucmsg=" "></select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>责任干部</dt>
+                <dd>
+                    <div id="user" class="single-select">
+                        <select id="userid" name="userid" datatype="*" errormsg="请选择责任干部" sucmsg=" "></select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>家庭住址</dt>
+                <dd>
+                    <textarea id="address" name="address" rows="2" cols="20" class="input normal"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>家庭人数</dt>
+                <dd>
+                    <input id="famnumber" name="famnumber" class="input normal" datatype="n" sucmsg=" "
+                           errormsg="请输入一个数字" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>备注</dt>
+                <dd>
+                    <textarea id="remarks" name="remarks" rows="2" cols="20" class="input normal"></textarea>
+                </dd>
+            </dl>
         </div>
-        <div class="clear">
+        <!--/内容-->
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-list">
+                <button type="button" class="btn" id="btnSave">
+                    提交保存
+                </button>
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+            </div>
+            <div class="clear">
+            </div>
         </div>
-    </div>
-    <!--/工具栏-->
+        <!--/工具栏-->
     </form>
-</body>
-<script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
-<script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
-<script type="text/javascript" src="../js/layout.js"></script>
-<script type="text/javascript">
-    $(function () {
 
-        //加载村居数据
-        $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=select', function (msg) {
-            for (var i = 0; i < msg.total; i++) {
-                var s = "<option  value=" + msg.rows[i].value + ">" + msg.rows[i].title + "</option>";
-                var li = "<li>" + msg.rows[i].title + "</li>";
-                $("#villageid").append(s);
-            }
-            $("#village").ruleSingleSelect().addClass("rule-single-select");
-            LoadMsg();
-        });
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
 
-        $("#villageid").change(function () {
-            LoadUser($(this).val());
-        });
-
-        $("#form1").Validform({
-            btnSubmit: '#btnSave',
-            showAllError: true,
-            //postonce: true,
-            tiptype: function (msg, o, cssctl) {
-                /*msg：提示信息;
-                o:{obj:*,type:*,curform:*}
-                obj指向的是当前验证的表单元素（或表单对象）；
-                type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态；
-                curform为当前form对象;
-                cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）；*/
-                //全部验证通过提交表单时o.obj为该表单对象;
-                if (!o.obj.is("form")) {
-                    //定位到相应的Tab页面
-                    if (o.obj.is(o.curform.find(".Validform_error:first"))) {
-                        var tabobj = o.obj.parents(".tab-content"); //显示当前的选项
-                        var tabindex = $(".tab-content").index(tabobj); //显示当前选项索引
-                        if (!$(".content-tab ul li").eq(tabindex).children("a").hasClass("selected")) {
-                            $(".content-tab ul li a").removeClass("selected");
-                            $(".content-tab ul li").eq(tabindex).children("a").addClass("selected");
-                            $(".tab-content").hide();
-                            tabobj.show();
-                        }
-                    }
-                    //页面上不存在提示信息的标签时，自动创建;
-                    if (o.obj.parents("dd").find(".Validform_checktip").length == 0) {
-                        o.obj.parents("dd").append("<span class='Validform_checktip' />");
-                        o.obj.parents("dd").next().find(".Validform_checktip").remove();
-                    }
-                    var objtip = o.obj.parents("dd").find(".Validform_checktip");
-                    cssctl(objtip, o.type);
-                    objtip.text(msg);
+            //加载村居数据
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=select', function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].value + ">" + msg.rows[i].title + "</option>";
+                    var li = "<li>" + msg.rows[i].title + "</li>";
+                    $("#villageid").append(s);
                 }
-            },
-            callback: function (form) {
-                $.ajax({
-                    url: '../../Ajax/sys_SubscriberFamiliesManager.ashx?type=save',
-                    type: 'post',
-                    data: $("#form1").serializeArray(),
-                    success: function (data, obj) {
-                        var reg = $.parseJSON(data);
-                        if (reg.status == "y") {
-                            alert(reg.info);
-                            window.location.href = "SubFamilyList.html";
-                        } else {
-                            alert(reg.info);
+                $("#village").ruleSingleSelect().addClass("rule-single-select");
+                LoadMsg();
+            });
+
+            $("#villageid").change(function () {
+                LoadUser($(this).val());
+            });
+
+            $("#form1").Validform({
+                btnSubmit: '#btnSave',
+                showAllError: true,
+                //postonce: true,
+                tiptype: function (msg, o, cssctl) {
+                    /*msg：提示信息;
+                    o:{obj:*,type:*,curform:*}
+                    obj指向的是当前验证的表单元素（或表单对象）；
+                    type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态；
+                    curform为当前form对象;
+                    cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）；*/
+                    //全部验证通过提交表单时o.obj为该表单对象;
+                    if (!o.obj.is("form")) {
+                        //定位到相应的Tab页面
+                        if (o.obj.is(o.curform.find(".Validform_error:first"))) {
+                            var tabobj = o.obj.parents(".tab-content"); //显示当前的选项
+                            var tabindex = $(".tab-content").index(tabobj); //显示当前选项索引
+                            if (!$(".content-tab ul li").eq(tabindex).children("a").hasClass("selected")) {
+                                $(".content-tab ul li a").removeClass("selected");
+                                $(".content-tab ul li").eq(tabindex).children("a").addClass("selected");
+                                $(".tab-content").hide();
+                                tabobj.show();
+                            }
                         }
-                    },
-                    error: function (data, obj) {
-                        alert("通讯错误");
+                        //页面上不存在提示信息的标签时，自动创建;
+                        if (o.obj.parents("dd").find(".Validform_checktip").length == 0) {
+                            o.obj.parents("dd").append("<span class='Validform_checktip' />");
+                            o.obj.parents("dd").next().find(".Validform_checktip").remove();
+                        }
+                        var objtip = o.obj.parents("dd").find(".Validform_checktip");
+                        cssctl(objtip, o.type);
+                        objtip.text(msg);
                     }
-                });
-                return false;
-            }
-        });
-    });
-
-    //村居信息加载完成后加载表单数据
-    function LoadMsg() {
-        LoadUser("");
-
-        //判断是添加还是修改
-        var url = window.location.href;
-        var urlStr = url.substring(url.indexOf('?') + 1)
-        var urlArr = urlStr.split('&');
-        if (urlArr.length == 2) {
-            $("#action").val(urlArr[0].split('=')[1]);
-            $("#subid").val(urlArr[1].split('=')[1]);
-            $.getJSON('../../Ajax/sys_SubscriberFamiliesManager.ashx?' + urlStr, function (msg) {
-                if (msg) {
-                    $("#subphone").val(msg.SubscriberPhone);
-                    $("#subname").val(msg.SubscriberName);
-                    $("#userduties").val(msg.UserDuties);
-                    $("#subtype").val(msg.SubscriberType);
-                    $("#stype span").text($("#subtype").find("option:selected").text());
-                    $("#villageid").val(msg.VillageId);
-                    $("#village span").text($("#villageid").find("option:selected").text());
-                    $("#userid").val(msg.UserId);
-                    $("#user span").text($("#userid").find("option:selected").text());
-                    $("#address").val(msg.FamilyAddress);
-                    $("#famnumber").val(msg.FamilyNumber);
-                    $("#remarks").val(msg.Remarks);
+                },
+                callback: function (form) {
+                    $.ajax({
+                        url: '../../Ajax/sys_SubscriberFamiliesManager.ashx?type=save',
+                        type: 'post',
+                        data: $("#form1").serializeArray(),
+                        success: function (data, obj) {
+                            var reg = $.parseJSON(data);
+                            if (reg.status == "y") {
+                                alert(reg.info);
+                                window.location.href = "SubFamilyList.html";
+                            } else {
+                                alert(reg.info);
+                            }
+                        },
+                        error: function (data, obj) {
+                            alert("通讯错误");
+                        }
+                    });
+                    return false;
                 }
             });
-        } else {
-            $("#action").val(urlArr[0].split('=')[1]);
-            $("#subid").val(0);
-        }
-    }
-
-    //根据村居编号加载干部信息
-    function LoadUser(villid) {
-        $("#userid").html("");
-        //加载干部数据
-        $.getJSON('../../Ajax/sys_UsersManager.ashx?type=select', { villid: villid }, function (msg) {
-            for (var i = 0; i < msg.total; i++) {
-                var s = "<option  value=" + msg.rows[i].UserId + ">" + msg.rows[i].UserName + "</option>";
-                var li = "<li>" + msg.rows[i].UserName + "</li>";
-                $("#userid").append(s);
-            }
-            $("#user").ruleSingleSelect().addClass("rule-single-select");
         });
-    }
 
-</script>
+        //村居信息加载完成后加载表单数据
+        function LoadMsg() {
+            LoadUser("");
+
+            //判断是添加还是修改
+            var url = window.location.href;
+            var urlStr = url.substring(url.indexOf('?') + 1)
+            var urlArr = urlStr.split('&');
+            if (urlArr.length == 2) {
+                $("#action").val(urlArr[0].split('=')[1]);
+                $("#subid").val(urlArr[1].split('=')[1]);
+                $.getJSON('../../Ajax/sys_SubscriberFamiliesManager.ashx?' + urlStr, function (msg) {
+                    if (msg) {
+                        $("#subphone").val(msg.SubscriberPhone);
+                        $("#subname").val(msg.SubscriberName);
+                        $("#userduties").val(msg.UserDuties);
+                        $("#subtype").val(msg.SubscriberType);
+                        $("#stype span").text($("#subtype").find("option:selected").text());
+                        $("#villageid").val(msg.VillageId);
+                        $("#village span").text($("#villageid").find("option:selected").text());
+                        $("#userid").val(msg.UserId);
+                        $("#user span").text($("#userid").find("option:selected").text());
+                        $("#address").val(msg.FamilyAddress);
+                        $("#famnumber").val(msg.FamilyNumber);
+                        $("#remarks").val(msg.Remarks);
+                    }
+                });
+            } else {
+                $("#action").val(urlArr[0].split('=')[1]);
+                $("#subid").val(0);
+            }
+        }
+
+        //根据村居编号加载干部信息
+        function LoadUser(villid) {
+            $("#userid").html("");
+            //加载干部数据
+            $.getJSON('../../Ajax/sys_UsersManager.ashx?type=select', { villid: villid }, function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].UserId + ">" + msg.rows[i].UserName + "</option>";
+                    var li = "<li>" + msg.rows[i].UserName + "</li>";
+                    $("#userid").append(s);
+                }
+                $("#user").ruleSingleSelect().addClass("rule-single-select");
+            });
+        }
+
+    </script>
+</body>
 </html>
