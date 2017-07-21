@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ThreeArriveAction.Common;
@@ -28,10 +29,21 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetModel(context);
             }
+            else if (type == "delete")
+            {
+                Delete(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
             }
+        }
+
+        private void Delete(HttpContext context)
+        {
+            var sh = new SqlHelper<sys_InteractionLearnsModel>(new sys_InteractionLearnsModel());
+            var line = sh.Delete(" AND LearnId = " + context.Request["id"].ToInt());
+            context.Response.Write(line);
         }
 
         private void GetModel(HttpContext context)
@@ -45,10 +57,14 @@ namespace ThreeArriveAction.Web.Ajax
                 context.Response.Write("错误的Id:" + id);
                 return;
             }
+            var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserId", model.Publisher } }).FirstOrDefault();
             context.Response.Write(new
             {
                 title = model.LearnTitle,
-                content = model.LearnContent
+                content = model.LearnContent,
+                time = model.PublishDate.ToString("yyyy-M-d dddd"),
+                userName = user?.UserName ?? "管理员",
+                type = ((StudyEnum)model.LearnType).ToString()
             }.ToJson());
         }
 
