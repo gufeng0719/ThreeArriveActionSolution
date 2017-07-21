@@ -21,6 +21,8 @@ using Senparc.Weixin.MP.Helpers;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP;
 using ThreeArriveAction.WeiXinComm.Utilities;
+using System.Threading.Tasks;
+using ThreeArriveAction.DAL;
 
 namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
@@ -29,7 +31,15 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
     /// </summary>
     public partial class CustomMessageHandler
     {
-     
+        private string  GetWelcomeInfo()
+        {
+            //获取Senparc.Weixin.MP.dll版本信息
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(HttpContext.Current.Server.MapPath("~/bin/Senparc.Weixin.MP.dll"));
+            var version = string.Format("{0}.{1}.{2}", fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart, fileVersionInfo.FileBuildPart);
+            return string.Format(@"",version);
+            
+        }
+
 
         public override IResponseMessageBase OnTextOrEventRequest(RequestMessageText requestMessage)
         {
@@ -187,7 +197,7 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
                 case "Description":
                     {
                         var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                       // strongResponseMessage.Content = GetWelcomeInfo();
+                        strongResponseMessage.Content = GetWelcomeInfo();
                         reponseMessage = strongResponseMessage;
                     }
                     break;
@@ -267,23 +277,23 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
 
             //下载文档
-            if (!string.IsNullOrEmpty(requestMessage.EventKey))
-            {
-                //var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
-                ////var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
-                //var codeRecord =
-                //    ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
+            //if (!string.IsNullOrEmpty(requestMessage.EventKey))
+            //{
+            //    var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
+            //    //var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
+            //    var codeRecord =
+            //        ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
 
 
-                //if (codeRecord != null)
-                //{
-                //    //确认可以下载
-                //    codeRecord.AllowDownload = true;
-                //    responseMessage.Content = GetDownloadInfo(codeRecord);
-                //}
-            }
+            //    if (codeRecord != null)
+            //    {
+            //        //确认可以下载
+            //        codeRecord.AllowDownload = true;
+            //        responseMessage.Content = GetDownloadInfo(codeRecord);
+            //    }
+            //}
 
-            responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
+            //responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
 
 
 
@@ -322,7 +332,7 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
         public override IResponseMessageBase OnEvent_SubscribeRequest(RequestMessageEvent_Subscribe requestMessage)
         {
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-           // responseMessage.Content = GetWelcomeInfo();
+            responseMessage =(ResponseMessageText)EventProcess(6,requestMessage);
             if (!string.IsNullOrEmpty(requestMessage.EventKey))
             {
                 responseMessage.Content += "\r\n============\r\n场景值：" + requestMessage.EventKey;
@@ -330,20 +340,27 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 
             //推送消息
             //下载文档
-            if (requestMessage.EventKey.StartsWith("qrscene_"))
-            {
-                //var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
-                ////var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
-                //var codeRecord =
-                //    ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
+            //if (requestMessage.EventKey.StartsWith("qrscene_"))
+            //{
+            //    var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
+            //    //var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
+            //    var codeRecord =
+            //        ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
 
-                //if (codeRecord != null)
-                //{
-                //    //确认可以下载
-                //    codeRecord.AllowDownload = true;
-                //    Senparc.Weixin.MP.AdvancedAPIs.CustomApi.SendText(null, WeixinOpenId, GetDownloadInfo(codeRecord));
-                //}
-            }
+            //    if (codeRecord != null)
+            //    {
+            //        if (codeRecord.AllowDownload)
+            //        {
+            //            Task.Factory.StartNew(() => AdvancedAPIs.CustomApi.SendTextAsync(null, WeixinOpenId, "下载已经开始，如需下载其他版本，请刷新页面后重新扫一扫。"));
+            //        }
+            //        else
+            //        {
+            //            //确认可以下载
+            //            codeRecord.AllowDownload = true;
+            //            Task.Factory.StartNew(() => AdvancedAPIs.CustomApi.SendTextAsync(null, WeixinOpenId, GetDownloadInfo(codeRecord)));
+            //        }
+            //    }
+            //}
 
 
             return responseMessage;
@@ -463,6 +480,54 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
             //return requestMessage
             //    .CreateResponseMessage<ResponseMessageNoResponse>();
             return null;
+        }
+
+        private IResponseMessageBase EventProcess(int type, RequestMessageEventBase requestMessage)
+        {
+            
+            string EventName = "";
+            if (requestMessage.Event.ToString().Trim() != "")
+            {
+                EventName = requestMessage.Event.ToString();
+            }
+            
+
+            //if (!wxcomm.ExistApiidAndWxId(1, requestMessage.ToUserName))
+            //{  //验证接收方是否为我们系统配置的帐号，即验证微帐号与微信原始帐号id是否一致，如果不一致，说明【1】配置错误，【2】数据来源有问题
+            //    wxResponseBaseMgrDAL.Add(1, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "none", "未取到关键词对应的数据", requestMessage.ToUserName);
+            //    return wxcomm.GetResponseMessageTxtByContent(requestMessage, "验证微帐号与微信原始帐号id不一致，可能原因【1】系统配置错误，【2】非法的数据来源", 1);
+            //}
+
+
+            int responseType = 0;
+            int rid = rBll.GetRuleIdAndResponseType(1, "reqestType=" + type, out responseType);  //取消关注
+            if (rid <= 0 || responseType <= 0)
+            {
+                wxResponseBaseMgrDAL.Add(1, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "none", "未取到关键词对应的数据", requestMessage.ToUserName);
+                return null;
+            }
+
+            IResponseMessageBase reponseMessage = null;
+            switch (responseType)
+            {
+                case 1:
+                    //发送纯文字
+                    reponseMessage = wxcomm.GetResponseMessageTxt(requestMessage, rid, 1);
+                    break;
+                case 2:
+                    //发送多图文
+                    reponseMessage = wxcomm.GetResponseMessageNews(requestMessage, rid, 1);
+                    break;
+                case 3:
+                    //发送语音
+                    reponseMessage = wxcomm.GetResponseMessageeMusic(requestMessage, rid, 1);
+                    break;
+                default:
+                    break;
+            }
+
+            return reponseMessage;
+
         }
     }
 }

@@ -72,9 +72,17 @@
       <Project>{D94BB4F1-DF3F-4BA7-93D2-1C76A1BF1C68}</Project>
       <Name>ThreeArriveAction.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.DAL\ThreeArriveAction.DAL.csproj">
+      <Project>{575a0962-9788-49ef-8472-ea06ba2a6a03}</Project>
+      <Name>ThreeArriveAction.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThreeArriveAction.Model\ThreeArriveAction.Model.csproj">
       <Project>{949E40E6-A255-4E85-8CBA-B0E61FF66378}</Project>
       <Name>ThreeArriveAction.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.Web.UI\ThreeArriveAction.Web.UI.csproj">
+      <Project>{F909338A-1711-4131-958B-12E8F110EB00}</Project>
+      <Name>ThreeArriveAction.Web.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

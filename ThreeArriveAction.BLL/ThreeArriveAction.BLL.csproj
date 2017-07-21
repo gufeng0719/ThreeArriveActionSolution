@@ -60,6 +60,8 @@
     <Compile Include="sys_WeekArrivesBLL.cs" />
     <Compile Include="wx\wx_requestRuleBLL.cs" />
     <Compile Include="wx\wx_requestRuleContentBLL.cs" />
+    <Compile Include="wx\wx_requst_BaseDataBLL.cs" />
+    <Compile Include="wx\wx_response_BaseDataBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreeArriveAction.Common\ThreeArriveAction.Common.csproj">

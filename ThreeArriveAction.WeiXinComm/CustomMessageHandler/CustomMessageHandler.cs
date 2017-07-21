@@ -33,6 +33,7 @@ using Senparc.Weixin;
 using Senparc.Weixin.MP;
 using ThreeArriveAction.WeiXinComm;
 using ThreeArriveAction.WeiXinComm.CustomMessageHandler;
+using ThreeArriveAction.BLL;
 
 namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
@@ -47,12 +48,14 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
          * DefaultResponseMessage必须在子类中重写，用于返回没有处理过的消息类型（也可以用于默认消息，如帮助信息等）；
          * 其中所有原OnXX的抽象方法已经都改为虚方法，可以不必每个都重写。若不重写，默认返回DefaultResponseMessage方法中的结果。
          */
+        wx_requestRuleBLL rBll = new wx_requestRuleBLL();
+        wx_requestRuleContentBLL rcBll = new wx_requestRuleContentBLL();
+        WeiXCommFun wxcomm = new WeiXCommFun();
 
-
-        #if DEBUG
-        string agentUrl = "http://localhost:12222/App/Weixin/4";
-        string agentToken = "27C455F496044A87";
-        string wiweihiKey = "CNadjJuWzyX5bz5Gn+/XoyqiqMa5DjXQ";
+#if DEBUG
+        string agentUrl = "http://wx.haqdj.gov.cn/Ajax/token_ajax.ashx";
+        string agentToken = "Token2017";
+        string wiweihiKey = "jtU2xBgEnE8bQayvnpLR0KAp9JcmypG2Eq4J3qmSfQp";
         #else
         //下面的Url和Token可以用其他平台的消息，或者到www.weiweihi.com注册微信用户，将自动在“微信营销工具”下得到
         private string agentUrl = WebConfigurationManager.AppSettings["WeixinAgentUrl"];//这里使用了www.weiweihi.com微信自动托管平台
@@ -468,10 +471,7 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
         public override IResponseMessageBase OnLinkRequest(RequestMessageLink requestMessage)
         {
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            responseMessage.Content = string.Format(@"您发送了一条连接信息：
-Title：{0}
-Description:{1}
-Url:{2}", requestMessage.Title, requestMessage.Description, requestMessage.Url);
+            responseMessage.Content = string.Format(@"您发送了一条连接信息：Title：{0}Description:{1}Url:{2}", requestMessage.Title, requestMessage.Description, requestMessage.Url);
             return responseMessage;
         }
 

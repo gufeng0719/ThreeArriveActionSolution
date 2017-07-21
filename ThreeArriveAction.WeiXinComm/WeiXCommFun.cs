@@ -4,6 +4,9 @@ using System.Web;
 using ThreeArriveAction.Common;
 using Senparc.Weixin.MP.Entities;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.DAL;
+using ThreeArriveAction.BLL;
+using ThreeArriveAction.Web.UI;
 
 namespace ThreeArriveAction.WeiXinComm
 {
@@ -24,7 +27,7 @@ namespace ThreeArriveAction.WeiXinComm
             string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
             responseMessage.Content = getDataTxtComm(wid, Indexid, openid, token);
-           // wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "text", responseMessage.Content, requestMessage.ToUserName);
+            wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "text", responseMessage.Content, requestMessage.ToUserName);
             return responseMessage;
         }
 
@@ -39,19 +42,19 @@ namespace ThreeArriveAction.WeiXinComm
         {
 
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageMusic>(requestMessage);
-            /*Model.wx_requestRuleContent model_wx = getDataMusicComm(wid, Indexid);
+            wx_requestRuleContentModel model_wx = getDataMusicComm(wid, Indexid);
             if (model_wx == null)
             {
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "music", "-1", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "music", "-1", requestMessage.ToUserName);
             }
             else
             {
                 responseMessage.Music.MusicUrl = model_wx.mediaUrl;
                 responseMessage.Music.Title = model_wx.rContent;
                 responseMessage.Music.Description = model_wx.rContent2;
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "music", "音乐链接：" + model_wx.mediaUrl + "|标题：" + model_wx.rContent + "|描述：" + model_wx.rContent2, requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "music", "音乐链接：" + model_wx.mediaUrl + "|标题：" + model_wx.rContent + "|描述：" + model_wx.rContent2, requestMessage.ToUserName);
 
-            }*/
+            }
 
             return responseMessage;
         }
@@ -68,20 +71,20 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetResponseMessageNews(RequestMessageText requestMessage, int Indexid, int wid)
         {
-            
+
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageNews>(requestMessage);
-            /*string openid = requestMessage.FromUserName;
+            string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
             List<Article> picTxtList = getDataPicTxtComm(wid, Indexid, openid, token);
             if (picTxtList == null || picTxtList.Count <= 0)
             {
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "-1", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "-1", requestMessage.ToUserName);
             }
             else
             {
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "这次发了" + picTxtList.Count + "条图文", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "这次发了" + picTxtList.Count + "条图文", requestMessage.ToUserName);
             }
-            responseMessage.Articles.AddRange(picTxtList);*/
+            responseMessage.Articles.AddRange(picTxtList);
             return responseMessage;
         }
 
@@ -93,16 +96,16 @@ namespace ThreeArriveAction.WeiXinComm
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IResponseMessageBase GetResponseMessageTxtByContent(RequestMessageText requestMessage, string content,int wid)
+        public IResponseMessageBase GetResponseMessageTxtByContent(RequestMessageText requestMessage, string content, int wid)
         {
 
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            /*var locationService = new LocationService();
+            var locationService = new LocationService();
             responseMessage.Content = content;
-            wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "text","文字请求，推送纯粹文字，内容为："+ content, requestMessage.ToUserName);
-           
-             */
-             return responseMessage;
+            wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "text", "文字请求，推送纯粹文字，内容为：" + content, requestMessage.ToUserName);
+
+
+            return responseMessage;
         }
 
         /// <summary>
@@ -115,11 +118,11 @@ namespace ThreeArriveAction.WeiXinComm
         {
 
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            /*var locationService = new LocationService();
+            var locationService = new LocationService();
             responseMessage.Content = content;
-            wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), "微信上墙", "text", "文字请求，推送纯粹文字，内容为：" + content, requestMessage.ToUserName);
-            
-             */
+            wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), "微信上墙", "text", "文字请求，推送纯粹文字，内容为：" + content, requestMessage.ToUserName);
+
+
             return responseMessage;
         }
 
@@ -134,7 +137,7 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetResponseMessageTxt(RequestMessageEventBase requestMessage, int Indexid, int wid)
         {
-            /*
+
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
             string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
@@ -145,16 +148,16 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 EventName = requestMessage.Event.ToString();
             }
-            else if (requestMessage.EventKey != null)
-            {
-                EventName += requestMessage.EventKey.ToString();
-            }
+            //else if (requestMessage. != null)
+            //{
+            //    EventName += requestMessage.Event.ToString();
+            //}
 
-            wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "text", responseMessage.Content, requestMessage.ToUserName);
+            wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "text", responseMessage.Content, requestMessage.ToUserName);
 
             return responseMessage;
-             * */
-            return null;
+
+
         }
         /// <summary>
         /// 2014-9-8新增抽奖功能
@@ -192,35 +195,35 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetResponseMessageeMusic(RequestMessageEventBase requestMessage, int Indexid, int wid)
         {
-            /*
+
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageMusic>(requestMessage);
             string EventName = "";
             if (requestMessage.Event.ToString().Trim() != "")
             {
                 EventName = requestMessage.Event.ToString();
             }
-            else if (requestMessage.EventKey != null)
-            {
-                EventName += requestMessage.EventKey.ToString();
-            }
+            //else if (requestMessage.EventKey != null)
+            //{
+            //    EventName += requestMessage.EventKey.ToString();
+            //}
 
 
-            Model.wx_requestRuleContent model = getDataMusicComm(wid, Indexid);
+            wx_requestRuleContentModel model = getDataMusicComm(wid, Indexid);
             if (model == null)
             {
-              
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "music", "-1", requestMessage.ToUserName);
+
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "music", "-1", requestMessage.ToUserName);
             }
             else
             {
                 responseMessage.Music.MusicUrl = model.mediaUrl;
                 responseMessage.Music.Title = model.rContent;
                 responseMessage.Music.Description = model.rContent2;
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "music", "音乐链接：" + model.mediaUrl + "|标题：" + model.rContent + "|描述：" + model.rContent2, requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "music", "音乐链接：" + model.mediaUrl + "|标题：" + model.rContent + "|描述：" + model.rContent2, requestMessage.ToUserName);
 
             }
-            return responseMessage;*/
-            return null;
+            return responseMessage;
+
         }
 
         /// <summary>
@@ -236,7 +239,7 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetResponseMessageNews(RequestMessageEventBase requestMessage, int Indexid, int wid)
         {
-            /*
+
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageNews>(requestMessage);
             string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
@@ -246,23 +249,23 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 EventName = requestMessage.Event.ToString();
             }
-            else if (requestMessage.EventKey != null)
-            {
-                EventName += requestMessage.EventKey.ToString();
-            }
+            //else if (requestMessage.EventKey != null)
+            //{
+            //    EventName += requestMessage.EventKey.ToString();
+            //}
 
             if (picTxtList == null || picTxtList.Count <= 0)
             {
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "txtpic", "-1", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "txtpic", "-1", requestMessage.ToUserName);
             }
             else
             {
-                wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "txtpic", "这次发了" + picTxtList.Count + "条图文", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "txtpic", "这次发了" + picTxtList.Count + "条图文", requestMessage.ToUserName);
             }
 
             responseMessage.Articles.AddRange(picTxtList);
-            return responseMessage;*/
-            return null;
+            return responseMessage;
+            //return null;
         }
 
         /// <summary>
@@ -271,9 +274,9 @@ namespace ThreeArriveAction.WeiXinComm
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IResponseMessageBase GetResponseMessageTxtByContent(RequestMessageEventBase requestMessage, string content,int wid)
+        public IResponseMessageBase GetResponseMessageTxtByContent(RequestMessageEventBase requestMessage, string content, int wid)
         {
-            /*
+
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
             var locationService = new LocationService();
             responseMessage.Content = content;
@@ -282,20 +285,19 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 EventName = requestMessage.Event.ToString();
             }
-            else if (requestMessage.EventKey != null)
-            {
-                EventName += requestMessage.EventKey.ToString();
-            }
-            wxResponseBaseMgr.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "text", "事件：推送纯粹的文字，内容为:" + content, requestMessage.ToUserName);
+            //else if (requestMessage.EventKey != null)
+            //{
+            //    EventName += requestMessage.EventKey.ToString();
+            //}
+            wxResponseBaseMgrDAL.Add(wid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "text", "事件：推送纯粹的文字，内容为:" + content, requestMessage.ToUserName);
 
-            return responseMessage;*/
-            return null;
+            return responseMessage;
         }
 
 
         #endregion
 
-        #region 模块功能的回复内容
+        /*#region 模块功能的回复内容
 
         /// <summary>
         /// 模块功能回复【请求为‘文字’类型】
@@ -307,7 +309,7 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetModuleResponse(RequestMessageText requestMessage, string modelFunctionName, int modelFunctionId, int apiid)
         {
-            /*
+            
             string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
 
@@ -360,7 +362,7 @@ namespace ThreeArriveAction.WeiXinComm
                 }
 
                 responseMessage.Articles.AddRange(rArticlelist);
-                wxResponseBaseMgr.Add(apiid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "这次发了" + rArticlelist.Count+ "条图文", requestMessage.ToUserName);
+                wxResponseBaseMgrDAL.Add(apiid, requestMessage.FromUserName, requestMessage.MsgType.ToString(), requestMessage.Content, "txtpic", "这次发了" + rArticlelist.Count+ "条图文", requestMessage.ToUserName);
 
                 return responseMessage;
 
@@ -369,8 +371,8 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 return null;
             }
-           */
-            return null;
+           
+            //return null;
 
         }
 
@@ -385,7 +387,7 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public IResponseMessageBase GetModuleResponse(RequestMessageEventBase requestMessage, string modelFunctionName, int modelFunctionId, int apiid)
         {
-            /*
+            
             string openid = requestMessage.FromUserName;
             string token = ConvertDateTimeInt(DateTime.Now).ToString();
 
@@ -444,21 +446,18 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 return null;
             }
-            */
-            return null;
-
         }
-       
-      
+
+
 
 
 
         #endregion
-
+    */
 
         #region 从数据库里读取数据
 
-        //BLL.wx_requestRuleContent rcBll = new BLL.wx_requestRuleContent();
+        wx_requestRuleContentBLL rcBll = new wx_requestRuleContentBLL();
 
         /// <summary>
         /// 从数据库里取文本类型的值
@@ -469,14 +468,14 @@ namespace ThreeArriveAction.WeiXinComm
         {
             //随机数
 
-            //string content = rcBll.GetTxtContent(Indexid);
-            //if (content.Contains("{openid}"))
-            //{
-            //    content = content.Replace("{openid}", openid);
-            //}
-            //content = ProcTitle(content, openid);
-            //return content;
-            return "";
+            string content = rcBll.GetTxtContent(Indexid);
+            if (content.Contains("{openid}"))
+            {
+                content = content.Replace("{openid}", openid);
+            }
+            content = ProcTitle(content, openid);
+            return content;
+            //return "";
 
         }
         /// <summary>
@@ -488,11 +487,8 @@ namespace ThreeArriveAction.WeiXinComm
         /// <returns></returns>
         public string getDataTxtComm(string openid)
         {
-            //string content = rcBll.GetTxtContent(openid);
-       
-            //return content;
-            return "";
-
+            string content = rcBll.GetTxtContent(openid);
+            return content;
         }
         /// <summary>
         /// 从数据库里取语音类型的值
@@ -503,9 +499,9 @@ namespace ThreeArriveAction.WeiXinComm
         public wx_requestRuleContentModel getDataMusicComm(int wid, int Indexid)
         {
 
-            //Model.wx_requestRuleContentModel model = rcBll.GetMusicContent(Indexid);
-            //return model;
-            return null;
+            Model.wx_requestRuleContentModel model = rcBll.GetMusicContent(Indexid);
+            return model;
+            //return null;
 
         }
 
@@ -521,38 +517,33 @@ namespace ThreeArriveAction.WeiXinComm
         {
             List<Article> retlist = new List<Article>();
             string website = MyCommFun.getWebSite();
-
-
-            /*
             IList<wx_requestRuleContentModel> twList = rcBll.GetTuWenContent(Indexid);
-
-
             Article article = new Article();
-            //for (int i = 0; i < twList.Count(); i++)
-            //{
-            //    article = new Article();
-            //    article.Title = ProcTitle(twList[i].rContent, openid);
-            //    article.Description = twList[i].rContent2;
-            //    article.Url = getWXApiUrl(twList[i].detailUrl, token, openid) + rcBll.cardnoStr(wid, openid) + getWxUrl_suffix();
-            //    if (twList[i].picUrl == null || twList[i].picUrl.ToString().Trim() == "")
-            //    {
-            //        article.PicUrl = "";
-            //    }
-            //    else
-            //    {
-            //        if (twList[i].picUrl.Contains("http://"))
-            //        {
-            //            article.PicUrl = twList[i].picUrl;
-                       
-            //        }
-            //        else
-            //        {
-            //            article.PicUrl = website + twList[i].picUrl;
-            //        }
-            //    }
-            //    retlist.Add(article);
-            //}
-            */
+            for (int i = 0; i < twList.Count; i++)
+            {
+                article = new Article();
+                article.Title = ProcTitle(twList[i].rContent, openid);
+                article.Description = twList[i].rContent2;
+                article.Url = getWXApiUrl(twList[i].detailUrl, token, openid);
+                if (twList[i].picUrl == null || twList[i].picUrl.ToString().Trim() == "")
+                {
+                    article.PicUrl = "";
+                }
+                else
+                {
+                    if (twList[i].picUrl.Contains("http://"))
+                    {
+                        article.PicUrl = twList[i].picUrl;
+
+                    }
+                    else
+                    {
+                        article.PicUrl = website + twList[i].picUrl;
+                    }
+                }
+                retlist.Add(article);
+            }
+
             return retlist;
 
         }
@@ -566,15 +557,16 @@ namespace ThreeArriveAction.WeiXinComm
         public bool ExistApiidAndWxId(int apiid, string wxid)
         {
             bool exists = true;
-            //DAL.wx_userweixin weixinDal = new DAL.wx_userweixin();
-            //if (weixinDal.ExistsWidAndWxId(apiid, wxid))
-            //{
-            //    exists = true;
-            //}
-            //else
-            //{
-            //    exists = false;
-            //}
+
+            wx_userweixin weixinModel = new ManagePage().GetWeiXinCode();
+            if (string.Equals(weixinModel.AppId, apiid) && string.Equals(weixinModel.wxId, wxid))
+            {
+                exists = true;
+            }
+            else
+            {
+                exists = false;
+            }
 
             return exists;
         }
@@ -621,7 +613,7 @@ namespace ThreeArriveAction.WeiXinComm
 
         public string getWXApiUrl(string url, string token, string openid)
         {
-            
+
             string ret = "";
             if (url.Contains("?"))
             {
@@ -631,7 +623,7 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 ret = url + "?token=" + token + "&openid=" + openid;
             }
-           
+
             return ret;
         }
 

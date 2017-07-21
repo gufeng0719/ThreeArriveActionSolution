@@ -52,11 +52,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Senparc.Weixin">
-      <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.dll</HintPath>
+    <Reference Include="Senparc.Weixin, Version=4.9.0.988, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.4.9.0\lib\net40\Senparc.Weixin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Senparc.Weixin.MP">
-      <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.MP.dll</HintPath>
+    <Reference Include="Senparc.Weixin.MP, Version=14.3.104.988, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Senparc.Weixin.MP.14.3.104\lib\net40\Senparc.Weixin.MP.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SqlHelper">
       <HintPath>..\ThreeArriveAction.Common\Reference\SqlHelper.dll</HintPath>
@@ -88,6 +90,7 @@
     <Content Include="admin\js\pinyin.js" />
     <Content Include="admin\weixin\addNews.html" />
     <Content Include="admin\weixin\subscribe.html" />
+    <Content Include="admin\weixin\wxMenu.html" />
     <Content Include="editor\plugins\baidumap\weixinIndex.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="images\weixin\buty.png" />
@@ -1318,11 +1321,7 @@
     <Folder Include="scripts\datepicker\skin\whyGreen\" />
     <Folder Include="upload\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="log\" />
-    <Folder Include="scripts\datepicker\skin\whyGreen\" />
-    <Folder Include="upload\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
