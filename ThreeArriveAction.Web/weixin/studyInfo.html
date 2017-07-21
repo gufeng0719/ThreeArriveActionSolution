@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <title>三到行动-在线学习</title>>
+</head>
+<body style="width: 94%; margin-left: 3%">
+    <div class="banner">
+        <img src="../images/weixin/banner.png">
+    </div>
+    <div style="text-align: center" id="app">
+        <h3>{{title}}</h3>
+        <div style="height: 24px; text-align: right;border-bottom: #d2d2d2 1px solid;font-size: 12px">
+            <span style="color:#d2d2d2">
+                by:{{userName}}&nbsp;&nbsp;&nbsp; 日期:{{time}}&nbsp;&nbsp;&nbsp; 类型:<span class="type">{{type}}</span>
+            </span>
+        </div>
+        <div class="content" v-html="content">{{content}}</div>
+    </div>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/weixin/main.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                title: "",
+                content: "",
+                time: "",
+                userName: "",
+                type: ""
+            },
+            mounted: function () {
+                var that = this;
+                $.ajax({
+                    type: "post",
+                    url: "../Ajax/sys_InteractionLearnsManager.ashx",
+                    data: {
+                        type: "getModel",
+                        id: req["id"]
+                    },
+                    complete: function (d) {
+                        var obj = window.JSON.parse(d.responseText);
+                        that.title = obj.title;
+                        that.content = obj.content;
+                        that.time = obj.time;
+                        that.userName = obj.userName;
+                        that.type = obj.type;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

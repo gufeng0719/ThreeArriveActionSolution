@@ -18,7 +18,7 @@
             width: 40%;
         }
 
-        div.type {
+        span.type {
             background-color: #FFFFCC;
             padding: 3px;
             border-radius: 5px;
@@ -28,11 +28,7 @@
         }
 
         div.title {
-        }
 
-        table tr {
-            border-top: #d2d2d2 1px solid;
-            height: 48px;
         }
 
     </style>
@@ -68,22 +64,28 @@
             </div>
             <div style="text-align: left;">
                 <div style="width: 100%;margin-top: -20px;">
-                    <input type="text" v-model="title" style="width: 60%" placeholder="输入关键字, 多个关键字可用逗号隔开"/>
-                    <input type="button" class="btn" value="检索" 
+                    <input type="text" v-model="title" style="width: 60%" placeholder="输入关键字, 多个关键字可用逗号隔开" />
+                    <input type="button" class="btn" value="检索"
                            @click="getpage(1)" style="width: 19%;margin: 4%;height: 31px;" />
                 </div>
             </div>
         </div>
         <div class="row">
             <table style="width: 90%;margin-left: 5%">
-                <tr v-for="model in list">
-                    <td style="width: 78%">
-                        <div class="title">{{model.context}}</div>
-                    </td>
-                    <td>
-                        <div class="type">{{model.type}}</div>
-                    </td>
-                </tr>
+                <template v-for="model in list">
+                    <tr @click="toInfo(model.id)">
+                        <td style="width: 78%">
+                            <div class="title">{{model.title}}</div>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: #d2d2d2 1px solid;font-size: 12px" @click="toInfo(model.id)">
+                        <td colspan="2" style="height: 24px; text-align: right">
+                            <b>
+                                by:{{model.userName}}&nbsp;&nbsp;&nbsp; 日期:{{model.time}}&nbsp;&nbsp;&nbsp; 类型:<span class="type">{{model.type}}</span>
+                            </b>
+                        </td>
+                    </tr>
+                </template>
                 <tr v-if="list.length <= 0">
                     <td colspan="3" style="text-align:center">
                         <b>暂无数据</b>

@@ -36,8 +36,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SqlHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -86,13 +86,11 @@
   <ItemGroup>
     <Content Include="Reference\Dapper.dll" />
     <Content Include="Reference\Dapper.xml" />
+    <Content Include="Reference\Newtonsoft.Json.dll" />
     <Content Include="Reference\Senparc.Weixin.dll" />
     <Content Include="Reference\Senparc.Weixin.MP.dll" />
     <Content Include="Reference\SqlHelper.dll" />
     <Content Include="Reference\SqlHelper.XML" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreeArriveAction.Model\ThreeArriveAction.Model.csproj">

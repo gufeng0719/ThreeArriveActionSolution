@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>淮安区组织部微信平台</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="tab-content">
+        <dl>
+            <dt>文章类型</dt>
+            <dd>
+                <label><input type="radio" name="type" value="1" />最新政策</label>
+                <label><input type="radio" name="type" value="2" />法律常识</label>
+                <label><input type="radio" name="type" value="3" />学习视频</label>
+                <label><input type="radio" name="type" value="4" />案例</label>
+                <label><input type="radio" name="type" value="5" />考试题库</label>
+                <label><input type="radio" name="type" value="6" />三到之星</label>
+            </dd>
+        </dl>
+        <dl>
+            <dt>标题</dt>
+            <dd>
+                <input type="text" id="title" name="title" class="input normal" datatype="*"
+                       sucmsg=" " errormsg="请输入文章标题" />
+            </dd>
+        </dl>
+        <dl>
+            <dt>备注说明</dt>
+            <dd>
+                <iframe name="ueditor" id="ueditor" src="../ueditor/index.html" width="1060" height="620"
+                        frameborder="0" scrolling="no" seamless="seamless"></iframe>
+            </dd>
+        </dl>
+    </div>
+    <div class="page-footer">
+        <div class="btn-list">
+            <button type="submit" class="btn" id="btnSave" onclick="submit()">
+                提交保存
+            </button>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script>
+        function submit() {
+            var content = document.getElementById('ueditor').contentWindow.getContent();
+            $.ajax({
+                type: "post",
+                url: "../Ajax/sys_InteractionLearnsManager.ashx",
+                data: {
+                    type: "add",
+                    studyType: $("[name='type']:checked").val(),
+                    title: $("#title").val(),
+                    content: content
+                },
+                complete: function (d) {
+                    if (d.responseText > 0) {
+                        alert("发布成功,请勿重复发布");
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

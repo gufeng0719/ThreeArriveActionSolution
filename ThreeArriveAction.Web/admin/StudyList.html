@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>淮安区组织部微信平台</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .hover {
+            color: #333;
+            background-color: #e6e6e6;
+            border-color: #adadad;
+        }
+    </style>
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>菜单列表</span>
+        </div>
+        <!--/导航栏-->
+        <!--列表-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable" id="app">
+            <thead>
+                <tr>
+                    <th width="8%">
+                        Id
+                    </th>
+                    <th align="left">
+                        标题
+                    </th>
+                    <th align="left" width="8%">
+                        作者
+                    </th>
+                    <th align="left" width="8%">
+                        日期
+                    </th>
+                    <th align="left" width="6%">
+                        类型
+                    </th>
+                    <th width="12%">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr v-for="model in list">
+                    <td>
+                        {{model.id}}
+                    </td>
+                    <td>
+                        {{model.title}}
+                    </td>
+                    <td>
+                        {{model.userName}}
+                    </td>
+                    <td>
+                        {{model.time}}
+                    </td>
+                    <td>
+                        {{model.type}}
+                    </td>
+                    <td>
+                        <input type="button" class="btn" value="删除" v-on:click="deleteModel(model.id)">
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr v-if="list.length<1">
+                    <td style="text-align: center" colspan="20">
+                        <b style="font-size: 14px; font-family: fantasy">
+                            暂无数据
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="20" style="text-align: right; padding-right: 20px">
+                        <input type="button" class="btn btn-default" value="上一页" v-bind:disabled="page <= 1" />
+                        <input type="button" v-for="count in pageCount"
+                               v-bind:class="'btn btn-default ' + (count == page ? 'hover' : '')"
+                               v-bind:value="count" />
+                        <input type="button" class="btn btn-default" value="下一页" v-bind:disabled="total / size < page" />
+                        <span>
+                            共{{total}}条数据
+                        </span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </form>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                list: [],
+                page: 1,
+                total: 0,
+                size: 15,
+                pageCount: 0
+            },
+            methods: {
+                deleteModel: function (id) {
+                    var that = this;
+                    if (window.confirm("删除后将不可恢复, 是否继续?")) {
+                        $.ajax({
+                            type: "post",
+                            url: "../Ajax/sys_InteractionLearnsManager.ashx",
+                            data: {
+                                type: "delete",
+                                id: id
+                            },
+                            complete: function (d) {
+                                if (d.responseText > 0) {
+                                    var tempPage = that.list.length > 1 ? that.page : that.page - 1;
+                                    that.getpage(tempPage);
+                                }
+                            }
+                        });
+                    }
+                },
+                getpage: function(page) {
+                    var that = this;
+                    $.ajax({
+                        type: "post",
+                        url: "../Ajax/sys_InteractionLearnsManager.ashx",
+                        data: {
+                            type: "getPageList",
+                            size: that.size,
+                            page: page
+                        },
+                        complete: function (d) {
+                            var obj = window.JSON.parse(d.responseText);
+                            that.list = obj.list;
+                            that.page = obj.page;
+                            that.total = obj.totle;
+                            that.pageCount = Math.ceil(that.total / that.size);
+                        }
+                    });
+                }
+            },
+            mounted: function () {
+                this.getpage(1);
+            }
+        });
+    </script>
+</body>
+</html>
