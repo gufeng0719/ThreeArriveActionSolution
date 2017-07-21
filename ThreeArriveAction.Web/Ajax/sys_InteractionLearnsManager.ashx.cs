@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Web;
 using ThreeArriveAction.Common;
@@ -20,10 +20,51 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetPageList(context);
             }
+            else if (type == "add")
+            {
+                Add(context);
+            }
+            else if (type == "getModel")
+            {
+                GetModel(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
             }
+        }
+
+        private void GetModel(HttpContext context)
+        {
+            var id = context.Request["id"];
+            var sh = new SqlHelper<sys_InteractionLearnsModel>(new sys_InteractionLearnsModel());
+            sh.AddWhere("LearnId", id);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                context.Response.Write("错误的Id:" + id);
+                return;
+            }
+            context.Response.Write(new
+            {
+                title = model.LearnTitle,
+                content = model.LearnContent
+            }.ToJson());
+        }
+
+        private void Add(HttpContext context)
+        {
+            //var user = new ManagePage().GetUsersinfo();
+            var sh = new SqlHelper<sys_InteractionLearnsModel>(new sys_InteractionLearnsModel
+            {
+                LearnContent = context.Request["content"],
+                LearnTitle = context.Request["title"],
+                LearnType = context.Request["studyType"].ToInt(),
+                PublishDate = DateTime.Now,
+                Publisher = 1
+            });
+            var line = sh.Insert();
+            context.Response.Write(line);
         }
 
         private void GetPageList(HttpContext context)
@@ -57,9 +98,31 @@ namespace ThreeArriveAction.Web.Ajax
                     sh.AddWhere(" OR LearnTitle LIKE '%" + title[i] + "%'  ");
             }
             var list = sh.Select();
+            var sysInteractionLearnsModels = list as sys_InteractionLearnsModel[] ?? list.ToArray();
+            if (!sysInteractionLearnsModels.Any())
+            {
+                context.Response.Write(new
+                {
+                    list = new ArrayList(),
+                    page,
+                    totle = 0,
+                    sql = ""
+                }.ToJson());
+                return;
+            }
+            var userSh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            userSh.AddWhere(" AND UserId in (" + string.Join(",", sysInteractionLearnsModels.Select(x => x.Publisher)) + ")");
+            var userlist = userSh.Select();
             context.Response.Write(new
             {
-                list = list.Select(x => new { }),
+                list = sysInteractionLearnsModels.Select(x => new
+                {
+                    id = x.LearnId,
+                    title = x.LearnTitle,
+                    time = x.PublishDate.ToString("yyyy-M-d"),
+                    userName = userlist.FirstOrDefault(u => x.Publisher == u.UserId)?.UserName ?? "管理员",
+                    type = ((StudyEnum)x.LearnType).ToString()
+                }),
                 page,
                 totle = sh.Total,
                 sql = sh.SqlString.ToString()

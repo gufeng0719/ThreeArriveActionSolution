@@ -38,6 +38,9 @@
                     }
                 }
             });
+        },
+        toInfo: function (id) {
+            window.open("studyInfo.html?id=" + id, "_self");
         }
     },
     watch: {
@@ -45,7 +48,7 @@
             this.getpage(1);
         }
     },
-    mounted: function() {
+    mounted: function () {
         this.getpage(1);
     }
 });
