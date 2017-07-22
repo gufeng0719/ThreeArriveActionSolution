@@ -52,12 +52,17 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Senparc.Weixin">
       <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin.MP, Version=14.3.104.988, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Senparc.Weixin.MP.14.3.104\lib\net40\Senparc.Weixin.MP.dll</HintPath>
       <Private>True</Private>
+    </Reference>
     <Reference Include="SqlHelper">
       <HintPath>..\ThreeArriveAction.Common\Reference\SqlHelper.dll</HintPath>
     </Reference>
@@ -1583,8 +1588,7 @@
   <ItemGroup>
     <Content Include="Ajax\sys_UsersManager.ashx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="scripts\datepicker\skin\whyGreen\" />
+  <!--<Folder Include="scripts\datepicker\skin\whyGreen\" />-->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
