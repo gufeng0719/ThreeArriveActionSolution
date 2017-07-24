@@ -1376,6 +1376,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\sys_SignInfoManager.ashx.cs">
+      <DependentUpon>sys_SignInfoManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\token_ajax.ashx.cs">
       <DependentUpon>token_ajax.ashx</DependentUpon>
     </Compile>
@@ -1500,6 +1503,7 @@
     <Content Include="Ajax\token_ajax.ashx" />
     <Content Include="Ajax\wxrequestRulesManager.ashx" />
     <Content Include="Ajax\wxMenuManager.ashx" />
+    <Content Include="Ajax\sys_SignInfoManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />

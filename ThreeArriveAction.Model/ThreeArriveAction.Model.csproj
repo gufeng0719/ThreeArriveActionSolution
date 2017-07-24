@@ -55,6 +55,7 @@
     <Compile Include="sys_OrganizationsModel.cs" />
     <Compile Include="sys_PublicMessagesModel.cs" />
     <Compile Include="sys_ReplaysModel.cs" />
+    <Compile Include="sys_SignInfoModel.cs" />
     <Compile Include="sys_SignsModel.cs" />
     <Compile Include="sys_SubscriberFamilyModel.cs" />
     <Compile Include="sys_ThingRecordsModel.cs" />

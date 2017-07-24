@@ -9,6 +9,21 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title>三到行动</title>
+    <style>
+        .flag {
+            background-color: red;
+            width: 15px;
+            border-radius: 61px;
+            font-size: 12px !important;
+            color: white;
+            height: 19px;
+            padding-top: 0 !important;
+            padding-bottom: 11px !important;
+            position: relative;
+            top: -11px;
+            left: 66%;
+        }
+    </style>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <!--top开始-->
@@ -64,10 +79,37 @@
                     </p>
                 </a>
             </li>
+            <li>
+                <a href="majorInfo.html">
+                    <p>
+                        <span class="flag">
+                            15
+                        </span>
+                        <img src="../images/weixin/七户信息修改.png" style="width: 55%;margin-top: -28px;" /><span style="font-size: 12px;">
+                            重要信息
+                        </span>
+                    </p>
+                </a>
+            </li>
+            <li>
+                <a href="javascrpit:void()">
+                    <p onclick="clearLogin()">
+                        <img src="../images/weixin/七户信息修改.png" style="width: 55%;" /><span style="font-size: 12px;">清除缓存</span>
+                    </p>
+                </a>
+            </li>
         </ul>
     </div>
     <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script src="../scripts/weixin/main.js"></script>
-    <script src="../scripts/require/r.js" data-main="/scripts/weixin/login.js?r=3"></script>
+    <link href="../scripts/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="../scripts/sweetalert/sweetalert.min.js"></script>
+    <script src="../scripts/weixin/login.js?r=3"></script>
+    <script>
+        function clearLogin() {
+            window.localStorage.clear();
+            alert("清除成功, 请关闭微信重新打开.");
+        }
+    </script>
 </body>
 </html>

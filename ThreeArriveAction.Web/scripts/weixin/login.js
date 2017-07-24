@@ -18,7 +18,8 @@ $(function () {
     if (!localStorage.getItem("current_user")) {
         signVerification();
     }
-    if (JSON.parse(localStorage.getItem("current_user")).UserRemark !== localStorage.getItem("openId")) {
+    var model = JSON.parse(localStorage.getItem("current_user"))
+    if (!model || model.UserRemark !== localStorage.getItem("openId")) {
         signVerification();
     }
 });

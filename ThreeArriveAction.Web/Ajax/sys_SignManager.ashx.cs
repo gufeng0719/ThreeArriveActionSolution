@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Web;
 using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
@@ -28,6 +29,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "add":
                     AddSignInfo(context);
+                    break;
+                case "getSignList":
+                    GetSignList(context);
                     break;
             }
         }
@@ -120,7 +124,7 @@ namespace ThreeArriveAction.Web.Ajax
                 if (openId.IsNullOrEmpty())
                 {
                     context.Response.Write("<script>parent.location.href=http://'" + HttpContext.Current.Request.Url.Authority + "/login.html'</script>");
-                    
+
                     return;
                 }
                 else
@@ -142,6 +146,34 @@ namespace ThreeArriveAction.Web.Ajax
 
             string result = signsBLL.AddSign(model.UserId, model.VillageId, model.OrganizationId);
             context.Response.Write(result);
+        }
+        #endregion
+
+        #region 获取已经签到的列表
+        public void GetSignList(HttpContext context)
+        {
+            var villageId = context.Request["villageId"].ToInt();
+            var userSh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
+            userSh.AddWhere("VillageId", villageId);
+            var needSign = userSh.Select();
+            var sysUsersModels = needSign as sys_UsersModel[] ?? needSign.ToArray();
+            if (!sysUsersModels.Any())
+            {
+                context.Response.Write(new ArrayList().ToJson());
+                return;
+            }
+            var signSh = new SqlHelper<sys_SignsModel>(new sys_SignsModel());
+            signSh.AddWhere(" AND SignDate >= '" + DateTime.Now.ToString("yyyy-MM-dd") +
+                            "' AND SignUserId IN (" + string.Join(",", sysUsersModels.Select(x => x.UserId)) + ")");
+            signSh.AddOrder("SignDate", SortEnum.Asc);
+            var sign = signSh.Select();
+            var sysSignsModels = sign as sys_SignsModel[] ?? sign.ToArray();
+
+            context.Response.Write(sysSignsModels.ToList().Select(x => new
+            {
+                time = x.SignDate.ToString("yyyy-M-d hh:mm:ss"),
+                name = sysUsersModels.FirstOrDefault(s => s.UserId == x.SignUserId)?.UserName ?? "管理员"
+            }).ToJson());
         }
         #endregion
 
