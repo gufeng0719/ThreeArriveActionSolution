@@ -72,7 +72,7 @@ namespace ThreeArriveAction.Web.Ajax
             var path4 = context.Request["path4"];
             var msg = context.Request["msg"] ?? "";
             var signSh = new SqlHelper<sys_SignsModel>(new sys_SignsModel());
-            signSh.AddWhere("SignId", userId);
+            signSh.AddWhere("SignUserId", userId);
             signSh.AddWhere("SignDate", DateTime.Now.ToString("yyyy-MM-dd"), RelationEnum.GreaterEqual);
             var sign = signSh.Select().FirstOrDefault();
             if (sign == null)

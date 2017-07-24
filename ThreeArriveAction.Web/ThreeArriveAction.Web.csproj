@@ -97,6 +97,7 @@
     <Content Include="admin\weixin\addNews.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
+    <Content Include="scripts\weixin\major.js" />
     <Content Include="ueditor\dialogs\attachment\attachment.css" />
     <Content Include="ueditor\dialogs\attachment\attachment.html" />
     <Content Include="ueditor\dialogs\attachment\attachment.js" />
@@ -1353,12 +1354,6 @@
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
-    <Content Include="upload\201707\20\201707202152511074.png" />
-    <Content Include="upload\201707\20\201707202155156644.png" />
-    <Content Include="upload\201707\20\201707202159414210.png" />
-    <Content Include="upload\201707\21\201707210950074142.png" />
-    <Content Include="upload\201707\21\201707211343570407.png" />
-    <Content Include="upload\201707\21\201707211350592865.png" />
     <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />
@@ -1376,6 +1371,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\sys_MajorInfoManager.ashx.cs">
+      <DependentUpon>sys_MajorInfoManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Ajax\sys_SignInfoManager.ashx.cs">
       <DependentUpon>sys_SignInfoManager.ashx</DependentUpon>
     </Compile>
@@ -1504,6 +1502,7 @@
     <Content Include="Ajax\wxrequestRulesManager.ashx" />
     <Content Include="Ajax\wxMenuManager.ashx" />
     <Content Include="Ajax\sys_SignInfoManager.ashx" />
+    <Content Include="Ajax\sys_MajorInfoManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1602,6 +1601,7 @@
     <None Include="scripts\lhgdialog\skins\igreen\ie6\vssver2.scc" />
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
+    <Content Include="weixin\major.html" />
     <Content Include="weixin\majorInfo.html" />
     <Content Include="weixin\onButys.html" />
     <Content Include="weixin\onButysSet.html" />

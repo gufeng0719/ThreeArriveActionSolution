@@ -13,7 +13,7 @@
         .flag {
             background-color: red;
             width: 15px;
-            border-radius: 61px;
+            border-radius: 15px;
             font-size: 12px !important;
             color: white;
             height: 19px;
@@ -22,6 +22,8 @@
             position: relative;
             top: -11px;
             left: 66%;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
         }
     </style>
 </head>
@@ -80,10 +82,10 @@
                 </a>
             </li>
             <li>
-                <a href="majorInfo.html">
+                <a href="major.html">
                     <p>
                         <span class="flag">
-                            15
+                            N
                         </span>
                         <img src="../images/weixin/七户信息修改.png" style="width: 55%;margin-top: -28px;" /><span style="font-size: 12px;">
                             重要信息
@@ -110,6 +112,24 @@
             window.localStorage.clear();
             alert("清除成功, 请关闭微信重新打开.");
         }
+
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: "../Ajax/sys_MajorInfoManager.ashx",
+                data: {
+                    type: "getUnreadNumber",
+                    userId: JSON.parse(localStorage.getItem("current_user")).UserId
+                },
+                complete: function (d) {
+                    if (d.responseText == 0) {
+                        $("span[class='flag']").hide();
+                    } else {
+                        $("span[class='flag']").html(d.responseText);
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>

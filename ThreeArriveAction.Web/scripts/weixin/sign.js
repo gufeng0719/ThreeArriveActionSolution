@@ -148,14 +148,22 @@ function pz(type) {
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
         success: function (res) {
-            if (type === 1)
+            if (type === 1) {
                 image1 = res.localIds.toString()
-            if (type === 2)
+                $("#image1").attr("src", image1);
+            }
+            if (type === 2) {
                 image2 = res.localIds.toString()
-            if (type === 3)
+                $("#image2").attr("src", image2);
+            }
+            if (type === 3) {
                 image3 = res.localIds.toString()
-            if (type === 4)
+                $("#image3").attr("src", image3);
+            }
+            if (type === 4) {
                 image4 = res.localIds.toString()
+                $("#image4").attr("src", image4);
+            }
         }
     });
 }
@@ -177,68 +185,55 @@ function submit() {
         alert("请上传工作布置记录照片");
         return;
     }
-    var path1 = downFile(1);
-    var path2 = downFile(2);
-    var path3 = downFile(3);
-    var path4 = downFile(4);
-
-    $.ajax({
-        type: "post",
-        url: "../Ajax/sys_SignInfoManager.ashx",
-        data: {
-            type: "add",
-            userId: JSON.parse(localStorage.getItem("current_user")).UserId,
-            path1: path1,
-            path2: path2,
-            path3: path3,
-            path4: path4,
-            msg: $("#msg").val()
-        },
-        complete: function (d) {
-            if (d.responseText > 0) {
-                alert("提交成功~");
-                window.open("index.html", "_self");
+    downFile([image1, image2, image3, image4], function (imgs) {
+        $.ajax({
+            type: "post",
+            url: "../Ajax/sys_SignInfoManager.ashx",
+            data: {
+                type: "add",
+                userId: JSON.parse(localStorage.getItem("current_user")).UserId,
+                path1: imgs[0],
+                path2: imgs[1],
+                path3: imgs[2],
+                path4: imgs[3],
+                msg: $("#msg").val()
+            },
+            complete: function (d) {
+                if (d.responseText > 0) {
+                    alert("提交成功~");
+                    window.open("index.html", "_self");
+                }
             }
-        }
+        });
     });
-
 }
 
-function downFile(type) {
-    var obj;
-    var image = "";
-    if (type === 1) {
-        image = image1;
-    }
-    if (type === 2) {
-        image = image2;
-    }
-    if (type === 3) {
-        image = image3;
-    }
-    if (type === 4) {
-        image = image4;
-    }
-    wx.uploadImage({
-        localId: image,
-        isShowProgressTips: 1,
-        success: function (res) {
-            $.ajax({
-                url: "../Ajax/weixinInfo.ashx",
-                type: "post",
-                async: false,
-                data: {
-                    type: "downFile",
-                    mediaId: res.serverId,
-                    openId: localStorage.getItem("openId")
-                },
-                success: function (d) {
-                    obj = d;
-                }
-            });
-        }
+function downFile(imgs, callback) {
+    var obj = [];
+    imgs.forEach((img) => {
+        wx.uploadImage({
+            localId: img,
+            isShowProgressTips: 1,
+            success: function (res) {
+                $.ajax({
+                    url: "../Ajax/weixinInfo.ashx",
+                    type: "post",
+                    async: false,
+                    data: {
+                        type: "downFile",
+                        mediaId: res.serverId,
+                        openId: localStorage.getItem("openId")
+                    },
+                    success: function (d) {
+                        obj.push(d);
+                        if (obj.length === imgs.length) {
+                            callback(obj);
+                        }
+                    }
+                });
+            }
+        });
     });
-    return obj;
 }
 
 function getIsSubmit() {
