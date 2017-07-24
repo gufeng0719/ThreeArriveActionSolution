@@ -57,10 +57,12 @@
     <Compile Include="sys_VillagesDAL.cs" />
     <Compile Include="sys_WeekArrivesDAL.cs" />
     <Compile Include="wx\wxResponseBaseMgrDAL.cs" />
+    <Compile Include="wx\wx_property_infoDAL.cs" />
     <Compile Include="wx\wx_requestRuleContentDAL.cs" />
     <Compile Include="wx\wx_requestRuleDAL.cs" />
     <Compile Include="wx\wx_requst_BaseDataDAL.cs" />
     <Compile Include="wx\wx_response_BaseDataDAL.cs" />
+    <Compile Include="wx\wx_userweixinDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThreeArriveAction.Common\ThreeArriveAction.Common.csproj">

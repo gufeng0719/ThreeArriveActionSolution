@@ -85,7 +85,6 @@
     <Compile Include="wx\wx_userweixin.cs" />
     <Compile Include="wx\wx_wsite_modulebase.cs" />
     <Compile Include="wx\wx_wsite_setting.cs" />
-    <Compile Include="wx_MenusModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

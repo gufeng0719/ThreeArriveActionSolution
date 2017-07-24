@@ -182,14 +182,15 @@ namespace ThreeArriveAction.Web.UI
         /// </summary>
         public wx_userweixin GetWeiXinCode()
         {
-            wx_userweixin weixin = new wx_userweixin();
-            weixin.id = 1;
-            weixin.wxName = "淮安区三到行动";
-            weixin.wxId = "gh_9d7c970705cb";
-            weixin.weixinCode = "haqsdxd";
-            weixin.wxToken = "Token2017";
-            weixin.AppId = "wx7c32c023241aba89";
-            weixin.AppSecret = "ed9fa9aaf2c12f9e110a12b83f8d9d08";
+            wx_userweixinBLL wxBLL = new wx_userweixinBLL();
+            wx_userweixin weixin = wxBLL.GetModel(1);
+            //weixin.id = 1;
+            //weixin.wxName = "淮安区三到行动";
+            //weixin.wxId = "gh_9d7c970705cb";
+            //weixin.weixinCode = "haqsdxd";
+            //weixin.wxToken = "Token2017";
+            //weixin.AppId = "wx7c32c023241aba89";
+            //weixin.AppSecret = "ed9fa9aaf2c12f9e110a12b83f8d9d08";
             return weixin;
         }
 

@@ -54,7 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\ThreeArriveAction.Common\Reference\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Senparc.Weixin">
       <HintPath>..\ThreeArriveAction.WeiXinComm\bin\Debug\Senparc.Weixin.dll</HintPath>
@@ -91,8 +91,11 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
+    <Content Include="admin\skin\default\noneimg.jpg" />
     <Content Include="admin\StudyEdit.html" />
     <Content Include="admin\StudyList.html" />
+    <Content Include="admin\weixin\addNews.html" />
+    <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
     <Content Include="ueditor\dialogs\attachment\attachment.css" />
     <Content Include="ueditor\dialogs\attachment\attachment.html" />
@@ -1350,6 +1353,12 @@
     <Content Include="scripts\weixin\js-sdk-config.js" />
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
+    <Content Include="upload\201707\20\201707202152511074.png" />
+    <Content Include="upload\201707\20\201707202155156644.png" />
+    <Content Include="upload\201707\20\201707202159414210.png" />
+    <Content Include="upload\201707\21\201707210950074142.png" />
+    <Content Include="upload\201707\21\201707211343570407.png" />
+    <Content Include="upload\201707\21\201707211350592865.png" />
     <Content Include="weixin\appIndex.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />
@@ -1367,6 +1376,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ajax\token_ajax.ashx.cs">
+      <DependentUpon>token_ajax.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Ajax\wxMenuManager.ashx.cs">
+      <DependentUpon>wxMenuManager.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Ajax\wxrequestRulesManager.ashx.cs">
+      <DependentUpon>wxrequestRulesManager.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ueditor\net\App_Code\Config.cs" />
     <Compile Include="ueditor\net\App_Code\ConfigHandler.cs" />
     <Compile Include="ueditor\net\App_Code\CrawlerHandler.cs" />
@@ -1448,6 +1467,10 @@
       <Project>{F909338A-1711-4131-958B-12E8F110EB00}</Project>
       <Name>ThreeArriveAction.Web.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ThreeArriveAction.WeiXinComm\ThreeArriveAction.WeiXinComm.csproj">
+      <Project>{1f4a282f-6634-4cba-afe4-d9eb4c1214b1}</Project>
+      <Name>ThreeArriveAction.WeiXinComm</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ajax\sys_NavigationsManager.ashx" />
@@ -1474,6 +1497,9 @@
     <Content Include="ueditor\third-party\video-js\font\vjs.eot" />
     <Content Include="ueditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="ueditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="Ajax\token_ajax.ashx" />
+    <Content Include="Ajax\wxrequestRulesManager.ashx" />
+    <Content Include="Ajax\wxMenuManager.ashx" />
     <None Include="editor\plugins\emoticons\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\images\vssver2.scc" />
     <None Include="editor\plugins\filemanager\vssver2.scc" />
@@ -1553,6 +1579,7 @@
     <None Include="images\font-awesome\scss\_mixins.scss" />
     <None Include="images\font-awesome\scss\_path.scss" />
     <None Include="images\font-awesome\scss\_variables.scss" />
+    <Content Include="log\20170720.log" />
     <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <None Include="scripts\bootstrap\fonts\glyphicons-halflings-regular.ttf" />

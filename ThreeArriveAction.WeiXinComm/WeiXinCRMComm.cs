@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using Senparc.Weixin.MP.AdvancedAPIs.User;
+using ThreeArriveAction.BLL;
+using ThreeArriveAction.Model;
+using System;
 
 namespace ThreeArriveAction.WeiXinComm
 {
     public class WeiXinCRMComm
     {
         public WeiXinCRMComm() { }
-        //wx_property_info pBll = new wx_property_info();
-        //BLL.wx_userweixin wBll = new wx_userweixin();
+        wx_property_infoBLL pBll = new wx_property_infoBLL();
+        wx_userweixinBLL wBll = new wx_userweixinBLL();
         #region Base Function: access_token和所有关注用户的openid字符串
         /// <summary>
         /// 及时获得access_token值
@@ -20,11 +23,11 @@ namespace ThreeArriveAction.WeiXinComm
         {
             string token = "";
             error="";
-            /*
+
             try
             {
-              
-                Model.wx_userweixin weixininfo = wBll.GetModel(wid);
+
+                wx_userweixin weixininfo = wBll.GetModel(wid);
                 if (weixininfo.AppId == null || weixininfo.AppSecret == null || weixininfo.AppId.Trim().Length <= 0 || weixininfo.AppSecret.Trim().Length <= 0)
                 {
                     error = "appId或者AppSecret未填写完全,请在[我的公众帐号]里补全信息！";
@@ -39,8 +42,8 @@ namespace ThreeArriveAction.WeiXinComm
                     pBll.AddAccess_Token(wid, token);
                     return token;
                 }
-              
-                wxProperty = pBll.GetModelList("iName='access_token' and wid="+wid)[0];
+
+                wxProperty = pBll.GetModelList("iName='access_token' and wid=" + wid)[0];
                 TimeSpan chajun = DateTime.Now - wxProperty.createDate.Value;
                 double chajunSecond = chajun.TotalSeconds;
 
@@ -66,7 +69,7 @@ namespace ThreeArriveAction.WeiXinComm
             {
                 error = "获得access_token出错:" + ex.Message;
             }
-             * */
+            
             return token;
         }
 
