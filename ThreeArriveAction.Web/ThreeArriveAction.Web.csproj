@@ -1598,6 +1598,7 @@
     <None Include="scripts\lhgdialog\skins\igreen\ie6\vssver2.scc" />
     <None Include="scripts\lhgdialog\skins\igreen\vssver2.scc" />
     <Content Include="weixin\index.html" />
+    <Content Include="weixin\majorInfo.html" />
     <Content Include="weixin\onButys.html" />
     <Content Include="weixin\onButysSet.html" />
     <Content Include="weixin\open.html" />
