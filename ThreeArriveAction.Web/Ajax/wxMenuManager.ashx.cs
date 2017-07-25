@@ -54,7 +54,7 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 json.success = false;
                 json.msg = error;
-                context.Response.Output.Write(json.ToJson());
+                context.Response.Write(json.ToJson());
                 return;
             }
             GetMenuResult result = mMgr.GetMenu(accessToken);
@@ -63,7 +63,7 @@ namespace ThreeArriveAction.Web.Ajax
                
                 json.success = false;
                 json.msg = "未获得到菜单，请参考【使用规则】，自行排查问题！";
-                context.Response.Output.Write(json.ToJson());
+                context.Response.Write(json.ToJson());
                 return;
                 //强制刷新
                 //accessToken = cpp.FlushAccessToken(weixin.id, out  error);
