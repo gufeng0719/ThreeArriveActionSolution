@@ -14,9 +14,9 @@ namespace ThreeArriveAction.Web.Ajax
     /// <summary>
     /// sys_PublicMessagesManager 的摘要说明
     /// </summary>
-    public class sys_PublicMessagesManager :ManagePage, IHttpHandler, IRequiresSessionState
+    public class sys_PublicMessagesManager : ManagePage, IHttpHandler, IRequiresSessionState
     {
-        private sys_PublicMessagesBLL pBLL = new sys_PublicMessagesBLL();   
+        private sys_PublicMessagesBLL pBLL = new sys_PublicMessagesBLL();
         public override void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
@@ -28,20 +28,15 @@ namespace ThreeArriveAction.Web.Ajax
                 case "add":
                     Add(context);
                     break;
-                     case "get":
+                case "get":
                     GetOpenList(context);
                     break;
                 case "detail":
                     GetPublishDetail(context);
                     break;
                 case "getModel":
-                                 GetModel(context);
-                                 break;
-                
-
-            else if (type == "getModel")
-            {
-                GetModel(context);
+                    GetModel(context);
+                    break;
             }
         }
 
@@ -66,9 +61,9 @@ namespace ThreeArriveAction.Web.Ajax
                 village = (villageList.FirstOrDefault(x => x.VillageId == village?.VillageParId)?.VillageName ?? "淮安") + "---" + village?.VillageName,
                 msg = model.Remarks
             }.ToJson());
-            }
-            
         }
+
+
         #region 添加公开信息
         public void Add(HttpContext context)
         {
@@ -166,8 +161,8 @@ namespace ThreeArriveAction.Web.Ajax
             string opendate = MXRequest.GetQueryString("opendate");
             int opentype = MXRequest.GetQueryIntValue("opentype");
             StringBuilder strWhere = new StringBuilder();
-            strWhere.Append(" PublicType="+opentype);
-            
+            strWhere.Append(" PublicType=" + opentype);
+
             if (town != 0)
             {
                 if (vid == 0)
@@ -191,7 +186,7 @@ namespace ThreeArriveAction.Web.Ajax
                     //查看本村或者本镇的公开信息
                     strWhere.Append(" and VillageId=" + model.VillageId);
                 }
-                
+
             }
             if (opendate != "")
             {
