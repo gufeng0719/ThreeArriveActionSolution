@@ -15,6 +15,11 @@
                 alert("请先选择值班人员");
                 return;
             }
+            if (JSON.parse(localStorage.getItem("current_user")).OrganizationId !== 3) {
+                alert("Sorry~ 只有书记才能对此进行设置");
+                window.open("index.html");
+                return;
+            }
             $.ajax({
                 type: "post",
                 url: "../Ajax/sys_OnButysManager.ashx?type=set",

@@ -27,13 +27,13 @@
             <div style="text-align: left;">
                 <table style="width:92%;margin-left:0">
                     <template v-for="(model,index) in list">
-                        <tr>
+                        <tr @click="gotoInfo(model.id)">
                             <td rowspan="2" style="width:30%">
                                 <img name="img" v-bind:src="model.img" height="80" width="120" style="margin-right: 15px" />
                             </td>
                             <td style="text-align: left;margin-left: 30px">{{model.town}}--{{model.village}}</td>
                         </tr>
-                        <tr>
+                        <tr @click="gotoInfo(model.id)">
                             <td style="text-align: left;margin-left: 30px">发布日期 :{{model.date}} </td>
                         </tr>
                         <tr style="height: 30px; ">

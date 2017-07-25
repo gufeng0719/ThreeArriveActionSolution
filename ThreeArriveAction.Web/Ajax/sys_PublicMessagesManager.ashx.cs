@@ -91,6 +91,7 @@ namespace ThreeArriveAction.Web.Ajax
                 var villageModel = villageList.FirstOrDefault(v => v.VillageId == item.VillageId);
                 list.Add(new
                 {
+                    id = item.VillageId,
                     img = item.ThumbnailUrl,
                     date = item.PublishDate.ToString("yyyy-MM-dd"),
                     village = villageModel?.VillageName ?? "",

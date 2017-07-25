@@ -11,10 +11,14 @@
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <title>三到行动-重要信息</title>
     <style>
-        .type {
-        }
-
         .unread {
+            color: white;
+            height: 20px;
+            width: 50px;
+            background-color: red;
+            padding: 3px;
+            font-weight: 100;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -41,7 +45,7 @@
                     <tr style="border-bottom: #d2d2d2 1px solid; font-size: 12px" @click="toInfo(model.id)">
                         <td colspan="2" style="height: 24px; text-align: right">
                             <b>
-                                by:{{model.userName}}&nbsp;&nbsp;&nbsp; 日期:{{model.time}}&nbsp;&nbsp;&nbsp; <span v-bind:class="'type' + model.type == 1 ? '' : 'unread'">{{model.type == 1 ? '已读' : '未读'}}</span>
+                                by:{{model.userName}}&nbsp;&nbsp;&nbsp; 日期:{{model.time}}&nbsp;&nbsp;&nbsp; <span v-bind:class="model.type == 1 ? '' : 'unread'">{{model.type == 1 ? '已读' : '未读'}}</span>
                             </b>
                         </td>
                     </tr>

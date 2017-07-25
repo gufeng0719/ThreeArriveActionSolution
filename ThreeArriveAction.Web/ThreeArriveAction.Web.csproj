@@ -98,6 +98,8 @@
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
     <Content Include="scripts\weixin\major.js" />
+    <Content Include="scripts\weixin\majorInfo.js" />
+    <Content Include="scripts\weixin\openInfo.js" />
     <Content Include="ueditor\dialogs\attachment\attachment.css" />
     <Content Include="ueditor\dialogs\attachment\attachment.html" />
     <Content Include="ueditor\dialogs\attachment\attachment.js" />
@@ -1606,6 +1608,7 @@
     <Content Include="weixin\onButys.html" />
     <Content Include="weixin\onButysSet.html" />
     <Content Include="weixin\open.html" />
+    <Content Include="weixin\openInfo.html" />
     <Content Include="weixin\openList.html" />
     <Content Include="weixin\redirect_uri.html" />
     <Content Include="weixin\sign.html" />

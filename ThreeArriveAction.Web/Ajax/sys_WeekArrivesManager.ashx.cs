@@ -50,7 +50,7 @@ namespace ThreeArriveAction.Web.Ajax
                 {
                     SubcriberId = context.Request.Form["slSubId"].ToInt(),
                     WeekArriveDate = DateTime.Now,
-                    ThingMessage = context.Request.Form["ThingMessage"],
+                    ThingMessage = context.Request.Form["ThingMessage"] ?? "",
                     ThingResult = context.Request.Form["ThingResult"],
                     ThingImgUrl = context.Request.Form["txtImgUrl"],
                     UserId = model.UserId,

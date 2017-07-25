@@ -6,7 +6,7 @@ var vm = new Vue({
         page: 1,
         size: 5,
         totle: 0,
-        ddlvillage: -1,
+        ddlvillage: -1
     },
     methods: {
         getpage: function (page) {
@@ -38,6 +38,9 @@ var vm = new Vue({
                     }
                 }
             });
+        },
+        gotoInfo: function (id) {
+            window.open("openInfo.html?id=" + id, "_self");
         }
     },
     watch: {
