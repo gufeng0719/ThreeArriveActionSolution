@@ -77,7 +77,7 @@ namespace ThreeArriveAction.Web.Ajax
                 strWhere.Append(" 1=1 ");
             }
             strWhere.Append(" and Convert(varchar(100),ButyDate,23)='" + butydate + "'");
-            string result = butyBLL.GetListJson(pageSize, pageIndex, strWhere.ToString(), "OnbutyId asc ");
+            string result = butyBLL.GetListJson(pageSize, pageIndex, strWhere.ToString(), "OnbutyId DESC ");
             context.Response.Write(result);
         }
         #endregion

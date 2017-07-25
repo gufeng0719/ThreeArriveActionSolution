@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Text;
 using System.Web;
+using System.Web.SessionState;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Web.UI;
 
 namespace ThreeArriveAction.Web.Ajax
 {
     /// <summary>
     /// sys_PublicMessagesManager 的摘要说明
     /// </summary>
-    public class sys_PublicMessagesManager : IHttpHandler
+    public class sys_PublicMessagesManager :ManagePage, IHttpHandler, IRequiresSessionState
     {
-        public void ProcessRequest(HttpContext context)
+        private sys_PublicMessagesBLL pBLL = new sys_PublicMessagesBLL();   
+        public override void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
-            if (type == "openList")
+            switch (type)
             {
-                OpenList(context);
+                case "openList":
+                    OpenList(context);
+                    break;
+                case "add":
+                    Add(context);
+                    break;
+                case "get":
+                    GetOpenList(context);
+                    break;
+                case "detail":
+                    GetPublishDetail(context);
+                    break;
             }
-            else if (type == "add")
-            {
-                Add(context);
-            }
+            
         }
-
+        #region 添加公开信息
         public void Add(HttpContext context)
         {
             var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
@@ -60,7 +72,9 @@ namespace ThreeArriveAction.Web.Ajax
             var line = new sys_PublicMessagesBLL().Add(model);
             context.Response.Write(line);
         }
+        #endregion
 
+        #region 获取公开信息列表供公众号使用
         public void OpenList(HttpContext context)
         {
             var openType = context.Request["openType"].ToInt();
@@ -105,10 +119,68 @@ namespace ThreeArriveAction.Web.Ajax
                 list
             }.ToJson());
         }
+        #endregion
 
+        #region 获取公开信息列表供管理系统使用
+        public void GetOpenList(HttpContext context)
+        {
+            //获取当前登录的操作者信息
+            sys_UsersModel model = GetUsersinfo();
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryIntValue("page");
+            int town = MXRequest.GetQueryInt("town");
+            int vid = MXRequest.GetQueryInt("vid");
+            string opendate = MXRequest.GetQueryString("opendate");
+            int opentype = MXRequest.GetQueryIntValue("opentype");
+            StringBuilder strWhere = new StringBuilder();
+            strWhere.Append(" PublicType="+opentype);
+            
+            if (town != 0)
+            {
+                if (vid == 0)
+                {
+                    strWhere.Append(" and VillageParId =" + town);
+                }
+                else
+                {
+                    strWhere.Append(" and VillageId=" + vid);
+                }
+            }
+            else
+            {
+                //默认查询(如果管理员，查询所有根据时间倒序查询)
+                if (model.OrganizationId == 2)
+                {
+                    strWhere.Append(" and VillageParId=" + model.VillageId);
+                }
+                else if (model.OrganizationId == 3 || model.OrganizationId == 4)
+                {
+                    //查看本村或者本镇的公开信息
+                    strWhere.Append(" and VillageId=" + model.VillageId);
+                }
+                
+            }
+            if (opendate != "")
+            {
+                strWhere.Append(" and Convert(varchar(100),PublishDate,23)='" + opendate + "'");
+            }
+            string result = pBLL.GetListJson(pageSize, pageIndex, strWhere.ToString(), "PublicId DESC ");
+            context.Response.Write(result);
 
+        }
+        #endregion
 
-        public bool IsReusable
+        #region 根据公开信息编号获取详细信息
+        public void GetPublishDetail(HttpContext context)
+        {
+            int pid = MXRequest.GetQueryIntValue("pid");
+            string json = pBLL.GetModelJson(pid);
+            context.Response.Output.Write(json);
+
+        }
+        #endregion
+
+        public new bool IsReusable
         {
             get
             {

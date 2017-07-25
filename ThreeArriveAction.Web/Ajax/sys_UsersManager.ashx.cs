@@ -58,6 +58,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "weixinGetButyUser":
                     WeixinGetButyUser(context);
                     break;
+                case "officer":
+                    GetOfficeList(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -94,6 +97,66 @@ namespace ThreeArriveAction.Web.Ajax
 
 
 
+        }
+
+        #endregion
+
+        #region 村居干部查询
+        private void GetOfficeList(HttpContext context)
+        {
+            //获取当前登录的操作者信息
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            if (model == null)
+            {
+                context.Response.Write("");
+            }
+            else
+            {
+                StringBuilder strSql = new StringBuilder();
+                int pageSize = 20;
+                int town = MXRequest.GetQueryIntValue("town");
+                int vid = MXRequest.GetQueryIntValue("vid");
+                int page = MXRequest.GetQueryInt("page", 1);
+                string key = MXRequest.GetQueryString("key");
+                key = key.Replace("'", "");
+                strSql.Append(" OrganizationId in (3,4) ");
+                if (town != 0 && vid == 0)
+                {//镇编号不为0，村编号为0，查询该镇所有村居干部
+                    strSql.Append("and VillageId in (select ViilageId from sys_Villages where VillageParId= " + town + ")");
+                }
+                else if (town != 0 && vid != 0)
+                {
+                    //镇编号不为0，村编号不为0，查询该村所有村居干部
+                    strSql.Append(" and VillageId =" + vid);
+                }
+                if (key != "")
+                {
+                    strSql.Append(" and ( UserPhone like '%" + key + "%' or UserName like '%" + key + "%' or UserDuties like '%" + key + "%' ) ");
+                }
+
+
+                int totalCount = 0;
+                StringBuilder strJson = new StringBuilder();
+
+                DataSet ds = usersBLL.GetList(pageSize, page, strSql.ToString(), "UserId asc", out totalCount);
+                strJson.Append("{\"total\":" + totalCount);
+                if (totalCount > 0)
+                {
+                    strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+                }
+                string pageContent = Utils.OutPageList(pageSize, page, totalCount, "Load(__id__)", 8);
+                if (pageContent == "")
+                {
+                    strJson.Append(",\"pageContent\":\"\"");
+                }
+                else
+                {
+                    strJson.Append(",\"pageContent\":" + pageContent);
+                }
+
+                strJson.Append("}");
+                context.Response.Write(strJson.ToString());
+            }
         }
 
         #endregion

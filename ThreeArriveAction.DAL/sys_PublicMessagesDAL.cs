@@ -1,5 +1,8 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
+using System.Text;
+using ThreeArriveAction.Common;
 using ThreeArriveAction.DBUtility;
 using ThreeArriveAction.Model;
 
@@ -32,5 +35,71 @@ namespace ThreeArriveAction.DAL
             return DbHelperSQL.ExecuteSql(sql, parameters);
 
         }
+
+        #region 查询
+
+        public sys_PublicMessagesModel GetModel(int publicId)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select top 1 * from sys_PublicMessages ");
+            strSql.Append(" where PublicId ="+publicId);
+            sys_PublicMessagesModel model = new sys_PublicMessagesModel();
+            DataTable dt = DbHelperSQL.Query(strSql.ToString()).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                if (dt.Rows[0]["PublicId"] != null && dt.Rows[0]["PublicId"].ToString() != "")
+                {
+                    model.PublicId = int.Parse(dt.Rows[0]["PublicId"].ToString());
+                }
+                if (dt.Rows[0]["VillageId"] != null && dt.Rows[0]["VillageId"].ToString() != "")
+                {
+                    model.VillageId = int.Parse(dt.Rows[0]["VillageId"].ToString());
+                }
+                if (dt.Rows[0]["PublishDate"] != null && dt.Rows[0]["PublishDate"].ToString() != "")
+                {
+                    model.PublishDate = DateTime.Parse(dt.Rows[0]["PublishDate"].ToString());
+                }
+                if (dt.Rows[0]["PublicType"] != null && dt.Rows[0]["PublicType"].ToString() != "")
+                {
+                    model.PublicType = int.Parse(dt.Rows[0]["PublicType"].ToString());
+                }
+                model.ThumbnailUrl = dt.Rows[0]["ThumbnailUrl"].ToString();
+                model.ImageUrl = dt.Rows[0]["ImageUrl"].ToString();
+                if (dt.Rows[0]["UserId"] != null && dt.Rows[0]["UserId"].ToString() != "")
+                {
+                    model.UserId = int.Parse(dt.Rows[0]["UserId"].ToString());
+                }
+                model.Remarks = dt.Rows[0]["Remarks"].ToString();
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
+        /// <summary>
+        /// 分页查询公开信息
+        /// </summary>
+        /// <param name="pageSize">每页条数</param>
+        /// <param name="pageIndex">当前页码数</param>
+        /// <param name="strWhere">查询条件</param>
+        /// <param name="filedOrder">排序条件</param>
+        /// <param name="recordCount">总记录数</param>
+        /// <returns></returns>
+        public DataSet GetList(int pageSize, int pageIndex, string strWhere, string filedOrder, out int recordCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select a.*,b.VillageName,c.VillageName as TownName from sys_PublicMessages a inner join sys_Villages b");
+            strSql.Append(" on a.VillageId=b.VillageId inner join sys_Villages c on b.VillageParId=c.VillageId ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            return DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), filedOrder));
+        }
+        #endregion
     }
 }

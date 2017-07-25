@@ -86,7 +86,7 @@ namespace ThreeArriveAction.Web.Ajax
                 int totalCount = 0;
                 StringBuilder strJson = new StringBuilder();
 
-                DataSet ds = subBLL.GetList(pageSize, page, strWhere.ToString(), "UserId asc", out totalCount);
+                DataSet ds = subBLL.GetList(pageSize, page, strWhere.ToString(), "SubscriberId ASC", out totalCount);
                 strJson.Append("{\"total\":" + totalCount);
                 if (totalCount > 0)
                 {

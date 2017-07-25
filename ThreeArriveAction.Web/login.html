@@ -5,45 +5,49 @@
     <title>淮安区组织部微信平台</title>
     <link href="admin/skin/default/style.css" rel="stylesheet" type="text/css" />
     <style>
-    form label.error {
-		display: block;
-		margin-bottom: 5px;
-		width: auto;
-		color:Red;
-	}
+        form label.error {
+            display: block;
+            margin-bottom: 5px;
+            width: auto;
+            color: Red;
+        }
     </style>
 </head>
 <body style="background: url('admin/skin/default/thumb_540497848dab9.jpg') repeat;">
     <form id="form1">
-    <div class="login-screen">
-        <div class="login-form">
-            <h1>
-                登录</h1>
-            <div class="control-group">
-                <input type="text" id="uphone" name="uphone"    class="login-field" placeholder="请输入手机号"
-                    title="手机号" />
-                <label class="login-field-icon user" for="uphone">
-                </label>
+        <div class="login-screen">
+            <div class="login-form">
+                <h1>
+                    登录
+                </h1>
+                <div class="control-group">
+                    <input type="text" id="uphone" name="uphone" class="login-field" placeholder="请输入手机号"
+                           title="手机号" />
+                    <label class="login-field-icon user" for="uphone">
+                    </label>
+                </div>
+                <div class="control-group">
+                    <input type="password" id="upwd" name="upwd" class="login-field" placeholder="请输入密码"
+                           title="密码" />
+                    <label class="login-field-icon pwd" for="upwd">
+                    </label>
+                </div>
+                <div class="error">
+                </div>
+                <div>
+                    <button type="button" id="btnLogin" class="btn-login">
+                        登 录
+                    </button>
+                </div>
+                <span class="login-tips"><i></i><b id="msgtip">请输入手机号和密码</b></span>
             </div>
-            <div class="control-group">
-                <input type="password" id="upwd" name="upwd" class="login-field" placeholder="请输入密码"
-                    title="密码" />
-                <label class="login-field-icon pwd" for="upwd">
-                </label>
-            </div>
-            <div class="error">
-            </div>
-            <div>
-                <button type="button" id="btnLogin" class="btn-login" >登 录
-                </button>
-            </div>
-            <span class="login-tips"><i></i><b id="msgtip">请输入手机号和密码</b></span>
+            <i class="arrow">箭头</i>
         </div>
-        <i class="arrow">箭头</i>
-    </div>
     </form>
     <script src="scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script src="scripts/jquery/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="admin/js/layout.js" type="text/javascript"></script>
     <script>
         $(function () {
             //检测IE
@@ -73,10 +77,10 @@
                     var data = $("#form1").serialize();
                     $.post('Ajax/sys_UsersManager.ashx?type=login', data, function (msg) {
                         var result = $.parseJSON(msg);
-                        if (result && result.success) {
+                        if (result.success == "True") {
                             window.location.href = "admin/index.html"
                         } else {
-                            alert(result.msg);
+                            jsprint(result.msg, "", "Error");
                         }
                     });
                 }

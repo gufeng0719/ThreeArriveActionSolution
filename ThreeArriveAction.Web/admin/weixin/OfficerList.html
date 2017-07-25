@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>村居干部查询</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span id="title">村居干部查询</span>
+        </div>
+        <!--/导航栏-->
+        <!--工具栏-->
+        <div class="toolbar-wrap">
+            <div id="floatHead" class="toolbar">
+                <div class="r-list">
+                    <div class="menu-list" style="display: inline-block; float: left;">
+                        <input type="text" id="key" name="key" class="keyword" placeholder="请输入查询关键字" />&nbsp;&nbsp;
+                        <div class="single-select" id="divtown">
+                            <select id="town" name="town"></select>
+                        </div>
+                        <div class="single-select" id="divvillage">
+                            <select id="village" name="village"></select>
+                        </div>
+                    </div>
+                    <input type="button" id="btnSearch" class="btn-search" value="查询" />
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--图片列表-->
+        <div class="imglist">
+            <ul id="officerList"></ul>
+        </div>
+        <!--内容底部-->
+        <div class="line20">
+        </div>
+        <div class="pagelist">
+            <div class="l-btns">
+                <span>显示</span>
+                <label class="pagenum">
+                    20
+                </label>
+                <span>条/页</span>
+            </div>
+            <div id="PageContent" class="default">
+            </div>
+        </div>
+        <!--/内容底部-->
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            //加载乡镇数据
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
+                $("#town").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#town").append(s);
+                }
+                $("#divtown").ruleSingleSelect().addClass("rule-single-select");
+                LoadVillage(0);
+            });
+            //加载第一页村居干部信息
+            Load(1);
+            //乡镇下列列表改变事件
+            $("#town").change(function () {
+                LoadVillage($(this).val());
+            });
+            //搜索按钮事件
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+
+
+        });
+
+        //加载村居信息
+        function LoadVillage(parid) {
+            $("#village").html("");
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: parid }, function (msg) {
+                $("#village").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#village").append(s);
+                }
+                $("#divvillage").ruleSingleSelect().addClass("rule-single-select");
+            });
+        }
+
+        //加载党村居干部列表信息
+        function Load(page) {
+            var town = $("#town").val();
+            var vid = $("#village").val();
+            var key = $("#key").val();
+
+            //加载列表
+            $.getJSON("../../Ajax/sys_UsersManager.ashx?type=officer", { town: town, vid: vid, page: page, key: key }, function (msg) {
+                // console.info(msg);
+                $("#officerList").html("");
+                if (msg.rows.length > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "<li>";
+                        s += "<div class=\"details\">";
+                        s += "<div class=\"pic\">";
+                        if (msg.rows[i].UserPhoto == "") {
+                            s += "<img src=\"../skin/default/noneimg.jpg\" data-original=\"\" />";
+                        } else {
+                            s += "<img src=\"" + msg.rows[i].UserPhoto + "\"  data-original=\"" + msg.rows[i].UserPhoto + "\" />";
+                        }
+                        s += "</div>";
+                        s += "<i class=\"absbg\"></i>";
+                        s += "<h1><span>" + msg.rows[i].UserName + "--" + msg.rows[i].UserPhone + "</span></h1>";
+                        s += "<div class=\"remark\">";
+                        s += msg.rows[i].UserDuties;
+                        s += "</div>";
+                        s += "<div class=\"foot\">";
+                        s += "<p class=\"time\">" + msg.rows[i].VillageName + "</p>";
+                        s += "<a href='Officer.html?uid=" + msg.rows[i].UserId + "' title='详细' class=\"edit\"></a>";
+                        s += "</div>";
+                        s += "</li>";
+                        $("#officerList").append(s);
+
+                        imgLayout();
+                        $(window).resize(function () {
+                            imgLayout();
+                        });
+                        //图片延迟加载
+                        $(".pic img").lazyload({ load: AutoResizeImage, effect: "fadeIn" });
+
+                        //点击图片链接
+                        $(".pic img").click(function () {
+                            //$.dialog({ lock: true, title: "查看大图", content: "<img src=\"" + $(this).attr("src") + "\" />", padding: 0 });
+                            var linkUrl = $(this).parent().parent().find(".foot a").attr("href");
+                            if (linkUrl != "") {
+                                location.href = linkUrl; //跳转到修改页面
+                            }
+                        });
+                    }
+                } else {
+                    $("#officerList").html("<li><div align=\"center\" style=\"font-size:12px;line-height:30px;color:#666;\">暂无记录</div></li>");
+                }
+                $("#PageContent").html(msg.pageContent);
+            });
+        }
+
+        //排列图文列表
+        function imgLayout() {
+            var imgWidth = $(".imglist").width();
+            var lineCount = Math.floor(imgWidth / 222);
+            var lineNum = imgWidth % 222 / (lineCount - 1);
+            $(".imglist ul").width(imgWidth + Math.ceil(lineNum));
+            $(".imglist ul li").css("margin-right", parseFloat(lineNum));
+        }
+        //等比例缩放图片大小
+        function AutoResizeImage(e, s) {
+            var img = new Image();
+            img.src = $(this).attr("src")
+            var w = img.width;
+            var h = img.height;
+            var wRatio = w / h;
+            if ((220 / wRatio) >= 165) {
+                $(this).width(220); $(this).height(220 / wRatio);
+            } else {
+                $(this).width(165 * wRatio); $(this).height(165);
+            }
+        }
+    </script>
+</body>
+</html>

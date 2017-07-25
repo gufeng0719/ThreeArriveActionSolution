@@ -140,10 +140,10 @@
                         var s = "<li>";
                         s += "<div class=\"details\">";
                         s += "<div class=\"pic left\">";
-                        if (msg.rows.UserPhoto == undefined) {
+                        if (msg.rows[i].UserPhoto == "") {
                             s += "<img src=\"../skin/default/noneimg.jpg\" style=\"width:100px;height:80px;\" data-original=\"\" />";
                         } else {
-                            s += "<img src=\"" + msg.rows.UserPhoto + "\" style=\"width:100px;height:80px;\" data-original=\"\" />";
+                            s += "<img src=\"" + msg.rows[i].UserPhoto + "\" style=\"width:100px;height:80px;\" data-original=\"\" />";
                         }
                         s += "</div>";
                         s += "<div class=\"left div-content\">";

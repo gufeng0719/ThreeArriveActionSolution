@@ -1302,7 +1302,7 @@ namespace ThreeArriveAction.Common
             pageStr.Append(firstBtn + firstStr);
             if (pageIndex >= centSize)
             {
-                pageStr.Append("<span>...</span>\n");
+                pageStr.Append("<span>...</span>");
             }
             for (int i = firstNum; i <= lastNum; i++)
             {

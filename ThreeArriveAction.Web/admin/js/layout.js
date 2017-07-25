@@ -112,6 +112,32 @@ function jsprint(msgtitle, url, msgcss, callback) {
         callback();
     }
 }
+
+function jsprintTop(msgtitle, url, msgcss, callback) {
+    var iconurl = "";
+    switch (msgcss) {
+        case "Success":
+            iconurl = "32X32/succ.png";
+            break;
+        case "Error":
+            iconurl = "32X32/fail.png";
+            break;
+        default:
+            iconurl = "32X32/hits.png";
+            break;
+    }
+    $.dialog.tips(msgtitle, 2, iconurl);
+    if (url == "back") {
+        frames["mainframe"].history.back(-1);
+    } else if (url != "") {
+        top.location.href = url;
+    }
+    //执行回调函数
+    if (arguments.length == 4) {
+        callback();
+    }
+}
+
 //弹出一个Dialog窗口
 function jsdialog(msgtitle, msgcontent, url, msgcss) {
     var iconurl = "";

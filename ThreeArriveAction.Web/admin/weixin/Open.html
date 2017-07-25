@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>三务公开</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <style>
+       #openList li{
+           text-align:center;
+       }
+       #openList li:first-child{
+           margin-top:15px;
+           margin-bottom:15px;
+       }
+       #openList li h3{
+           font-size:20px;
+           font-weight:bold;
+       }
+       #openList li img{
+           width:600px;
+           height:600px;
+       }
+    </style>
+    
+</head>
+
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span id="title">党务公开</span>
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="line10"></div>
+        <!--图片列表-->
+        <div class="alignment">
+            <ul id="openList"></ul>
+        </div>
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script>
+        $(function () {
+            var url = window.location.href.split('?')[1];
+            var pid = url.split('=')[1];
+            $.getJSON('../../Ajax/sys_PublicMessagesManager.ashx?type=detail', { pid: pid }, function (msg) {
+                //console.info(msg);
+                if (msg != undefined) {
+                    var s = "<li><h3>" + msg.Remarks + "</h3><li>";
+                    var imgList = msg.ImageUrl.split(',');
+                    for (var i = 0; i < imgList.length; i++) {
+                        s += "<li><img src='"+imgList[i]+"'></li>";
+                    }
+                    $("#openList").append(s);
+                } else {
+                    history.back(-1);
+                }
+            
+            });
+        });
+
+    </script>
+</body>
+</html>

@@ -596,7 +596,6 @@
             //初始化表单验证
             $("#form1").initValidform();
             $.getJSON('../../Ajax/wxMenuManager.ashx?type=get', function (result) {
-                console.info(result);
                 if (result && result.success) {
                     if (result.topNum > 0) {
                         for (var i = 0; i < result.topNum; i++) {
@@ -651,7 +650,7 @@
                     if (result && result.success) {
                         jsprint(result.msg, "", "Success");
                     } else {
-                        jsprint(result.msg, "", "False");
+                        jsprint(result.msg, "", "Error");
                     }
                 });
             });

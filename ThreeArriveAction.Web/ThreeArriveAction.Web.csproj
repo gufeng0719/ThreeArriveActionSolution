@@ -95,6 +95,10 @@
     <Content Include="admin\StudyEdit.html" />
     <Content Include="admin\StudyList.html" />
     <Content Include="admin\weixin\addNews.html" />
+    <Content Include="admin\weixin\Officer.html" />
+    <Content Include="admin\weixin\OfficerList.html" />
+    <Content Include="admin\weixin\Open.html" />
+    <Content Include="admin\weixin\openList.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
     <Content Include="ueditor\dialogs\attachment\attachment.css" />
@@ -1423,6 +1427,7 @@
     </Compile>
     <Compile Include="Ajax\sys_PublicMessagesManager.ashx.cs">
       <DependentUpon>sys_PublicMessagesManager.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ajax\sys_SignManager.ashx.cs">
       <DependentUpon>sys_SignManager.ashx</DependentUpon>
@@ -1619,6 +1624,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ajax\sys_UsersManager.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="upload\20170721\" />
+    <Folder Include="upload\20170724\" />
+    <Folder Include="upload\20170725\" />
   </ItemGroup>
   <!--<Folder Include="scripts\datepicker\skin\whyGreen\" />-->
   <PropertyGroup>

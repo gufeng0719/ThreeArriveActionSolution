@@ -48,7 +48,7 @@
                         </div>
                         <ul class="drop-item">
                             <!--<li><a target="_self" href="#">淮安区“三到行动”信息化平台</a></li>-->
-                            <li><a href="#" target="mainframe">管理中心</a></li>
+                            <li><a href="center.html" target="mainframe">管理中心</a></li>
                             <li><a onclick="linkMenuTree(false, '');" href="javascript:void(0);" target="mainframe">修改密码</a></li>
                             <li><a href="javascript:Exit()">注销登录</a> </li>
                         </ul>
@@ -100,18 +100,23 @@
                 url: "../Ajax/sys_NavigationsManager.ashx?type=get&time=" + Math.random(),
                 dataType: "html",
                 success: function (data, textStatus) {
-                    //将得到的数据插件到页面中
-                    $("#sidebar-nav .list-box").html(data);
-                    $("#pop-menu .list-box").html(data);
-                    //初始化导航菜单
-                    initMenuTree(islink);
-                    initPopMenuTree();
-                    //设置左边导航滚动条
-                    $("#sidebar-nav").niceScroll({ touchbehavior: false, cursorcolor: "#7C7C7C", cursoropacitymax: 0.6, cursorwidth: 5 });
-                    $("#pop-menu .list-box").niceScroll({ touchbehavior: false, cursorcolor: "#7C7C7C", cursoropacitymax: 0.6, cursorwidth: 5 });
-                    $("#pop-menu .list-box").getNiceScroll().hide();
-                    //设置主导航菜单显示和隐藏
-                    navresize();
+                    if (data.length == 0) {
+                        jsprintTop("还未登陆系统，请先登录，等待跳转页面", "../login.html", "Error");
+
+                    } else {
+                        //将得到的数据插件到页面中
+                        $("#sidebar-nav .list-box").html(data);
+                        $("#pop-menu .list-box").html(data);
+                        //初始化导航菜单
+                        initMenuTree(islink);
+                        initPopMenuTree();
+                        //设置左边导航滚动条
+                        $("#sidebar-nav").niceScroll({ touchbehavior: false, cursorcolor: "#7C7C7C", cursoropacitymax: 0.6, cursorwidth: 5 });
+                        $("#pop-menu .list-box").niceScroll({ touchbehavior: false, cursorcolor: "#7C7C7C", cursoropacitymax: 0.6, cursorwidth: 5 });
+                        $("#pop-menu .list-box").getNiceScroll().hide();
+                        //设置主导航菜单显示和隐藏
+                        navresize();
+                    }
                 }
             });
         }
