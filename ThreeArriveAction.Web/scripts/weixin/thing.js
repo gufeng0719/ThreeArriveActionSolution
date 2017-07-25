@@ -2,13 +2,27 @@
     el: "#app",
     data: {
         localIds: [],
-        family: -1
+        family: -1,
+        familyType: -1
+    },
+    mounted: function () {
+        this.$children[0].typeList.push({ key: 8, value: "其他" })
+
     }
 });
 
 function submitcontent() {
-    if (vm.family === -1) {
-        alert("请选择拜访户");return;
+    if (vm.familyType == 8) {
+        if (!$("#name").val()) {
+            alert("请输入姓名"); return;
+        }
+        if (!$("#phone").val()) {
+            alert("请输入联系方式"); return;
+        }
+    } else {
+        if (vm.family === -1) {
+            alert("请选择拜访户"); return;
+        }
     }
     if (!$("#title").val()) {
         alert("请输入事件"); return;
@@ -32,17 +46,40 @@ function submitcontent() {
                 thingsolution: $("#Textarea1").val(),
                 thinghaving: $("[name='thinghaving']:checked").val() == "1" ? "1" : "",
                 imgurl: paths[0],
-                slSubId: vm.family
+                slSubId: vm.family,
+                name: $("#name").val(),
+                phone: $("#phone").val()
             },
             url: "../Ajax/sys_ThingRecordManager.ashx?type=add",
             success: function (d) {
                 var obj = JSON.parse(d);
                 alert(obj.info);
-                window.open("index.html", "_self");
+                sendMsgToShuji();
             },
             error: function (d) {
                 console.log(d);
             }
         });
+    });
+}
+
+function sendMsgToShuji() {
+    $.ajax({
+        type: "post",
+        url: "../Ajax/sys_ThingRecordManager.ashx?type=getMsgInfo",
+        data: {
+            openId: localStorage.getItem("openId")
+        },
+        complete: function (d) {
+            var obj = JSON.parse(d.responseText);
+            var msg = `时间 : ${obj.time}\n`;
+            msg += `${obj.fromName}拜访了${obj.toName}\n`;
+            msg += `原因 : ${obj.title}\n`;
+            msg += obj.having;
+            sendMsg([obj.toOpenId], msg, function () {
+                console.log("已发送信息给 " + obj.toOpenId);
+                window.open("index.html", "_self");
+            });
+        }
     });
 }

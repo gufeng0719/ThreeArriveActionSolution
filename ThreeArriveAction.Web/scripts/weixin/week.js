@@ -10,11 +10,8 @@ function submitcontent() {
     if (vm.family === -1) {
         alert("请选择拜访户"); return;
     }
-    if (!$("#thing").val()) {
-        alert("请输入描述"); return;
-    }
-    if (!$("#thing").val()) {
-        alert("请输入结果"); return;
+    if (!$("#result").val()) {
+        alert("请输入工作内容"); return;
     }
     submit(function (paths, xpoint, ypoint) {
         $.ajax({
@@ -23,7 +20,6 @@ function submitcontent() {
             data: {
                 openId: localStorage.getItem("openId"),
                 slSubId: vm.family,
-                ThingMessage: $("#thing").val(),
                 ThingResult: $("#result").val(),
                 txtImgUrl: paths[0],
                 xpoint: xpoint,

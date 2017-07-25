@@ -109,8 +109,11 @@ namespace ThreeArriveAction.Web.Ajax
                 {
                     img = x.UserPhoto,
                     name = x.UserName,
-                    village = (villageList.FirstOrDefault(v => v.VillageId == x.VillageParId)?.VillageName ?? "淮安") + " --" + villageList.FirstOrDefault(v => v.VillageId == x.VillageId)?.VillageName,
-                    phone = x.UserPhoto
+                    village = (villageList.FirstOrDefault(v => v.VillageId == x.VillageParId)?.VillageName ?? "淮安") + 
+                            " --" + 
+                            villageList.FirstOrDefault(v => v.VillageId == x.VillageId)?.VillageName,
+                    phone = x.UserPhoto,
+                    time = x.ButyDate.ToString("yyyy-M-d")
                 }),
                 page,
                 totle = sh.Total,
@@ -121,12 +124,13 @@ namespace ThreeArriveAction.Web.Ajax
 
         class v_OnButyUsers
         {
-            public int OnbutyId;
-            public int VillageId;
-            public int VillageParId;
-            public string UserName = string.Empty;
-            public string UserPhone = string.Empty;
-            public string UserPhoto = string.Empty;
+            public int OnbutyId { get; set; }
+            public int VillageId { get; set; }
+            public int VillageParId { get; set; }
+            public string UserName { get; set; } = string.Empty;
+            public string UserPhone { get; set; } = string.Empty;
+            public string UserPhoto { get; set; } = string.Empty;
+            public DateTime ButyDate { get; set; } = DateTime.Now;
         }
 
 

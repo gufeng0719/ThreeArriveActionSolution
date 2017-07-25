@@ -1,30 +1,27 @@
-﻿
-var vm = new Vue({
+﻿var vm = new Vue({
     el: "#app",
     data: {
         list: [],
         page: 1,
-        size: 5,
-        totle: 0,
-        ddlvillage: -1
+        size: 10,
+        totle: 0
     },
     methods: {
         getpage: function (page) {
             var that = this;
             $.ajax({
                 type: "post",
-                url: "../Ajax/sys_PublicMessagesManager.ashx",
+                url: "../Ajax/sys_MajorInfoManager.ashx",
                 data: {
-                    type: "openList",
-                    openType: req["type"],
+                    type: "getPageList",
                     page: page,
                     size: that.size,
-                    village: that.ddlvillage
+                    userId: JSON.parse(localStorage.getItem("current_user")).UserId
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
+                    that.list = obj.list;
                     that.page = obj.page;
-                    that.list = obj.list,
                     that.totle = obj.totle;
                     if (that.page > 1) {
                         $("#lastpage").attr("disabled", false);
@@ -39,26 +36,11 @@ var vm = new Vue({
                 }
             });
         },
-        gotoInfo: function (id) {
-            window.open("openInfo.html?id=" + id, "_self");
-        }
-    },
-    watch: {
-        "ddlvillage": function () {
-            this.getpage(1);
+        toInfo: function (id) {
+            window.open("majorInfo.html?id=" + id, "_self");
         }
     },
     mounted: function () {
         this.getpage(1);
-        if (req["type"] == "1") {
-            $("#pagetitle").html("三到行动-党务公开");
-        }
-        if (req["type"] == "2") {
-            $("#pagetitle").html("三到行动-村务公开");
-        }
-        if (req["type"] == "3") {
-            $("#pagetitle").html("三到行动-财务公开");
-        }
     }
 });
-

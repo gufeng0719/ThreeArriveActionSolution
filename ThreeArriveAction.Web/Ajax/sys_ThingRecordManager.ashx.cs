@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using ThreeArriveAction.BLL;
@@ -23,7 +24,54 @@ namespace ThreeArriveAction.Web.Ajax
                 case "add":
                     AddThingRecord(context);
                     break;
+                case "getMsgInfo":
+                    GetMsgInfo(context);
+                    break;
             }
+        }
+
+        private void GetMsgInfo(HttpContext context)
+        {
+            var openId = context.Request["openId"];
+            var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserRemark", openId } }).FirstOrDefault();
+            if (user == null)
+            {
+                context.Response.Write("错误的OpenId");
+                return;
+            }
+            var sh = new SqlHelper<sys_ThingRecordsModel>(new sys_ThingRecordsModel());
+            sh.AddWhere("UserId", user.UserId);
+            sh.AddOrder("ThingDate", SortEnum.Desc);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                context.Response.Write("此用户没有任何的拜访记录");
+                return;
+            }
+            var familyModel = new sys_SubscriberFamilyModel();
+            if (model.SubcriberId > 0)
+            {
+                var familySh = new SqlHelper<sys_SubscriberFamilyModel>(new sys_SubscriberFamilyModel());
+                familySh.AddWhere("SubscriberId", model.SubcriberId);
+                familyModel = familySh.Select().FirstOrDefault();
+            }
+            else
+            {
+                familyModel.SubscriberName = model.ExtraName;
+                familyModel.SubscriberPhone = model.ExtraPhone;
+            }
+
+            var toUser = DataConfig.GetUsers(new Dictionary<string, object> { { "VillageId", user.VillageId }, { "OrganizationId", 3 } }).FirstOrDefault();
+
+            context.Response.Write(new
+            {
+                fromName = $"{user.UserName}({user.UserPhone})",
+                toName = $"{familyModel?.SubscriberName }({familyModel?.SubscriberPhone ?? "暂无联系方式"})",
+                toOpenId = toUser?.UserRemark ?? ConfigurationManager.AppSettings["OpenIdForAdmin"],
+                time = model.ThingDate.ToString("yy-M-d hh:mm"),
+                title = model.ThingName,
+                having = model.ThingHaving.Trim() == "是" ? "已解决" : "未解决"
+            }.ToJson());
         }
 
         private void AddThingRecord(HttpContext context)
@@ -38,15 +86,19 @@ namespace ThreeArriveAction.Web.Ajax
             }
             else
             {
-                sys_ThingRecordsModel thingModel = new sys_ThingRecordsModel();
-                thingModel.ThingDate = DateTime.Now;
-                thingModel.ThingName = MXRequest.GetFormString("thingname") ?? "";
-                thingModel.ThingReason = MXRequest.GetFormString("thingreason") ?? "";
-                thingModel.ThingSolution = MXRequest.GetFormString("thingsolution") ?? "";
-                thingModel.ThingHaving = MXRequest.GetFormString("thinghaving") == "" ? "否" : "是";
-                thingModel.ThingImgUrl = MXRequest.GetFormString("imgurl") ?? "";
-                thingModel.SubcriberId = MXRequest.GetFormString("slSubId").ToInt();
-                thingModel.UserId = model == null ? GetUserIdByOpenId(openId) : model.UserId;
+                sys_ThingRecordsModel thingModel = new sys_ThingRecordsModel
+                {
+                    ThingDate = DateTime.Now,
+                    ThingName = MXRequest.GetFormString("thingname") ?? "",
+                    ThingReason = MXRequest.GetFormString("thingreason") ?? "",
+                    ThingSolution = MXRequest.GetFormString("thingsolution") ?? "",
+                    ThingHaving = MXRequest.GetFormString("thinghaving") == "" ? "否" : "是",
+                    ThingImgUrl = MXRequest.GetFormString("imgurl") ?? "",
+                    SubcriberId = MXRequest.GetFormString("slSubId").ToInt(),
+                    UserId = model?.UserId ?? GetUserIdByOpenId(openId),
+                    ExtraName = context.Request["name"] ?? "",
+                    ExtraPhone = context.Request["phone"] ?? ""
+                };
                 string result = thingBLL.AddThingRecord(thingModel);
                 context.Response.Write(result);
             }

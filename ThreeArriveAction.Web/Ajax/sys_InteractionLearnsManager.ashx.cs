@@ -106,10 +106,13 @@ namespace ThreeArriveAction.Web.Ajax
             for (var i = 0; i < title.Length; i++)
             {
                 if (title[i].IsNullOrEmpty()) continue;
-                if (i == 0)
-                    sh.AddWhere(" AND ( LearnTitle LIKE '%" + title[i] + "%' ");
-                else if (i == title.Length - 1)
-                    sh.AddWhere(" OR LearnTitle LIKE '%" + title[i] + "%' ) ");
+                if (i == 0 || i == title.Length - 1)
+                {
+                    if (i == 0)
+                        sh.AddWhere(" AND ( LearnTitle LIKE '%" + title[i] + "%' ");
+                    if (i == title.Length - 1)
+                        sh.AddWhere(" OR LearnTitle LIKE '%" + title[i] + "%' ) ");
+                }
                 else
                     sh.AddWhere(" OR LearnTitle LIKE '%" + title[i] + "%'  ");
             }

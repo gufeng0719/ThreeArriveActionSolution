@@ -1,5 +1,5 @@
 ﻿
-function GetRequest() {
+function getRequest() {
     var url = location.search; //获取url中"?"符后的字串
     var theRequest = new Object();
     if (url.indexOf("?") !== -1) {
@@ -11,5 +11,20 @@ function GetRequest() {
     }
     return theRequest;
 }
-req = GetRequest();
+req = getRequest();
+
+sendMsg = function (openIds, msg, callback) {
+    $.ajax({
+        type: "post",
+        url: "../Ajax/weixinInfo.ashx",
+        data: {
+            type: "sendMsg",
+            openIds: openIds,
+            msg: msg
+        },
+        complete: function (d) {
+            callback(d.responseText);
+        }
+    });
+}
 

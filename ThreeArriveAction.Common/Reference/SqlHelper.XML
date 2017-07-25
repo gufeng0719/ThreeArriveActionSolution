@@ -98,6 +98,12 @@
             <param name="thatRelationField">另一个关联字段</param>
             <param name="where">链接之前的筛选(以AND开头)</param>
         </member>
+        <member name="M:ThreeArriveAction.Common.SqlHelper`1.Select">
+            <summary>
+            查询数据 (需要分页请先配置PageConfig)
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:ThreeArriveAction.Common.SqlHelper`1.RemoveStrModel(System.String)">
             <summary>
             移除 T 后面可能出现的个别字符串
@@ -128,6 +134,11 @@
         <member name="P:ThreeArriveAction.Common.PageConfig.SortEnum">
             <summary>
             排序类型
+            </summary>
+        </member>
+        <member name="P:ThreeArriveAction.Common.PageConfig.PageSortSql">
+            <summary>
+            多排序或者复杂排序用此字段
             </summary>
         </member>
         <member name="T:ThreeArriveAction.Common.RelationEnum">
