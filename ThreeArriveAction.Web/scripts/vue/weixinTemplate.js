@@ -2,11 +2,11 @@
 Vue.component("ddlsee", {
     template:
         '<div>' +
-        '   <select v-model="type">                                                            ' +
-        '      <option value="-1">-请选择-</option>                                             ' +
-        '      <option v-for="model in typeList" :value="model.key">{{model.value}}</option>  ' +
-        '   </select>                                                                          ' +
-        '   <select v-model="myfamily">                                                          ' +
+        '   <select v-model="type">                                                                    ' +
+        '      <option value="-1">-请选择-</option>                                                     ' +
+        '      <option v-for="model in typeList" :value="model.key">{{model.value}}</option>           ' +
+        '   </select>                                                                                  ' +
+        '   <select v-model="myfamily" v-show="type!=8">                                               ' +
         '      <option selected v-for="model in familyList" :value="model.key">{{model.value}}</option>' +
         '   </select>' +
         '</div>',
@@ -62,6 +62,9 @@ Vue.component("ddlsee", {
                     console.log(d);
                 }
             });
+            if (that.$parent.familyType) {
+                that.$parent.familyType = newValue;
+            }
         },
         myfamily: function (newValue) {
             vm.family = newValue;

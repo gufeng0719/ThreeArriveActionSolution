@@ -103,6 +103,27 @@ namespace ThreeArriveAction.Model
             get { return remarks; }
             set { remarks = value; }
         }
+
+
+        private string extraName;
+        /// <summary>
+        /// 额外的拜访户的姓名(不在七户表数据中的用户)
+        /// </summary>
+        public string ExtraName
+        {
+            get { return extraName; }
+            set { extraName = value; }
+        }
+
+        private string extraPhone;
+        /// <summary>
+        /// 额外的拜访户的联系方式(不在七户表数据中的用户)
+        /// </summary>
+        public string ExtraPhone
+        {
+            get { return extraPhone; }
+            set { extraPhone = value; }
+        }
     }
     #endregion
 }

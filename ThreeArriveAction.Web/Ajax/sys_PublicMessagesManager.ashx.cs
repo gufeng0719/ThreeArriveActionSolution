@@ -24,6 +24,33 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 Add(context);
             }
+            else if (type == "getModel")
+            {
+                GetModel(context);
+            }
+        }
+
+        public void GetModel(HttpContext context)
+        {
+            var id = context.Request["id"].ToInt();
+            var sh = new SqlHelper<sys_PublicMessagesModel>(new sys_PublicMessagesModel());
+            sh.AddWhere("PublicId", id);
+            var model = sh.Select().FirstOrDefault();
+            if (model == null)
+            {
+                context.Response.Write("未能获取到用户对象");
+                return;
+            }
+            var villageList = DataConfig.GetVillages();
+            var village = villageList.FirstOrDefault(x => x.VillageId == model.VillageId);
+            context.Response.Write(new
+            {
+                type = ((OpenTypeEnum)model.PublicType).ToString(),
+                gimg = model.ThumbnailUrl,
+                imgs = model.ImageUrl.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                village = (villageList.FirstOrDefault(x => x.VillageId == village?.VillageParId)?.VillageName ?? "淮安") + "---" + village?.VillageName,
+                msg = model.Remarks
+            }.ToJson());
         }
 
         public void Add(HttpContext context)
@@ -91,7 +118,7 @@ namespace ThreeArriveAction.Web.Ajax
                 var villageModel = villageList.FirstOrDefault(v => v.VillageId == item.VillageId);
                 list.Add(new
                 {
-                    id = item.VillageId,
+                    id = item.PublicId,
                     img = item.ThumbnailUrl,
                     date = item.PublishDate.ToString("yyyy-MM-dd"),
                     village = villageModel?.VillageName ?? "",
