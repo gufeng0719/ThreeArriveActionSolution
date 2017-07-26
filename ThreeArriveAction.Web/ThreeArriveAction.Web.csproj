@@ -95,6 +95,7 @@
     <Content Include="admin\StudyEdit.html" />
     <Content Include="admin\StudyList.html" />
     <Content Include="admin\weixin\addNews.html" />
+    <Content Include="admin\weixin\IntegralsList.html" />
     <Content Include="admin\weixin\Officer.html" />
     <Content Include="admin\weixin\OfficerList.html" />
     <Content Include="admin\weixin\Open.html" />

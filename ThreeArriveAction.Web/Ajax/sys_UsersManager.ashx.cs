@@ -139,6 +139,13 @@ namespace ThreeArriveAction.Web.Ajax
                 StringBuilder strJson = new StringBuilder();
 
                 DataSet ds = usersBLL.GetList(pageSize, page, strSql.ToString(), "UserId asc", out totalCount);
+                var villageList = DataConfig.GetVillages();
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    var parId = villageList.FirstOrDefault(x => x.VillageId == int.Parse(dr["VillageId"].ToString())).VillageParId;
+                    var parName = villageList.FirstOrDefault(x => x.VillageId == parId).VillageName;
+                    dr["VillageName"] = parName + "--" + dr["VillageName"].ToString();
+                }
                 strJson.Append("{\"total\":" + totalCount);
                 if (totalCount > 0)
                 {

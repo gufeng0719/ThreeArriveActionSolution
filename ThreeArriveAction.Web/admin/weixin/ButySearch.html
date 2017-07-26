@@ -57,7 +57,7 @@
     </div>
     <!--/工具栏-->
     <!--图片列表-->
-    <div class="imgList">
+    <div class="imglist">
         <ul id="butyList">
         </ul>
     </div>
@@ -77,6 +77,7 @@
     <!--/内容底部-->
     </form>
     <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/jquery.lazyload.min.js"></script>
     <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
     <script type="text/javascript" src="../js/layout.js"></script>
@@ -89,7 +90,7 @@
         $(function () {
             $("#butydate").val(new Date().format("yyyy-MM-dd"));
             //加载乡镇数据
-            
+
             $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
                 $("#town").append("<option  value=\"0\">不限</option>");
                 for (var i = 0; i < msg.total; i++) {
@@ -139,33 +140,20 @@
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "<li>";
                         s += "<div class=\"details\">";
-                        s += "<div class=\"pic left\">";
+                        s += "<div class=\"pic\">";
                         if (msg.rows[i].UserPhoto == "") {
-                            s += "<img src=\"../skin/default/noneimg.jpg\" style=\"width:100px;height:80px;\" data-original=\"\" />";
+                            s += "<img src=\"../skin/default/noneimg.jpg\"  data-original=\"\" />";
                         } else {
-                            s += "<img src=\"" + msg.rows[i].UserPhoto + "\" style=\"width:100px;height:80px;\" data-original=\"\" />";
+                            s += "<img src=\"" + msg.rows[i].UserPhoto + "\"  data-original=\"" + msg.rows[i].UserPhoto + "\" />";
                         }
                         s += "</div>";
-                        s += "<div class=\"left div-content\">";
-                        s += "<dl>";
-                        s += "<dt>姓名:</dt>"
-                        s += "<dd>";
-                        s += msg.rows[i].UserName;
-                        s += "</dd>";
-                        s += "</dl>";
-                        s += "<dl>";
-                        s += "<dt>职务:</dt>";
-                        s += "<dd>";
+                        s += "<i class=\"absbg\"></i>";
+                        s += "<h1><span>"+msg.rows[i].UserName+"--"+msg.rows[i].UserPhone+"</span></h1>";
+                        s += "<div class=\"remark\">";
                         s += msg.rows[i].UserDuties;
-                        s += "</dd>";
-                        s += "</dl>";
-                        s += "<dl>";
-                        s += "<dt>联系方式:</dt>";
-                        s += "<dd>";
-                        s += msg.rows[i].UserPhone;
-                        s += "</dd>";
-                        s += "</dl>";
                         s += "</div>";
+                        s += "<div class=\"foot\">";
+                        s += "<p class=\"time\">"+msg.rows[i].VillageName+"</p>";
                         s += "</div>";
                         s += "</li>";
                         $("#butyList").append(s);
@@ -175,6 +163,29 @@
                 }
             });
         }
+
+        //排列图文列表
+        function imgLayout() {
+            var imgWidth = $(".imglist").width();
+            var lineCount = Math.floor(imgWidth / 222);
+            var lineNum = imgWidth % 222 / (lineCount - 1);
+            $(".imglist ul").width(imgWidth + Math.ceil(lineNum));
+            $(".imglist ul li").css("margin-right", parseFloat(lineNum));
+        }
+        //等比例缩放图片大小
+        function AutoResizeImage(e, s) {
+            var img = new Image();
+            img.src = $(this).attr("src")
+            var w = img.width;
+            var h = img.height;
+            var wRatio = w / h;
+            if ((220 / wRatio) >= 165) {
+                $(this).width(220); $(this).height(220 / wRatio);
+            } else {
+                $(this).width(165 * wRatio); $(this).height(165);
+            }
+        }
+    </script>
     </script>
 </body>
 </html>

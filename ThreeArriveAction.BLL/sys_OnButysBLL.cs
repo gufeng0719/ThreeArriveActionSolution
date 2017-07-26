@@ -71,9 +71,14 @@ namespace ThreeArriveAction.BLL
 
         public string GetListJson(int pageSize, int pageIndex, string strWhere, string fieldOrder)
         {
+            sys_VillagesBLL vBLL = new sys_VillagesBLL();
             StringBuilder strJson = new StringBuilder();
             int recordCount = 0;
             DataTable  dt = GetList(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            foreach(DataRow dr in dt.Rows)
+            {
+                dr["VillageName"] = vBLL.GetVillage(int.Parse(dr["VillageParId"].ToString())).VillageName + "--" + dr["VillageName"].ToString();
+            }
             strJson.Append("{\"total\":" + recordCount);
             strJson.Append(",\"rows\":");
             if (recordCount > 0)

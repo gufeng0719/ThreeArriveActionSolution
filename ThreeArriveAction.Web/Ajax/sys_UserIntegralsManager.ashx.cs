@@ -26,6 +26,10 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetModel(context);
             }
+            else if (type == "get")
+            {
+                GetUserIntergalList(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
@@ -103,6 +107,14 @@ namespace ThreeArriveAction.Web.Ajax
             }.ToJson());
         }
 
+        private void GetUserIntergalList(HttpContext context)
+        {
+            int town = MXRequest.GetQueryIntValue("town");
+            int vid = MXRequest.GetQueryIntValue("vid");
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryIntValue("page");
+            string sdate = MXRequest.GetQueryStringValue("sdate");
+        }
 
         public bool IsReusable
         {
