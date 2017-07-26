@@ -127,7 +127,7 @@ namespace ThreeArriveAction.Web.Ajax
             sh.AddUpdate("FamilyCoordinate", x + "," + y);
             var line = sh.Update();
             context.Response.Write(new
-                                   {
+            {
                 line
             }.ToJson());
         }

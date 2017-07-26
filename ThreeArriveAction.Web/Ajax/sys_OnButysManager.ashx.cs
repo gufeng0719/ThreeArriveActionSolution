@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
@@ -112,7 +111,7 @@ namespace ThreeArriveAction.Web.Ajax
                     village = (villageList.FirstOrDefault(v => v.VillageId == x.VillageParId)?.VillageName ?? "淮安") + 
                             " --" + 
                             villageList.FirstOrDefault(v => v.VillageId == x.VillageId)?.VillageName,
-                    phone = x.UserPhoto,
+                    phone = x.UserPhone,
                     time = x.ButyDate.ToString("yyyy-M-d")
                 }),
                 page,

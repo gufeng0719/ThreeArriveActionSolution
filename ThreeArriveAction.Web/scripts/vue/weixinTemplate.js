@@ -134,23 +134,22 @@ Vue.component("ddlvillage", {
 
 Vue.component("image-template", {
     template:
-        '<div v-if="isMore">                                                                    ' +
-            '    <a v-for="(localId,index) in localIds"                                         ' +
-            '        :data-id="localId"                                                         ' +
-            '        @touchstart="gtouchstart(localId.toString())"                              ' +
-            '        @touchmove="gtouchmove()"                                                  ' +
-            '        @touchend="gtouchend()">                                                   ' +
-            '        <img :src="localId" style="width: 32%;" />                                 ' +
-            '    </a>                                                                           ' +
-            '    <a @click="pz()" v-if="localIds.length < 9">                                   ' +
-            '        <img src="../images/templates/bottommenu/218.png" style="width: 32%;" />   ' +
-            '    </a>                                                                           ' +
-            '</div>                                                                             ' +
-            '<div v-else>                                                                       ' +
-            '   <a @click="pz()">                                                               ' +
-            '       <img :src="srcUrl" style="width: 32%;" />                                   ' +
-            '   </a>                                                                            ' +
-            '</div>                                                                             ',
+            '<div v-if="isMore">                                                               ' +
+            '    <div v-for="(localId,index) in localIds" style="display:inline"               ' +
+            '       @dblclick="removeImg(localId)">                                            ' +
+            '       <a :data-id="localId">                                                     ' +
+            '           <img :src="localId" style="width: 28%;" />                             ' +
+            '       </a>                                                                       ' +
+            '    </div>                                                                        ' +
+            '    <a @click="pz()" v-if="localIds.length < 9">                                  ' +
+            '        <img src="../images/templates/bottommenu/218.png" style="width: 28%;" />  ' +
+            '    </a>                                                                          ' +
+            '</div>                                                                            ' +
+            '<div v-else>                                                                      ' +
+            '   <a @click="pz()">                                                              ' +
+            '       <img :src="srcUrl" style="width: 28%;" />                                  ' +
+            '   </a>                                                                           ' +
+            '</div>                                                                            ',
     props: ["local-ids", "is-more"],
     data: function () {
         return {
@@ -178,6 +177,11 @@ Vue.component("image-template", {
                     }
 
                 }
+            });
+        },
+        removeImg: function (id) {
+            vm.localIds = window._.remove(vm.localIds, function (localId) {
+                return localId !== id;
             });
         }
     },

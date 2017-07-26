@@ -61,23 +61,41 @@ var vm = new Vue({
                     that.address = obj.address;
                     that.number = obj.number;
                     that.msg = obj.msg;
+                    if (that.y === 119.156456 && that.x === 33.5226) {
+                        window.wx.getLocation({
+                            type: 'gcj02',
+                            success: function (res) {
+                                $("#baiduframe").attr("src",
+                                    "../editor/plugins/baidumap/weixinIndex.html?yjindu=" +
+                                    res.longitude +
+                                    "&xweidu=" +
+                                    res.latitude);
+                            },
+                            error: function () {
+                                alert("定位失败,请重试");
+                            }
+                        });
+                    } else {
+                        $("#baiduframe").attr("src", "../../editor/plugins/baidumap/weixinIndex.html?yjindu=" + that.y + "&xweidu=" + that.x);
+                    }
+                }
+            });
+        },
+        localXy: function () {
+            window.wx.getLocation({
+                type: 'gcj02',
+                success: function (res) {
+                    $("#baiduframe").attr("src", "../editor/plugins/baidumap/weixinIndex.html?yjindu=" + res.longitude + "&xweidu=" + res.latitude);
+                }, error: function () {
+                    alert("定位失败,请重试");
                 }
             });
         }
     },
     watch: {
-        x: function (newValue) {
-            $("#baiduframe").attr("src", "../../editor/plugins/baidumap/weixinIndex.html?yjindu=" + this.y + "&xweidu=" + newValue);
-        },
-        y: function (newValue) {
-            $("#baiduframe").attr("src", "../../editor/plugins/baidumap/weixinIndex.html?yjindu=" + newValue + "&xweidu=" + this.x);
-        },
         family: function (newValue) {
             this.getSubfamilyModel(newValue);
         }
-    },
-    mounted: function () {
-
     }
 });
 
@@ -94,7 +112,6 @@ $(function () {
             var obj = JSON.parse(d);
             console.log(obj);
             window.wx.config({
-                debug: false,
                 appId: obj.appId,
                 timestamp: obj.timestamp,
                 nonceStr: obj.nonceStr,
@@ -106,15 +123,4 @@ $(function () {
             console.log(d);
         }
     });
-
-    window.wx.ready(function () {
-        window.wx.getLocation({
-            type: 'gcj02',
-            success: function (res) {
-                vm.x = res.latitude;
-                vm.y = res.longitude;
-            }
-        });
-    });
-
 });
