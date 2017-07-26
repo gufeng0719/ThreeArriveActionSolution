@@ -235,6 +235,7 @@ function addImage(targetObj, originalSrc, thumbSrc) {
         newLi.children(".img-box").addClass("selected");
     }
 }
+
 //设置相册封面
 function setFocusImg(obj) {
     var focusPhotoObj = $(obj).parents(".photo-list").siblings(".focus-photo");

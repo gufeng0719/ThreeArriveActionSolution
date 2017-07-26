@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>在线学习</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>在线学习</span>
+        </div>
+        <!--/导航栏-->
+        <!--工具栏-->
+        <div class="toolbar-wrap">
+            <div id="floatHead" class="toolbar">
+                <div class="r-list">
+                    <div style="float: left;">
+                        <div class="rule-single-select">
+                            <select id="learntype" name="learntype">
+                                <option value="1">不限</option>
+                                <option value="1">最新政策</option>
+                                <option value="2">法律常识</option>
+                                <option value="3">学习视频</option>
+                                <option value="4">案例</option>
+                                <option value="5">考试题库</option>
+                                <option value="6">"三到"之星</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="float: left;">
+                        <input type="text" class="keyword" id="keywords" />
+                        <input type="button" id="btnSearch" class="btn-search" value="查询" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--列表-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+            <thead>
+                <tr>
+                    <th width="8%">
+                        选择
+                    </th>
+                    <th align="left" width="10%">
+                        类型
+                    </th>
+                    <th align="left" width="12%">
+                        标题
+                    </th>
+                    <th align="left" width="11%">
+                        发布日期
+                    </th>
+                    <th align="left" width="11%">
+                        发布者
+                    </th>
+                    <th width="4%">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+            <!--/列表-->
+        </table>
+        <!--内容底部-->
+        <div class="line20">
+        </div>
+        <div class="pagelist">
+            <div class="l-btns">
+                <span>显示</span>
+                <label class="pagenum">
+                    10
+                </label>
+                <span>条/页</span>
+            </div>
+            <div id="PageContent" class="default">
+            </div>
+        </div>
+        <!--/内容底部-->
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Load(1);
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+        });
+
+        function Load(page) {
+            var key = $("#keywords").val();
+            var learntype = $("#learntype").find("option:selected").val();
+            //加载列表
+            $.getJSON("../../Ajax/sys_InteractionLearnsManager.ashx?type=get", { "keywords": key, "page": page, "learntype": learntype }, function (msg) {
+                console.info(msg.rows.length);
+                $("#tbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
+                        s += "<input id=\"chkId" + msg.rows[i].SubscriberId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].SubscriberId + "\" /> </span>";
+                        s += "</td>";
+                        s += "<td><a href='SubFamilyEdit.html?type=edit&subid=" + msg.rows[i].SubscriberId + "'>" + msg.rows[i].SubscriberName + "</a></td>";
+                        s += "<td>" + msg.rows[i].SubscriberPhone + "</td>";
+                        s += "<td>" + msg.rows[i].Dictdata_Name + "</td>";
+                        s += "<td>" + msg.rows[i].FamilyAddress + "</td>";
+                        s += "<td>" + msg.rows[i].FamilyNumber + "</td>";
+                        s += "<td>" + msg.rows[i].VillageName + "</td>";
+                        s += "<td>" + msg.rows[i].UserName + "</td>";
+                        s += "<td align=\"center\"><a href='SubFamilyEdit.html?type=edit&subid=" + msg.rows[i].SubscriberId + "'>修改</a></td>";
+                        s += "</tr>";
+                        $("#tbody").append(s);
+                    }
+                    console.info(msg.pageContent);
+                    $("#PageContent").html(msg.pageContent);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

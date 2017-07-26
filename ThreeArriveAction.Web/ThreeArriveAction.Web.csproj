@@ -95,11 +95,14 @@
     <Content Include="admin\StudyEdit.html" />
     <Content Include="admin\StudyList.html" />
     <Content Include="admin\weixin\addNews.html" />
+    <Content Include="admin\weixin\IntegralInfo.html" />
     <Content Include="admin\weixin\IntegralsList.html" />
+    <Content Include="admin\weixin\LearnsList.html" />
     <Content Include="admin\weixin\Officer.html" />
     <Content Include="admin\weixin\OfficerList.html" />
     <Content Include="admin\weixin\Open.html" />
     <Content Include="admin\weixin\openList.html" />
+    <Content Include="admin\weixin\PublicInsert.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
     <Content Include="scripts\weixin\major.js" />
@@ -1404,6 +1407,7 @@
     <Compile Include="ueditor\net\App_Code\UploadHandler.cs" />
     <Compile Include="Ajax\sys_IntegralInfoManager.ashx.cs">
       <DependentUpon>sys_IntegralInfoManager.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ajax\sys_InteractionLearnsManager.ashx.cs">
       <DependentUpon>sys_InteractionLearnsManager.ashx</DependentUpon>
@@ -1416,6 +1420,7 @@
     </Compile>
     <Compile Include="Ajax\sys_UserIntegralsManager.ashx.cs">
       <DependentUpon>sys_UserIntegralsManager.ashx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ajax\sys_NavigationsManager.ashx.cs">
       <DependentUpon>sys_NavigationsManager.ashx</DependentUpon>
@@ -1428,7 +1433,6 @@
     </Compile>
     <Compile Include="Ajax\sys_PublicMessagesManager.ashx.cs">
       <DependentUpon>sys_PublicMessagesManager.ashx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Ajax\sys_SignManager.ashx.cs">
       <DependentUpon>sys_SignManager.ashx</DependentUpon>
