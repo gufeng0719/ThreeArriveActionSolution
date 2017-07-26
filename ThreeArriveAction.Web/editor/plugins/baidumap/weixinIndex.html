@@ -34,6 +34,7 @@
 
 <body>
     <div id="l-map" style="width: 100%"></div>
+    <input type="button" value="定位" class="dinwei" />
     <div id="r-result" style="font-size: 12px; ;display: none">
         鼠标点击拾取坐标<br />
         鼠标点击地图图区位置，右侧显示点击处经纬度坐标<br />
@@ -111,6 +112,16 @@
             window.parent.vm.y = e.point.lng;
             window.parent.vm.x = e.point.lat;
         }
+        map.removeOverlay(marker1)
+        marker1 = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));
+        map.addOverlay(marker1)
     });
+
+    function positionTo(y, x) {
+        map.removeOverlay(marker1)
+        marker1 = new BMap.Marker(new BMap.Point(y, x));
+        map.addOverlay(marker1)
+        map.panTo(marker1);
+    }
 
 </script>

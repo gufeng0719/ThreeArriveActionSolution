@@ -1637,6 +1637,9 @@
     <Folder Include="upload\20170724\" />
     <Folder Include="upload\20170725\" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <!--<Folder Include="scripts\datepicker\skin\whyGreen\" />-->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -16,6 +16,15 @@
             padding-left: 5px;
             width: 40%;
         }
+
+        .small {
+            width: 44px;
+            padding: 0px;
+            height: 30px;
+            position: relative;
+            top: -32px;
+            left: 87%
+        }
     </style>
 </head>
 <body style="width: 94%; margin-left: 3%">
@@ -93,9 +102,10 @@
             <div>
                 <iframe id="baiduframe" name="baiduframe" src="../editor/plugins/baidumap/weixinIndex.html?yjindu=119.156456&xweidu=33.5226"
                         style="width: 100%;border: 0 "></iframe>
+                <input type="button" class="btn small" value="定位" @click="localXy()" />
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="position: relative;top: -49px;">
             <div class="header">
                 <div class="text">
                     其他描述
@@ -120,7 +130,6 @@
     <script src="../scripts/sweetalert/sweetalert.min.js"></script>
     <script src="../scripts/weixin/login.js"></script>
     <script src="../scripts/weixin/jweixin-1.2.0.js"></script>
-    <script src="../scripts/weixin/js-sdk-config.js"></script>
     <script src="../scripts/weixin/familyEdit.js"></script>
 </body>
 </html>
