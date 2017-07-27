@@ -14,10 +14,10 @@ namespace ThreeArriveAction.Web.Ajax
     /// <summary>
     /// sys_PublicMessagesManager 的摘要说明
     /// </summary>
-    public class sys_PublicMessagesManager : ManagePage, IHttpHandler, IRequiresSessionState
+    public class sys_PublicMessagesManager :IHttpHandler, IRequiresSessionState
     {
         private sys_PublicMessagesBLL pBLL = new sys_PublicMessagesBLL();
-        public override void ProcessRequest(HttpContext context)
+        public  void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
             switch (type)
@@ -36,6 +36,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "getModel":
                     GetModel(context);
+                    break;
+                case "insert":
+                    Insert(context);
                     break;
             }
         }
@@ -96,8 +99,39 @@ namespace ThreeArriveAction.Web.Ajax
                 UserId = user.UserId,
                 VillageId = user.VillageId
             };
-            var line = new sys_PublicMessagesBLL().Add(model);
+            var line = pBLL.Add(model);
             context.Response.Write(line);
+        }
+
+        public void Insert(HttpContext context)
+        {
+            int ptype = MXRequest.GetFormIntValue("ptype");
+            string th = MXRequest.GetFormString("thumbnail");
+            string imgurl = context.Request.Form["imgurl"];
+            
+            string remark = MXRequest.GetFormString("remark");
+            sys_UsersModel userModel =new ManagePage().GetUsersinfo();
+            sys_PublicMessagesModel publicModel = new sys_PublicMessagesModel();
+            publicModel.VillageId = userModel.VillageId;
+            publicModel.PublishDate = DateTime.Now;
+            publicModel.PublicType = ptype;
+            publicModel.ThumbnailUrl = th;
+            publicModel.ImageUrl =imgurl;
+            publicModel.UserId = userModel.UserId;
+            publicModel.Remarks = remark;
+            int number = pBLL.Add(publicModel);
+            JsonMessage json = new JsonMessage();
+            if (number>0)
+            {
+                json.success = true;
+                json.msg = "公务发布成功";
+            }else
+            {
+                json.success = false;
+                json.msg = "公务发布失败";
+            }
+
+            context.Response.Write(JsonHelper.ToJson(json));
         }
         #endregion
 
@@ -153,7 +187,7 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetOpenList(HttpContext context)
         {
             //获取当前登录的操作者信息
-            sys_UsersModel model = GetUsersinfo();
+            sys_UsersModel model =new ManagePage(). GetUsersinfo();
             int pageSize = 20;
             int pageIndex = MXRequest.GetQueryIntValue("page");
             int town = MXRequest.GetQueryInt("town");
@@ -208,7 +242,7 @@ namespace ThreeArriveAction.Web.Ajax
         }
         #endregion
 
-        public new bool IsReusable
+        public  bool IsReusable
         {
             get
             {

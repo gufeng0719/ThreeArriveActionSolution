@@ -47,6 +47,20 @@ namespace ThreeArriveAction.DAL
             }
 
         }
+
+        public DataSet GetList(int pageSize,int pageIndex,string strWhere,string filedOrder,out int recordCount )
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select a.*,b.VillageId,b.UserName,c.VillageName,c.VillageParId ");
+            strSql.Append(" from sys_UserIntegrals a inner join sys_Users b on a.UserId = b.UserId ");
+            strSql.Append(" inner join sys_Villages c on b.VillageId =c.VillageId ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            return DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), filedOrder));
+        }
         #endregion
     }
 }

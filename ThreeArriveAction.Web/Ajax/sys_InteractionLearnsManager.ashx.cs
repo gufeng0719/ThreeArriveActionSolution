@@ -33,6 +33,10 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 Delete(context);
             }
+            else if (type == "get")
+            {
+                GetLearnList(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
@@ -146,6 +150,11 @@ namespace ThreeArriveAction.Web.Ajax
                 totle = sh.Total,
                 sql = sh.SqlString.ToString()
             }.ToJson());
+        }
+
+        private void GetLearnList(HttpContext context)
+        {
+
         }
 
         public bool IsReusable

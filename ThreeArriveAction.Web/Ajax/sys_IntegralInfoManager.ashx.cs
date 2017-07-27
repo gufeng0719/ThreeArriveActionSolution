@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Data;
 using System.Web;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Web.UI;
+using System.Web.SessionState;
+using ThreeArriveAction.BLL;
 
 namespace ThreeArriveAction.Web.Ajax
 {
     /// <summary>
     /// sys_IntegralInfoManager 的摘要说明
     /// </summary>
-    public class sys_IntegralInfoManager : IHttpHandler
+    public class sys_IntegralInfoManager :ManagePage, IHttpHandler,IRequiresSessionState
     {
-
-        public void ProcessRequest(HttpContext context)
+        private readonly sys_IntegralInfoBLL iiBLL = new sys_IntegralInfoBLL();
+        public override void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
             if (type == "integralInfoList")
             {
                 IntegralInfoList(context);
+            }else if (type == "get")
+            {
+                GetIntergralInfoList(context);
             }
             else
             {
@@ -67,7 +75,35 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-        public bool IsReusable
+        private void GetIntergralInfoList(HttpContext context)
+        {
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryIntValue("page");
+            int iid = MXRequest.GetQueryIntValue("iid");
+            StringBuilder strJson = new StringBuilder();
+            string strWhere = " IntegralId=" +iid;
+            string filedOrder = "IntegralDate DESC ";
+            int recordCount = 0;
+            DataSet ds = iiBLL.GetList(pageSize,pageIndex,strWhere,filedOrder,out recordCount);
+            strJson.Append("{\"total\":" + recordCount);
+            if (recordCount > 0)
+            {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+            strJson.Append("}");
+            context.Response.Output.Write(strJson.ToString());
+        }
+
+        public new  bool IsReusable
         {
             get
             {

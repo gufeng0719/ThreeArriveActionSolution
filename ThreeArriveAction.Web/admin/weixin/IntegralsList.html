@@ -39,17 +39,22 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
             <thead>
                 <tr>
-                    
-                    <th align="left" width="10%">
+                    <th align="left" width="5%">
+                        序号
+                    </th>
+                    <th align="left" width="20%">
+                        日期
+                    </th>
+                    <th align="left" width="20%">
                         姓名
                     </th>
-                    <th align="left" width="12%">
+                    <th align="left" width="20%">
                         村居
                     </th>
-                    <th align="left" width="11%">
+                    <th align="left" width="20%">
                         积分
                     </th>
-                    <th width="4%">
+                    <th width="15%">
                         操作
                     </th>
                 </tr>
@@ -64,7 +69,7 @@
             <div class="l-btns">
                 <span>显示</span>
                 <label class="pagenum">
-                    10
+                    20
                 </label>
                 <span>条/页</span>
             </div>
@@ -109,57 +114,42 @@
             });
         });
 
+        //加载村居信息
+        function LoadVillage(parid) {
+            $("#village").html("");
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: parid }, function (msg) {
+                $("#village").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#village").append(s);
+                }
+                $("#divvillage").ruleSingleSelect().addClass("rule-single-select");
+            });
+        }
+
         function Load(page) {
             var town = $("#town").val();
             var vid = $("#village").val();
             var sdate = $("#sdate").val();
             //加载列表
             $.getJSON("../../Ajax/sys_UserIntegralsManager.ashx?type=get", { town: town, vid: vid, page: page, sdate: sdate }, function (msg) {
-                console.info(msg.rows.length);
                 $("#tbody").html("");
                 if (msg.total > 0) {
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "";
-                        s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" + msg.rows[i].SubscriberId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].SubscriberId + "\" /> </span>";
+                        s += "<tr><td align=\"left\">";
+                        s += (i+1);
                         s += "</td>";
-                        s += "<td><a href='SubFamilyEdit.html?type=edit&subid=" + msg.rows[i].SubscriberId + "'>" + msg.rows[i].SubscriberName + "</a></td>";
-                        s += "<td>" + msg.rows[i].SubscriberPhone + "</td>";
-                        s += "<td>" + msg.rows[i].Dictdata_Name + "</td>";
-                        s += "<td>" + msg.rows[i].FamilyAddress + "</td>";
-                        s += "<td>" + msg.rows[i].FamilyNumber + "</td>";
+                        s += "<td>" + msg.rows[i].IntegralYear + "年" + msg.rows[i].IntegralMonth + "月</td>";
+                        s += "<td><a href='IntegralInfo.html?iid=" + msg.rows[i].IntegralId + "'>" + msg.rows[i].UserName + "</a></td>";
                         s += "<td>" + msg.rows[i].VillageName + "</td>";
-                        s += "<td>" + msg.rows[i].UserName + "</td>";
-                        s += "<td align=\"center\"><a href='SubFamilyEdit.html?type=edit&subid=" + msg.rows[i].SubscriberId + "'>修改</a></td>";
+                        s += "<td>已获得<span style=\"font-size；20px;font-weight:blod;color:red;\">" + msg.rows[i].IntegralScore + "</span>积分</td>";
+                        s += "<td align=\"center\"><a href='IntegralInfo.html?iid=" + msg.rows[i].IntegralId + "'>详细</a></td>";
                         s += "</tr>";
                         $("#tbody").append(s);
                     }
-                    console.info(msg.pageContent);
                     $("#PageContent").html(msg.pageContent);
                 }
-            });
-        }
-
-        function Delete() {
-            if ($(".checkall input:checked").size() < 1) {
-                $.dialog.alert("对不起,请选中您要操作的记录!");
-                return false;
-            }
-            $.dialog.confirm("删除记录后,不可恢复,您确定吗?", function () {
-                var str = "";
-                $(".checkall input:checked").each(function () {
-                    str += $(this).val() + ",";
-                });
-                str = str.substring(0, str.length - 1);
-                $.post("../../Ajax/sys_SubscriberFamiliesManager.ashx?type=del", { str: str }, function (msg) {
-                    var result = $.parseJSON(msg);
-                    console.info(result);
-                    if (result.status == "y") {
-                        jsdialog("系统提示", result.info, "SubFamilyList.html", "Success");
-                    } else {
-                        jsdialog("系统提示", result.info, "SubFamilyList.html", "");
-                    }
-                });
             });
         }
     </script>
