@@ -4,37 +4,212 @@
     <meta charset="utf-8" />
     <title>三务公开</title>
     <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../scripts/element/element.css" rel="stylesheet" />
     <style>
-        #openList li {
-            text-align: center;
-        }
-
-        #openList li:first-child {
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        #openList li h3 {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        #openList li img {
-            width: 600px;
-            height: 600px;
+        .row {
+            height: 50px;
         }
     </style>
-
 </head>
 
 <body class="mainbody">
-<form id="form1">
-    
-</form>
-<script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="js/layout.js"></script>
-<script>
-    
-</script>
+    <!--导航栏-->
+    <div class="location">
+        <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+        <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span id="title">群发消息</span>
+    </div>
+    <!--/导航栏-->
+    <!--内容-->
+    <div class="line10"></div>
+    <div id="app" >
+        <el-row>
+            <el-col v-bind:span="6">
+                <el-tree v-bind:data="dataTree"
+                         ref="tree"
+                         show-checkbox
+                         accordion
+                         node-key="id">
+                </el-tree>
+            </el-col>
+            <el-col v-bind:span="18">
+                <table style="margin-left: 15%">
+                    <tr class="row">
+                        <td>消息类型 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <el-radio-group v-model="type">
+                                <el-radio v-bind:label="0">文本</el-radio>
+                                <el-radio v-bind:label="1">图片</el-radio>
+                                <el-radio v-bind:label="2">语音</el-radio>
+                                <el-radio v-bind:label="3">视频</el-radio>
+                            </el-radio-group>
+                        </td>
+                    </tr>
+                    <tr class="row" v-if="type == 3">
+                        <td>标题 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <input type="text" v-model="title" />
+                        </td>
+                    </tr>
+                    <tr class="row" v-if="type != 0">
+                        <td>选择文件 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <form method="post" enctype="multipart/form-data">
+                                <input type="file" id="file" v-bind:accept="mime" /><br />{{hint}}
+                                <input type="button" value="上传" class="btn" @click="uploadFile()" v-loading.fullscreen.lock="fullscreenLoading"/>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr class="row" v-if="type == 3" style="height: 110px">
+                        <td>视频描述 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <textarea style="height: 60px;width: 247px;" v-model="describe"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="row" v-if="type == 0">
+                        <td>输入内容 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>
+                            <textarea style="height: 60px;width: 247px;" v-model="msg"></textarea>
+                        </td>
+                    </tr>
+
+                    <tr class="row">
+                        <td colspan="2">
+                            <input type="button" value="发送" class="btn" @click="sendMsg()" v-loading.fullscreen.lock="fullscreenLoading"/>
+                        </td>
+                    </tr>
+                </table>
+            </el-col>
+        </el-row>
+    </div>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script src="../scripts/lodash.min.js"></script>
+    <script src="../scripts/vue/vue.js"></script>
+    <script src="../scripts/element/elemrnt.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                dataTree: [],
+                type: 0,
+                mime: "",
+                hint: "",
+                path: "",
+                msg: "",
+                describe: "",
+                title: "",
+                fullscreenLoading: false
+            },
+            methods: {
+                sendMsg: function () {
+                    var that = this;
+                    var openIds = that.$refs.tree.getCheckedKeys();
+                    if (openIds.length < 1) {
+                        alert("请选择需要群发的对象");
+                        return
+                    }
+                    if (that.type === 0 && that.msg.trim() === "") {
+                        alert("请输入需要发送的消息");
+                        return
+                    }
+                    if (that.type !== 0 && that.path.trim() === "") {
+                        alert("选择需要的文件,并且完成上传");
+                        return
+                    }
+                    if (that.type === 3) {
+                        if (that.title.trim() === "") {
+                            alert("请输入视频标题");
+                            return
+                        }
+                        if (that.describe.trim() === "") {
+                            alert("请输入视频描述");
+                            return
+                        }
+                    }
+                    that.fullscreenLoading = true;
+                    $.ajax({
+                        type: "post",
+                        url: "../Ajax/weixinInfo.ashx",
+                        data: {
+                            type: "sendMsg",
+                            openIds: openIds,
+                            msg: that.msg,
+                            path: that.path,
+                            msgType: that.type,
+                            describe: that.describe,
+                            title: that.title
+                        },
+                        complete: function (d) {
+                            that.fullscreenLoading = false;
+                            alert(d.responseText);
+                        }
+                    });
+                },
+                uploadFile: function () {
+                    var that = this;
+                    if (!$('#file').val()) {
+                        alert("请先选择需要上传的文件");
+                        return;
+                    }
+                    that.fullscreenLoading = true;
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+                    $.ajax({
+                        url: '../Ajax/upload_ajax.ashx?action=UpLoadMsgFile',
+                        type: 'POST',
+                        cache: false,
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    }).done(function (res) {
+                        if (res === "网络异常,请重新尝试上传") {
+                            alery(res);
+                            return;
+                        }
+                        that.path = res;
+                        that.fullscreenLoading = false;
+                        alert("上传成功")
+                    }).fail(function (res) {
+                        that.fullscreenLoading = false;
+                        alert(res);
+                    });
+                }
+            }, watch: {
+                type: function (newValue) {
+                    $("#file").val("")
+                    this.path = ""
+                    this.msg = ""
+                    if (newValue === 1) {
+                        this.hint = "支持PNG\\JPEG\\JPG\\GIF格式 不能超过2M";
+                        this.mime = "image/gif, image/jpeg";
+                    }
+                    if (newValue === 2) {
+                        this.hint = "播放长度不超过60s，支持AMR\\MP3格式 不能超过2M";
+                        this.mime = "audio/mp3, audio/amr";
+                    }
+                    if (newValue === 3) {
+                        this.hint = "支持MP4格式 不能超过10M";
+                        this.mime = "video/mp4";
+                    }
+                }
+            },
+            mounted () {
+                var that = this;
+                $.ajax({
+                    type: "get",
+                    url: "../Ajax/sys_UsersManager.ashx?type=getUsersByVillage",
+                    complete: function (d) {
+                        var list = JSON.parse(d.responseText);
+                        list.forEach((item) => {
+                            item.disabled = window._.all(item.children, function (child) {
+                                return child.disabled;
+                            });
+                        });
+                        that.dataTree = list;
+                    }
+                });
+            }
+        })
+    </script>
 </body>
 </html>

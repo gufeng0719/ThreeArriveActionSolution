@@ -91,6 +91,7 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
+    <Content Include="admin\sendMsg.html" />
     <Content Include="admin\skin\default\noneimg.jpg" />
     <Content Include="admin\StudyEdit.html" />
     <Content Include="admin\StudyList.html" />
@@ -102,6 +103,8 @@
     <Content Include="admin\weixin\openList.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
+    <Content Include="scripts\element\element.css" />
+    <Content Include="scripts\element\elemrnt.js" />
     <Content Include="scripts\weixin\major.js" />
     <Content Include="scripts\weixin\majorInfo.js" />
     <Content Include="scripts\weixin\openInfo.js" />

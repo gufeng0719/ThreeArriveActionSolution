@@ -61,6 +61,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "officer":
                     GetOfficeList(context);
                     break;
+                case "getUsersByVillage":
+                    GetUsersByVillage(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -452,6 +455,36 @@ namespace ThreeArriveAction.Web.Ajax
 
         #endregion
 
+        #region 获取用户更具villageId
+
+        private void GetUsersByVillage(HttpContext context)
+        {
+            var villageList = DataConfig.GetVillages();
+            var userList = DataConfig.GetUsers(new Dictionary<string, object>());
+
+            var list = villageList.Where(x => x.VillageParId == 1).Select(x => new
+            {
+                id = x.VillageId,
+                label = x.VillageName,
+                children = villageList.Where(v => v.VillageParId == x.VillageId).Select(v => new
+                {
+                    id = v.VillageId,
+                    label = v.VillageName,
+                    children = userList.Where(u => u.VillageId == v.VillageId).Select(u => new
+                    {
+                        id = u.UserRemark,
+                        label = u.UserName,
+                        children = new ArrayList(),
+                        disabled = u.UserRemark.IsNullOrEmpty()
+                    }),
+                    disabled = userList.Where(u => u.VillageId == v.VillageId).All(u => u.UserRemark.IsNullOrEmpty())
+                }),
+            });
+
+            context.Response.Write(list.ToJson());
+        }
+
+        #endregion
 
         public bool IsReusable
         {

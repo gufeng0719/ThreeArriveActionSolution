@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -15,7 +13,7 @@ namespace ThreeArriveAction.Common
         /// <param name="url">服务器地址</param>
         /// <param name="data">发送的数据</param>
         /// <returns></returns>
-        public string HttpPost(string url, string data)
+        public static string HttpPost(string url, string data)
         {
             try
             {
@@ -54,7 +52,7 @@ namespace ThreeArriveAction.Common
         /// </summary>
         /// <param name="url">服务器地址</param>
         /// <returns></returns>
-        public string HttpGet(string url)
+        public static string HttpGet(string url)
         {
             try
             {
@@ -79,6 +77,29 @@ namespace ThreeArriveAction.Common
             {
                 return "";
             }
+        }
+
+        /// <summary>
+        /// 上传临时素材
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        public static string UploadMultimedia(string filePath, string accessToken, MediaType type)
+        {
+            string result;
+            var wxurl = $"https://api.weixin.qq.com/cgi-bin/media/upload?access_token={accessToken}&type={type}";
+            var myWebClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+            try
+            {
+                var responseArray = myWebClient.UploadFile(wxurl, "POST", filePath);
+                result = Encoding.Default.GetString(responseArray, 0, responseArray.Length);
+            }
+            catch (Exception ex)
+            {
+                result = "Error:" + ex.Message;
+            }
+            return result;
         }
     }
 }
