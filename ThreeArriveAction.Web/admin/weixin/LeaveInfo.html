@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>在线互动管理</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="LearnsManager.html" class="back"><i></i><span>返回列表页</span></a>
+            <a href="center.html" class="home"><i></i><span>首页</span></a> <i class="arrow"></i>
+            <a href="LearnsManager.html">
+                <span>在线互动列表</span>
+            </a> <i class="arrow"></i><span>在线互动管理</span>
+        </div>
+        <div class="line10">
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabs(this);" class="selected">在线互动</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <dl>
+                <dt>留言内容</dt>
+                <dd>
+                    <textarea id="leavecontent" name="leavecontent" cols="20" rows="2" class="input" disabled="disabled"></textarea>
+                    <input type="hidden" id="leaveid" name="leaveid" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>图片</dt>
+                <dd>
+                <dd>
+                    <div class="photo-list">
+                        <ul></ul>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>发布者</dt>
+                <dd>
+                    <input type="text" id="username" class="input normal" disabled="disabled" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    发布时间
+                </dt>
+                <dd>
+                    <input type="text" id="leavedatetime" class="input normal" disabled="disabled" />
+                </dd>
+            </dl>
+
+            <dl id="repalys">
+                <dt>
+                    互动留言
+                </dt>
+                <dd>
+                    <ul id="repalysList"></ul>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    回复:
+                </dt>
+                <dd>
+                    <input type="text" id="replay" name="replay" placeholder="" class="input normal" />
+                    <input type="hidden" id="hidreid" name="hidreid" />
+                </dd>
+            </dl>
+        </div>
+        <!--/内容-->
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-list">
+                <button type="button" class="btn" id="btnSave">
+                    回复
+                </button>
+                <button type="button" class="btn" id="btnPraise">
+                    点赞
+                </button>
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <!--/工具栏-->
+    </form>
+
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            //回复按钮事件
+            $("#btnSave").click(function () {
+                var replay = $("#replay").val();
+                if (replay == "") {
+                    $.dialog.alert("请给出回复内容");
+                    return;
+                }
+                var data = {
+                    rid: $("#hidreid").val(),
+                    replay: replay,
+                    lid: $("#leaveid").val()
+                };
+                $.ajax({
+                    url: '../../Ajax/sys_ReplaysManager.ashx?type=replay',
+                    type: 'post',
+                    data: data,
+                    success: function (msg, obj) {
+                        var reg = $.parseJSON(msg);
+                        if (reg.status == "y") {
+                            jsdialog("系统提示", reg.info, window.location.href, "Success");
+                        } else {
+                            jsdialog("系统提示", reg.info, "", "Error");
+                        }
+                    },
+                    error: function (data, obj) {
+                        alert("通讯错误");
+                    }
+                });
+            });
+            //点赞按钮事件
+            $("#btnPraise").click(function () {
+                var data = {
+                    lid: $("#leaveid").val()
+                };
+                $.ajax({
+                    url: '../../Ajax/sys_LeaveMessageManager.ashx?type=praise',
+                    type: 'post',
+                    data: data,
+                    success: function (msg, obj) {
+                        var reg = $.parseJSON(msg);
+                        if (reg.status == "y") {
+                            jsdialog("系统提示", reg.info, window.location.href, "Success");
+                        } else {
+                            jsdialog("系统提示", reg.info, "", "Error");
+                        }
+                    },
+                    error: function (data, obj) {
+                        alert("通讯错误");
+                    }
+                });
+            });
+            LoadMsg();
+        });
+
+        function LoadMsg() {
+            //判断是添加还是修改
+            var url = window.location.href;
+            var urlStr = url.substring(url.indexOf('?') + 1)
+            var lid = urlStr.split('=')[1];
+
+            $.getJSON('../../Ajax/sys_LeaveMessageManager.ashx?type=edit&id=' + lid, function (msg) {
+                //console.info(msg.status)
+                if (msg.status == undefined) {
+                    $("#leavecontent").val(msg.content);
+                    $("#leaveid").val(lid);
+                    $("#username").val(msg.userName);
+                    $("#leavedatetime").val(msg.time);
+                    $("#replay").attr("placeholder", "回复:  " + msg.userName);
+                    $("#hidreid").val(msg.userId);
+                    for (var i = 0; i < msg.imgs.length; i++) {
+                        var s = "<li><img src=" + msg.imgs[i] + " style=\"max-height:400px;max-width:400px;\" /></li>";
+                        $("div.photo-list ul").append(s);
+                    }
+                    if (msg.yetPraise) {
+                        $("#btnPraise").attr("disabled","disabled")
+                        $("#btnPraise").addClass("gray").removeClass("violet")
+                    } else {
+                        $("#btnPraise").removeAttr("disabled")
+                        $("#btnPraise").addClass("violet").removeClass("gray")
+                    }
+                    $.getJSON("../../Ajax/sys_ReplaysManager.ashx?type=get&id=" + lid, function (msg) {
+                        $("#repalysList").html("");
+                        for (var j = 0; j < msg.list.length; j++) {
+                            var str = "";
+                            str += "<li><span style=\"color:blue;font-size:16px;font-weight:bloder; margin-right:5px;\" onclick=\"Replay('" + msg.list[j].player + "'," + msg.list[j].playerId + ")\">" + msg.list[j].player + "</span>";
+                            str += "回复:<span style=\"color:green;font-size:14px;font-weight:blod; margin:0 5px;\" onclick=\"Replay('" + msg.list[j].toPlayer + "'," + msg.list[j].toPlayerId + ")\">" + msg.list[j].toPlayer + "</span>:&nbsp;&nbsp;";
+                            str += msg.list[j].content + "<li>";
+                            $("#repalysList").append(str);
+                        }
+                    });
+
+                }
+            });
+        }
+
+        function Replay(name,id) {
+            $("#replay").attr("placeholder", "回复:  " + name);
+            $("#hidreid").val(id);
+        }
+    </script>
+</body>
+</html>

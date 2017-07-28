@@ -44,12 +44,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sys_configBLL.cs" />
     <Compile Include="sys_IntegralInfoBLL.cs" />
+    <Compile Include="sys_InteractionLearnsBLL.cs" />
+    <Compile Include="sys_LeaveMessageBLL.cs" />
     <Compile Include="sys_NavigationsBLL.cs" />
     <Compile Include="sys_OnButysBLL.cs" />
     <Compile Include="sys_OnSignsBLL.cs" />
     <Compile Include="sys_OrganizationAndNavigationsBLL.cs" />
     <Compile Include="sys_OrganizationsBLL.cs" />
     <Compile Include="sys_PublicMessagesBLL.cs" />
+    <Compile Include="sys_ReplaysBLL.cs" />
     <Compile Include="sys_SignsBLL.cs" />
     <Compile Include="sys_SubscriberFamilyBLL.cs" />
     <Compile Include="sys_ThingRecordsBLL.cs" />

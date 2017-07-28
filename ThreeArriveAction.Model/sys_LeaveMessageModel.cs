@@ -15,5 +15,6 @@ namespace ThreeArriveAction.Model
         public DateTime LeaveDateTime { get; set; } = DateTime.Now;
         public int LeavePraiseNumber { get; set; }
         public  string LeavePraiseUserIds { get; set; } = string.Empty;
+        public int LeaveState { get; set; }
     }
 }
