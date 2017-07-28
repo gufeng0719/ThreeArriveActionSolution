@@ -7,7 +7,8 @@
         学习视频 = 3,
         案例 = 4,
         考试题库 = 5,
-        三到之星 = 6
+        三到之星 = 6,
+        重要通知 = 7
     }
 
     public enum OpenTypeEnum
@@ -31,7 +32,7 @@
         // ReSharper disable once InconsistentNaming
         video = 3,
         // ReSharper disable once InconsistentNaming
-        thumb
+        news
     }
 
 }

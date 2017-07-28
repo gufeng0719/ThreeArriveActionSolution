@@ -12,7 +12,7 @@
 });
 
 function submitcontent() {
-    if (vm.familyType == 8) {
+    if (vm.familyType === 8) {
         if (!$("#name").val()) {
             alert("请输入姓名"); return;
         }
@@ -44,7 +44,7 @@ function submitcontent() {
                 thingname: $("#title").val(),
                 thingreason: $("#thing").val(),
                 thingsolution: $("#Textarea1").val(),
-                thinghaving: $("[name='thinghaving']:checked").val() == "1" ? "1" : "",
+                thinghaving: $("[name='thinghaving']:checked").val() === "1" ? "1" : "",
                 imgurl: paths[0],
                 slSubId: vm.family,
                 name: $("#name").val(),
@@ -76,7 +76,7 @@ function sendMsgToShuji() {
             msg += `${obj.fromName}拜访了${obj.toName}\n`;
             msg += `原因 : ${obj.title}\n`;
             msg += obj.having;
-            sendMsg([obj.toOpenId], msg, function () {
+            sendTemplateMsg([obj.toOpenId], msg, function () {
                 console.log("已发送信息给 " + obj.toOpenId);
                 window.open("index.html", "_self");
             });

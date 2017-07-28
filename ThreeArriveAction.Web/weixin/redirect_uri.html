@@ -23,6 +23,10 @@
                 url: "../Ajax/weixinInfo.ashx",
                 success: function (d) {
                     var obj = JSON.parse(d);
+                    if (!obj.openid || obj.openid.length < 5) {
+                        alert("获取个人信息失败, 请尝试清除缓存,且重新进入页面");
+                        return;
+                    }
                     localStorage.setItem("openId", obj.openid);
                     window.open(decodeURIComponent(req["page"]), "_self");
                 },

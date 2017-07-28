@@ -9,6 +9,19 @@
         .row {
             height: 50px;
         }
+
+        .hint {
+            font-size: 12px;
+            color: #c3c3c3;
+        }
+
+        .btn-add {
+            margin-left: 277px;
+        }
+
+        .delete {
+            margin-left: 100px;
+        }
     </style>
 </head>
 
@@ -21,7 +34,7 @@
     <!--/导航栏-->
     <!--内容-->
     <div class="line10"></div>
-    <div id="app" >
+    <div id="app">
         <el-row>
             <el-col v-bind:span="6">
                 <el-tree v-bind:data="dataTree"
@@ -41,40 +54,43 @@
                                 <el-radio v-bind:label="1">图片</el-radio>
                                 <el-radio v-bind:label="2">语音</el-radio>
                                 <el-radio v-bind:label="3">视频</el-radio>
+                                <el-radio v-bind:label="4">图文</el-radio>
                             </el-radio-group>
                         </td>
                     </tr>
                     <tr class="row" v-if="type == 3">
-                        <td>标题 :&nbsp;&nbsp;&nbsp;</td>
+                        <td>{{typeTile}} :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <input type="text" v-model="title" />
                         </td>
                     </tr>
-                    <tr class="row" v-if="type != 0">
-                        <td>选择文件 :&nbsp;&nbsp;&nbsp;</td>
+                    <tr class="row" v-if="type != 0 &&  type != 4 ">
+                        <td>{{typeFile}} :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <form method="post" enctype="multipart/form-data">
-                                <input type="file" id="file" v-bind:accept="mime" /><br />{{hint}}
-                                <input type="button" value="上传" class="btn" @click="uploadFile()" v-loading.fullscreen.lock="fullscreenLoading"/>
+                                <input type="file" id="file" v-bind:accept="mime" /><br />
+                                <span class="hint">{{hint}}</span>
+                                <input type="button" value="上传" class="btn" @click="uploadFile('file')" v-loading.fullscreen.lock="fullscreenLoading" />
                             </form>
                         </td>
                     </tr>
-                    <tr class="row" v-if="type == 3" style="height: 110px">
-                        <td>视频描述 :&nbsp;&nbsp;&nbsp;</td>
-                        <td>
-                            <textarea style="height: 60px;width: 247px;" v-model="describe"></textarea>
-                        </td>
-                    </tr>
-                    <tr class="row" v-if="type == 0">
-                        <td>输入内容 :&nbsp;&nbsp;&nbsp;</td>
+                    <tr class="row" v-if="type == 0 || type == 3" style="height: 80px">
+                        <td>{{typeMsg}} :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <textarea style="height: 60px;width: 247px;" v-model="msg"></textarea>
                         </td>
                     </tr>
-
+                    <!-- 图文部分 -->
+                    <tr v-if="type == 4" v-for="(tw,index) in twList">
+                        <td is="tw-item" :tw="tw" :ind="index" :twlength="twList.length"></td>
+                    </tr>
                     <tr class="row">
                         <td colspan="2">
-                            <input type="button" value="发送" class="btn" @click="sendMsg()" v-loading.fullscreen.lock="fullscreenLoading"/>
+                            <input type="button" value="发送" class="btn" @click="sendMsg()" v-loading.fullscreen.lock="fullscreenLoading" />
+                            <el-tooltip class="btn-add" v-if="twList.length < 3 && type == 4"
+                                        effect="dark" content="点击添加一组图文,最多三组" placement="bottom-end">
+                                <el-button @click="addTw()">+</el-button>
+                            </el-tooltip>
                         </td>
                     </tr>
                 </table>
@@ -86,6 +102,7 @@
     <script src="../scripts/lodash.min.js"></script>
     <script src="../scripts/vue/vue.js"></script>
     <script src="../scripts/element/elemrnt.js"></script>
+    <script src="../scripts/vue/weixinTemplate.js"></script>
     <script>
         var vm = new Vue({
             el: "#app",
@@ -94,50 +111,63 @@
                 type: 0,
                 mime: "",
                 hint: "",
+                yetpath: "",
                 path: "",
                 msg: "",
-                describe: "",
                 title: "",
-                fullscreenLoading: false
+                fullscreenLoading: false,
+                typeTile: "",
+                typeFile: "",
+                typeMsg: "文本内容",
+                twList: [
+                    {
+                        title: "",
+                        msg: "",
+                        path: "",
+                        yetpath: ""
+                    }]
             },
             methods: {
                 sendMsg: function () {
                     var that = this;
                     var openIds = that.$refs.tree.getCheckedKeys();
-                    if (openIds.length < 1) {
-                        alert("请选择需要群发的对象");
-                        return
-                    }
+                    //if (openIds.length < 1) {
+                    //    alert("请选择需要群发的对象");
+                    //    return
+                    //} todo
                     if (that.type === 0 && that.msg.trim() === "") {
                         alert("请输入需要发送的消息");
                         return
                     }
-                    if (that.type !== 0 && that.path.trim() === "") {
+                    if (that.type !== 0 && that.type !== 4 && that.path.trim() === "") {
                         alert("选择需要的文件,并且完成上传");
                         return
                     }
                     if (that.type === 3) {
                         if (that.title.trim() === "") {
-                            alert("请输入视频标题");
+                            alert("请输入标题");
                             return
                         }
-                        if (that.describe.trim() === "") {
-                            alert("请输入视频描述");
+                        if (that.msg.trim() === "") {
+                            alert("请输入描述/内容");
                             return
                         }
+                    }
+                    if (that.type === 4) {
+                        // todo 验证
                     }
                     that.fullscreenLoading = true;
                     $.ajax({
                         type: "post",
                         url: "../Ajax/weixinInfo.ashx",
                         data: {
-                            type: "sendMsg",
+                            type: "sendMsgTest",
                             openIds: openIds,
                             msg: that.msg,
                             path: that.path,
                             msgType: that.type,
-                            describe: that.describe,
-                            title: that.title
+                            title: that.title,
+                            twList: JSON.stringify(that.twList)
                         },
                         complete: function (d) {
                             that.fullscreenLoading = false;
@@ -145,15 +175,20 @@
                         }
                     });
                 },
-                uploadFile: function () {
+                uploadFile: function (name) {
                     var that = this;
-                    if (!$('#file').val()) {
+                    if (!$('#' + name).val()) {
                         alert("请先选择需要上传的文件");
                         return;
                     }
+                    if (that.yetpath === $('#' + name).val() && that.path) {
+                        alert("请勿重复上传");
+                        return;
+                    }
+
                     that.fullscreenLoading = true;
                     var formData = new FormData();
-                    formData.append('file', $('#file')[0].files[0]);
+                    formData.append('file', $('#' + name)[0].files[0]);
                     $.ajax({
                         url: '../Ajax/upload_ajax.ashx?action=UpLoadMsgFile',
                         type: 'POST',
@@ -166,30 +201,51 @@
                             alery(res);
                             return;
                         }
-                        that.path = res;
+                        if (name.split("_").length > 1) {
+                            that.twList[name.split("_")[1]].path = res;
+                            that.twList[name.split("_")[1]].yetpath = $('#' + name).val();
+                        } else {
+                            that.path = res;
+                            that.yetpath = $('#' + name).val()
+                        }
                         that.fullscreenLoading = false;
                         alert("上传成功")
                     }).fail(function (res) {
                         that.fullscreenLoading = false;
                         alert(res);
                     });
+                },
+                addTw: function () {
+                    this.twList.push({
+                        title: "",
+                        msg: ""
+                    });
                 }
-            }, watch: {
+            },
+            watch: {
                 type: function (newValue) {
-                    $("#file").val("")
+                    $("input[type='file']").val("")
                     this.path = ""
                     this.msg = ""
+                    if (newValue === 0) {
+                        this.typeMsg = "文本内容"
+                    }
                     if (newValue === 1) {
                         this.hint = "支持PNG\\JPEG\\JPG\\GIF格式 不能超过2M";
                         this.mime = "image/gif, image/jpeg";
+                        this.typeFile = "选择图片"
                     }
                     if (newValue === 2) {
                         this.hint = "播放长度不超过60s，支持AMR\\MP3格式 不能超过2M";
                         this.mime = "audio/mp3, audio/amr";
+                        this.typeFile = "选择语音"
                     }
                     if (newValue === 3) {
                         this.hint = "支持MP4格式 不能超过10M";
                         this.mime = "video/mp4";
+                        this.typeFile = "选择视频"
+                        this.typeTile = "视频标题"
+                        this.typeMsg = "视频描述"
                     }
                 }
             },

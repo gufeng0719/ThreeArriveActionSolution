@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.SessionState;
 using ThreeArriveAction.Common;
 using System.Drawing;
+using System.Linq;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -40,11 +41,134 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 SendMsg(context);
             }
+            else if (type == "sendMsgTest")
+            {
+                SendMsgTest(context);
+            }
             else
             {
                 context.Response.Write("错误的请求");
                 context.Response.End();
             }
+        }
+
+
+        public void SendMsgTest(HttpContext context)
+        {
+            // 参数传入以及处理
+            var openIds = (context.Request["openIds[]"] ?? "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var msg = context.Request["msg"];
+            var type = context.Request["msgType"].ToInt();
+            var path = context.Request["path"];
+            var title = context.Request["title"];
+            var describe = context.Request["describe"];
+            var twList = context.Request["twList"].Replace(@"\\", "/").JsonToObject<List<TwModel>>();
+            var arr = new ArrayList();
+            arr.AddRange(openIds);
+            if (arr.Count < 2)
+            {
+                arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
+            }
+
+            // 获取 access token 
+            var aModel = CacheHelper.Get<Token>("_AccessToken");
+            if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
+            {
+                aModel = GetAModel();
+            }
+
+            // 如果有文件则先获取文件的madiaId
+            var media = new MediaModel();
+            if (!path.IsNullOrEmpty())
+            {
+                media = HttpHelper.UploadMultimedia(@"D:\Projects\threearrive\upload\material\20170728\20170728084546824.jpg", aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+            }
+
+            var body = new object(); // 请求参数
+            // 针对不同类型发送信息
+            if (type == MediaType.text.GetHashCode()) // 发送文本信息
+            {
+                body = new
+                {
+                    touser = arr[0],
+                    msgtype = "text",
+                    text = new
+                    {
+                        content = msg
+                    }
+                };
+            }
+            else if (type == MediaType.voice.GetHashCode() || type == MediaType.image.GetHashCode()) // 图片和语音
+            {
+                body = new
+                {
+                    touser = arr[0],
+                    image = new
+                    {
+                        media.media_id
+                    },
+                    msgtype = "image"
+                };
+            }
+            else if (type == MediaType.video.GetHashCode()) // 视频消息
+            {
+                var videoMedia = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=" + aModel.Value, new
+                {
+                    title,
+                    media.media_id,
+                    description = describe
+                }.ToJson()).JsonToObject<MediaModel>();
+                body = new
+                {
+                    touser = arr[0],
+                    mpvideo = new
+                    {
+                        title,
+                        videoMedia.media_id,
+                        description = describe
+                    },
+                    msgtype = "mpvideo"
+                };
+            }
+            else if (type == MediaType.news.GetHashCode()) // 图文消息
+            {
+                var articles = new ArrayList();
+                LogHelper.Log(twList.ToJson());
+                foreach (var tw in twList)
+                {
+                    var twMedia = HttpHelper.UploadMultimedia(tw.path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+                    articles.Add(new
+                    {
+                        thumb_media_id = twMedia.media_id,
+                        author = "管理员",
+                        tw.title,
+                        content = tw.msg,
+                        show_cover_pic = 1
+                    });
+                }
+                var twBody = new
+                {
+                    articles
+                };
+                LogHelper.Log(twBody.ToJson());
+                var twRes = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=" + aModel.Value,
+                                                twBody.ToJson());
+                LogHelper.Log(twRes.ToJson());
+                body = new
+                {
+                    touser = arr[0],
+                    mpnews = new
+                    {
+                        twRes.JsonToObject<MediaModel>().media_id
+                    },
+                    msgtype = "mpnews"
+                };
+                LogHelper.Log(body.ToJson());
+            }
+            var res = HttpHelper.HttpPost(ConfigurationManager.AppSettings["WeixinSendMsgTest"] + aModel.Value,
+                                          body.ToJson());
+
+            context.Response.Write(res);
         }
 
         public void SendMsg(HttpContext context)
@@ -54,7 +178,6 @@ namespace ThreeArriveAction.Web.Ajax
             var type = context.Request["msgType"].ToInt();
             var path = context.Request["path"];
             var title = context.Request["title"];
-            var describe = context.Request["describe"];
             var arr = new ArrayList();
             arr.AddRange(openIds);
             if (arr.Count < 2)
@@ -99,7 +222,7 @@ namespace ThreeArriveAction.Web.Ajax
                 {
                     title,
                     media.media_id,
-                    description = describe
+                    description = msg
                 }.ToJson()).JsonToObject<MediaModel>();
                 body = new
                 {
@@ -108,7 +231,7 @@ namespace ThreeArriveAction.Web.Ajax
                     {
                         title,
                         videoMedia.media_id,
-                        description = describe
+                        description = msg
                     },
                     msgtype = "mpvideo"
                 };
@@ -356,6 +479,13 @@ namespace ThreeArriveAction.Web.Ajax
             public string type;
             public string media_id;
             public string created_at;
+        }
+
+        class TwModel
+        {
+            public string title;
+            public string msg;
+            public string path;
         }
     }
 }
