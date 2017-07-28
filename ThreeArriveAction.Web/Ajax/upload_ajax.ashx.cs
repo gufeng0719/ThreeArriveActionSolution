@@ -32,11 +32,46 @@ namespace ThreeArriveAction.Web.Ajax
                 case "ManagerFile": //管理文件
                     ManagerFile(context);
                     break;
+                case "UpLoadMsgFile": //管理文件
+                    UpLoadMsgFile(context);
+                    break;
                 default: //普通上传
                     UpLoadFile(context);
                     break;
             }
         }
+
+        #region 群发消息素材上传
+
+        public void UpLoadMsgFile(HttpContext context)
+        {
+            if (context.Request.Files.Count > 0)
+            {
+                var file = context.Request.Files["file"];
+                if (file != null)
+                {
+                    var extention = Path.GetExtension(file.FileName);
+                    string path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + $"upload/material/{DateTime.Now:yyyyMMdd}/";
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    path += $"{DateTime.Now:yyyyMMddhhmmssfff}{extention}";
+                    try
+                    {
+                        file.SaveAs(path);
+                        context.Response.Write(path);
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        LogHelper.Log($"path:{path}\r\n错误消息:{e.Message}", "素材文件上传失败");
+                        context.Response.Write("网络异常,请重新尝试上传");
+                        return;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         #region 上传文件处理===================================
         private void UpLoadFile(HttpContext context)

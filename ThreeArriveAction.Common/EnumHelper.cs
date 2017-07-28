@@ -16,4 +16,22 @@
         村务公开,
         财务公开
     }
+
+    /// <summary>
+    /// 微信素材类型
+    /// </summary>
+    public enum MediaType
+    {
+        // ReSharper disable once InconsistentNaming
+        text = 0,
+        // ReSharper disable once InconsistentNaming
+        image = 1,
+        // ReSharper disable once InconsistentNaming
+        voice = 2,
+        // ReSharper disable once InconsistentNaming
+        video = 3,
+        // ReSharper disable once InconsistentNaming
+        thumb
+    }
+
 }

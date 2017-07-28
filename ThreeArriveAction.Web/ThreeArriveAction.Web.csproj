@@ -91,7 +91,10 @@
     <Content Include="admin\index.html" />
     <Content Include="admin\js\layout.js" />
     <Content Include="admin\js\pinyin.js" />
-    <Content Include="admin\LearnsEdit.html" />
+<Content Include="admin\LearnsEdit.html" />
+    <Content Include="admin\LearnsManager.html" />
+    <Content Include="admin\LeaveManage.html" />
+    <Content Include="admin\LeavesEdit.html" />
     <Content Include="admin\LearnsManager.html" />
     <Content Include="admin\LeaveManage.html" />
     <Content Include="admin\LeavesEdit.html" />
@@ -113,6 +116,8 @@
     <Content Include="admin\weixin\PublicInsert.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
+    <Content Include="scripts\element\element.css" />
+    <Content Include="scripts\element\elemrnt.js" />
     <Content Include="scripts\weixin\major.js" />
     <Content Include="scripts\weixin\majorInfo.js" />
     <Content Include="scripts\weixin\openInfo.js" />

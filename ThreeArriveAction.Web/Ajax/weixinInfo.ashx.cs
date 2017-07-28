@@ -51,27 +51,75 @@ namespace ThreeArriveAction.Web.Ajax
         {
             var openIds = context.Request["openIds[]"].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var msg = context.Request["msg"];
+            var type = context.Request["msgType"].ToInt();
+            var path = context.Request["path"];
+            var title = context.Request["title"];
+            var describe = context.Request["describe"];
             var arr = new ArrayList();
             arr.AddRange(openIds);
-            arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
-            var body = new
+            if (arr.Count < 2)
             {
-                touser = arr,
-                msgtype = "text",
-                text = new { content = msg }
-            };
+                arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
+            }
             var aModel = CacheHelper.Get<Token>("_AccessToken");
             if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
             {
                 aModel = GetAModel();
             }
-            var res = new HttpHelper().HttpPost(ConfigurationManager.AppSettings["WeixinSendMsg"] + aModel.Value, body.ToJson());
-            if (res.IndexOf("success", StringComparison.Ordinal) < 0)
+            object body;
+            if (type == MediaType.text.GetHashCode()) // 发送文本信息
             {
-                LogHelper.Log(ConfigurationManager.AppSettings["WeixinSendMsg"] + aModel.Value, "群发消息请求链接");
-                LogHelper.Log(body.ToJson(), "群发消息Body");
-                LogHelper.Log(res, "群发消息响应");
+                body = new
+                {
+                    touser = arr,
+                    msgtype = "text",
+                    text = new
+                    {
+                        content = msg
+                    }
+                };
             }
+            else if (type == MediaType.voice.GetHashCode() || type == MediaType.image.GetHashCode())// 图片和语音
+            {
+                var media = HttpHelper.UploadMultimedia(path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+                body = new
+                {
+                    touser = openIds,
+                    image = new
+                    {
+                        media.media_id
+                    },
+                    msgtype = "image"
+                };
+            }
+            else
+            {
+                var media = HttpHelper.UploadMultimedia(path, aModel.Value, MediaType.video).JsonToObject<MediaModel>();
+                var videoMedia = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=" + aModel.Value, new
+                {
+                    title,
+                    media.media_id,
+                    description = describe
+                }.ToJson()).JsonToObject<MediaModel>();
+                body = new
+                {
+                    touser = openIds,
+                    mpvideo = new
+                    {
+                        title,
+                        videoMedia.media_id,
+                        description = describe
+                    },
+                    msgtype = "mpvideo"
+                };
+            }
+            var res = HttpHelper.HttpPost(ConfigurationManager.AppSettings["WeixinSendMsg"] + aModel.Value, body.ToJson());
+            LogForSendMsg(aModel.Value, body, res);
+            //if (res.IndexOf("success", StringComparison.Ordinal) < 0)
+            //{
+            // todo 只有失败记录日志,目前测试在任何事件都记录了日志
+            //}
+            context.Response.Write(res);
         }
 
         public void GetCodeUrl(HttpContext context)
@@ -136,7 +184,6 @@ namespace ThreeArriveAction.Web.Ajax
                 + "&noncestr=" + nonceStr
                 + "&timestamp=" + timestamp
                 + "&url=" + context.Request["url"];
-            LogHelper.Log(str, "signature");
             return new JDKConfig
             {
                 jsApiList = new List<string>
@@ -190,7 +237,7 @@ namespace ThreeArriveAction.Web.Ajax
                                         ConfigurationManager.AppSettings["AppSecret"],
                                         code);
 
-            var response = new HttpHelper().HttpGet(url).JsonToObject<OpenIdModel>();
+            var response = HttpHelper.HttpGet(url).JsonToObject<OpenIdModel>();
             LogHelper.Log("获取access_token:" + response.access_token + " \r\n    openid:" + response.openid, "记录每次调用access_token接口的时间");
             return response;
         }
@@ -200,7 +247,7 @@ namespace ThreeArriveAction.Web.Ajax
             var url = string.Format(ConfigurationManager.AppSettings["WeixinAccessToken"],
                                         ConfigurationManager.AppSettings["AppId"],
                                         ConfigurationManager.AppSettings["AppSecret"]);
-            var accessToken = new HttpHelper().HttpGet(url).JsonToObject<AccessToken>();
+            var accessToken = HttpHelper.HttpGet(url).JsonToObject<AccessToken>();
             LogHelper.Log("获取access_token:" + accessToken.access_token, "记录每次调用access_token接口的时间");
             var m = new Token
             {
@@ -215,7 +262,7 @@ namespace ThreeArriveAction.Web.Ajax
         {
             var url = string.Format(ConfigurationManager.AppSettings["WeixinJsapiTicket"],
                                         token);
-            var jticket = new HttpHelper().HttpGet(url).JsonToObject<JsapiTicket>();
+            var jticket = HttpHelper.HttpGet(url).JsonToObject<JsapiTicket>();
             LogHelper.Log("获取jsapi_ticket:" + jticket.ticket + " \r\n    openid:" + openId, "记录每次调用jsapi_ticket接口的时间");
             var m = new Token
             {
@@ -249,6 +296,13 @@ namespace ThreeArriveAction.Web.Ajax
                 return "";
             }
 
+        }
+
+        private void LogForSendMsg(string accessToken, object body, string res)
+        {
+            LogHelper.Log(ConfigurationManager.AppSettings["WeixinSendMsg"] + accessToken, "群发消息请求链接");
+            LogHelper.Log(body.ToJson(), "群发消息Body");
+            LogHelper.Log(res, "群发消息响应");
         }
 
         public bool IsReusable
@@ -295,6 +349,13 @@ namespace ThreeArriveAction.Web.Ajax
             public string nonceStr;
             public string signature;
             public List<string> jsApiList;
+        }
+
+        class MediaModel
+        {
+            public string type;
+            public string media_id;
+            public string created_at;
         }
     }
 }

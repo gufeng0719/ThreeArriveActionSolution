@@ -43,10 +43,11 @@ namespace ThreeArriveAction.Web.Ajax
                 case "getAll":
                     GetVillageAll(context);
                     break;
-
-
             }
         }
+
+       
+
         /// <summary>
         /// 获取村居下拉选项数据
         /// </summary>
