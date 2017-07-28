@@ -3,17 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
+using System.Text;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
+using System.Web.SessionState;
+using ThreeArriveAction.BLL;
+using ThreeArriveAction.Common;
+using ThreeArriveAction.Model;
+using ThreeArriveAction.Web.UI;
 
 namespace ThreeArriveAction.Web.Ajax
 {
     /// <summary>
     /// sys_InteractionLearnsManager 的摘要说明
     /// </summary>
-    public class sys_InteractionLearnsManager : IHttpHandler
+    public class sys_InteractionLearnsManager : IHttpHandler,IRequiresSessionState
     {
-
+        private readonly sys_InteractionLearnsBLL iiBLL = new sys_InteractionLearnsBLL();
         public void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
@@ -36,6 +43,17 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == "get")
             {
                 GetLearnList(context);
+            }else if (type == "save")
+            {
+                SaveLearn(context);
+            }
+            else if (type == "edit")
+            {
+                GetModel(context);
+            }
+            else if (type == "del")
+            {
+                DeleteLearns(context);
             }
             else
             {
@@ -68,7 +86,8 @@ namespace ThreeArriveAction.Web.Ajax
                 content = model.LearnContent,
                 time = model.PublishDate.ToString("yyyy-M-d dddd"),
                 userName = user?.UserName ?? "管理员",
-                type = ((StudyEnum)model.LearnType).ToString()
+                type = ((StudyEnum)model.LearnType).ToString(),
+                remark = model.Remarks
             }.ToJson());
         }
 
@@ -154,8 +173,92 @@ namespace ThreeArriveAction.Web.Ajax
 
         private void GetLearnList(HttpContext context)
         {
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryIntValue("page");
+            string key = MXRequest.GetQueryString("keywords");
+            int learntype = MXRequest.GetQueryIntValue("learntype");
+            StringBuilder strWhere = new StringBuilder();
+            strWhere.Append(" 1=1 ");
+            if (key != "")
+            {
+                string[] keyArr = (key ?? "").Replace("  ", " ").Split(' ');
+                for (var i = 0; i < keyArr.Length; i++)
+                {
+                    if (keyArr[i].IsNullOrEmpty()) continue;
+                    if (i == 0 || i == keyArr.Length - 1)
+                    {
+                        if (i == 0)
+                            strWhere.Append(" AND ( LearnTitle LIKE '%" + keyArr[i] + "%' ");
+                        if (i == keyArr.Length - 1)
+                            strWhere.Append(" OR LearnTitle LIKE '%" + keyArr[i] + "%' ) ");
+                    }
+                    else
+                        strWhere.Append(" OR LearnTitle LIKE '%" + keyArr[i] + "%'  ");
+                }
+              
+            }
+            if (learntype != 0)
+            {
+                strWhere.Append(" and LearnType ="+learntype);
+            }
+            string fieldOrder = "PublishDate DESC ";
+            int recordCount = 0;
+            DataSet ds = iiBLL.GetList(pageSize,pageIndex,strWhere.ToString(),fieldOrder,out recordCount);
+            StringBuilder strJson = new StringBuilder();
+            
+            strJson.Append("{\"total\":" + recordCount);
+            if (recordCount > 0)
+            {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+
+            strJson.Append("}");
+            context.Response.Write(strJson.ToString());
 
         }
+
+        #region 保存在线学习
+        private void SaveLearn(HttpContext context)
+        {
+            string action = MXRequest.GetFormString("action");
+            sys_InteractionLearnsModel iiModel = new sys_InteractionLearnsModel();
+            iiModel.LearnTitle = MXRequest.GetFormString("learntitle");
+            iiModel.LearnType = MXRequest.GetFormIntValue("learntype");
+            iiModel.LearnContent = MXRequest.GetFormString("learncontent");
+            iiModel.Publisher = new ManagePage().GetUsersinfo().UserId;
+            iiModel.PublishDate = DateTime.Now;
+            iiModel.Remarks = MXRequest.GetFormString("remark");
+            string json = "";
+            if (action == "add")
+            {
+                json = iiBLL.AddLearns(iiModel);
+            }
+            else
+            {
+                iiModel.LearnId = MXRequest.GetFormIntValue("learnid");
+                json = iiBLL.UpdateLearns(iiModel);
+            }
+            context.Response.Output.Write(json);
+        }
+        #endregion
+
+        #region 删除在线学习
+        private void DeleteLearns(HttpContext context)
+        {
+            string userIds = MXRequest.GetFormString("str");
+            string result = iiBLL.DeleteLearns(userIds);
+            context.Response.Write(result);
+        }
+        #endregion
 
         public bool IsReusable
         {

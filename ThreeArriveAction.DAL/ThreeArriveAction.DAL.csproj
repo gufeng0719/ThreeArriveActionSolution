@@ -43,12 +43,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="sys_configDAL.cs" />
     <Compile Include="sys_IntegralInfoDAL.cs" />
+    <Compile Include="sys_InteractionLearnsDAL.cs" />
+    <Compile Include="sys_LeaveMessageDAL.cs" />
     <Compile Include="sys_NavigationsDAL.cs" />
     <Compile Include="sys_OnButysDAL.cs" />
     <Compile Include="sys_OnSignsDAL.cs" />
     <Compile Include="sys_OrganizationAndNavigationsDAL.cs" />
     <Compile Include="sys_OrganizationsDAL.cs" />
     <Compile Include="sys_PublicMessagesDAL.cs" />
+    <Compile Include="sys_ReplaysDAL.cs" />
     <Compile Include="sys_SignsDAL.cs" />
     <Compile Include="sys_SubcriberFamilyDAL.cs" />
     <Compile Include="sys_ThingRecordsDAL.cs" />

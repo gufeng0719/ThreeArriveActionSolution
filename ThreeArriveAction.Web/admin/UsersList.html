@@ -136,7 +136,6 @@
                 str = str.substring(0, str.length - 1);
                 $.post("../Ajax/sys_UsersManager.ashx?type=del", { str: str }, function (msg) {
                     var result = $.parseJSON(msg);
-                    console.info(result);
                     if (result.status == "y") {
                         jsdialog("系统提示", result.info, "UsersList.html", "Success");
                     } else {

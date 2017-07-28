@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>在线互动</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>在线互动</span>
+        </div>
+        <!--/导航栏-->
+        <!--工具栏-->
+        <div class="toolbar-wrap">
+            <div id="floatHead" class="toolbar">
+                <div class="l-list">
+                    <ul class="icon-list">
+                        <li><a class="add" href="AddLeave.html"><i></i><span>去留言</span></a></li>
+                    </ul>
+                </div>
+                <div class="r-list">
+                    <div style="float: left;">
+                        <input type="text" class="keyword" id="keywords" />
+                        <input type="button" id="btnSearch" class="btn-search" value="查询" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/工具栏-->
+        <!--列表-->
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+            <thead>
+                <tr>
+                    <th align="center" width="10%">
+                        图片
+                    </th>
+                    <th align="center" width="30%">
+                        内容
+                    </th>
+                    <th align="center" width="11%">
+                        发布者
+                    </th>
+                    <th align="center" width="11%">
+                        发布日期
+                    </th>
+                    <th alin="center" width="10%">
+                        点赞数
+                    </th>
+                    <th align="center" width="10%">
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+            <!--/列表-->
+        </table>
+        <!--内容底部-->
+        <div class="line20">
+        </div>
+        <div class="pagelist">
+            <div class="l-btns">
+                <span>显示</span>
+                <label class="pagenum">
+                    20
+                </label>
+                <span>条/页</span>
+            </div>
+            <div id="PageContent" class="default">
+            </div>
+        </div>
+        <!--/内容底部-->
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            Load(1);
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+        });
+
+        function Load(page) {
+            var key = $("#keywords").val();
+            //加载列表
+            $.getJSON("../../Ajax/sys_LeaveMessageManager.ashx?type=get", { "keywords": key, "page": page, "leavestate": 1 }, function (msg) {
+                //console.info(msg.rows.length);
+                $("#tbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr>";
+                        s += "<td align=\"center\">";
+                        s += "<img src=" + (msg.rows[i].LeaveImages.split(',')[0] == "" ? "skin/default/noneimg.png" : msg.rows[i].LeaveImages.split(',')[0]) + " style=\"max-height:60px;max-width:60px;\" />";
+                        s += "</td>";
+                        s += "<td align=\"center\"><a href='LeaveInfo.html?lid=" + msg.rows[i].LeaveId + "'>" + msg.rows[i].LeaveContent + "</a></td>";
+                        s += "<td align=\"center\"> " + msg.rows[i].UserName + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].LeaveDateTime + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].LeavePraiseNumber + "</td>";
+                        s += "<td align=\"center\"><a href='LeaveInfo.html?lid=" + msg.rows[i].LeaveId + "'>查看</a>";
+                        s += "</td>";
+                        s += "</tr>";
+                        $("#tbody").append(s);
+                    }
+                    //console.info(msg.pageContent);
+                    $("#PageContent").html(msg.pageContent);
+                }
+            });
+        }
+
+
+    </script>
+</body>
+</html>

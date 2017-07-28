@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>淮安区组织部微信平台</title>
+    <link href="../skin/default/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="LearnsList.html" class="back"><i></i><span>返回列表页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i>
+            <a href="LearnsList.html">
+                <span>在线学习列表</span>
+            </a> <i class="arrow"></i><span>在线学习</span>
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="line10"></div>
+
+        <div class="nlist-2">
+            <h2 style="text-align:center;margin:10px 0;font-size:20px;"><span id="title"></span></h2>
+            <div id="content">
+
+            </div>
+            <div id="remark">
+
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" src="../../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../js/layout.js"></script>
+    <script>
+        $(function () {
+            //判断是添加还是修改
+            var url = window.location.href;
+            var urlStr = url.substring(url.indexOf('?') + 1)
+            var id = urlStr.split('=')[1];
+
+            $.getJSON('../../Ajax/sys_InteractionLearnsManager.ashx?type=getModel&id=' + id, function (msg) {
+                if (msg) {
+                    $("#title").text(msg.title);                    
+                    var newData = decodeURIComponent(msg.content);
+                    $("#content").html(newData);
+                    $("#remark").html(msg.remark);
+                }
+            });
+
+
+        });
+
+    </script>
+</body>
+</html>

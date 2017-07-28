@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>在线学习管理</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="LearnsManager.html" class="back"><i></i><span>返回列表页</span></a>
+            <a href="center.html" class="home"><i></i><span>首页</span></a> <i class="arrow"></i>
+            <a href="LearnsManager.html">
+                <span>在线学习列表</span>
+            </a> <i class="arrow"></i><span>编辑在线学习</span>
+        </div>
+        <div class="line10">
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabs(this);" class="selected">在线学习</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <dl>
+                <dt>在线学习类型</dt>
+                <dd>
+                    <div class="rule-single-select">
+                        <select id="learntype" name="learntype" datatype="*" errormsg="请选择类型" sucmsg=" ">
+                            <option value="1">最新政策</option>
+                            <option value="2">法律常识</option>
+                            <option value="3">学习视频</option>
+                            <option value="4">案例</option>
+                            <option value="5">考试题库</option>
+                            <option value="6">"三到"之星</option>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>标题</dt>
+                <dd>
+                    <input type="text" id="learntitle" name="learntitle" class="input normal" datatype="*"
+                           sucmsg=" " errormsg="请输入标题" />
+                    <input type="hidden" id="action" name="action" />
+                    <input type="hidden" id="learnid" name="learnid" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>内容</dt>
+                <dd>
+                    <textarea id="learncontent" name="learncontent" class="editor" style="visibility:hidden;"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>备注</dt>
+                <dd>
+                    <textarea id="remark" name="remark" cols="20" rows="2" class="input"></textarea>
+                </dd>
+            </dl>
+        </div>
+        <!--/内容-->
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-list">
+                <button type="submit" class="btn" id="btnSave">
+                    提交保存
+                </button>
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <!--/工具栏-->
+    </form>
+
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.js"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.queue.js"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.handlers.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../editor/kindeditor-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../editor/lang/zh_CN.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript">
+        var editor;
+        $(function () {
+
+            //初始化上传控件
+            $(".upload-img").each(function () {
+                $(this).InitSWFUpload({ sendurl: "../Ajax/upload_ajax.ashx", flashurl: "../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpge;*.png;*.gif;*.rar;*.zip;*.doc;*.xls;*.mp3;*.mp4" });
+            });
+
+            //初始化编辑器
+            editor = KindEditor.create('.editor', {
+                width: '98%',
+                height: '350px',
+                resizeType: 1,
+                uploadJson: '../Ajax/upload_ajax.ashx?action=EditorFile&IsWater=1',
+                fileManagerJson: '../Ajax/upload_ajax.ashx?action=ManagerFile',
+                allowFileManager: true
+            });
+
+            $("#form1").Validform({
+                btnSubmit: '#btnSave',
+                showAllError: true,
+                //postonce: true,
+                tiptype: function (msg, o, cssctl) {
+                    /*msg：提示信息;
+                    o:{obj:*,type:*,curform:*}
+                    obj指向的是当前验证的表单元素（或表单对象）；
+                    type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态；
+                    curform为当前form对象;
+                    cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）；*/
+                    //全部验证通过提交表单时o.obj为该表单对象;
+                    if (!o.obj.is("form")) {
+                        //定位到相应的Tab页面
+                        if (o.obj.is(o.curform.find(".Validform_error:first"))) {
+                            var tabobj = o.obj.parents(".tab-content"); //显示当前的选项
+                            var tabindex = $(".tab-content").index(tabobj); //显示当前选项索引
+                            if (!$(".content-tab ul li").eq(tabindex).children("a").hasClass("selected")) {
+                                $(".content-tab ul li a").removeClass("selected");
+                                $(".content-tab ul li").eq(tabindex).children("a").addClass("selected");
+                                $(".tab-content").hide();
+                                tabobj.show();
+                            }
+                        }
+                        //页面上不存在提示信息的标签时，自动创建;
+                        if (o.obj.parents("dd").find(".Validform_checktip").length == 0) {
+                            o.obj.parents("dd").append("<span class='Validform_checktip' />");
+                            o.obj.parents("dd").next().find(".Validform_checktip").remove();
+                        }
+                        var objtip = o.obj.parents("dd").find(".Validform_checktip");
+                        cssctl(objtip, o.type);
+                        objtip.text(msg);
+                    }
+                },
+                callback: function (form) {
+                    var data = editor.html();
+                    data = encodeURIComponent(data);
+                    var formData = $("#form1").serializeArray();
+                    formData[4].value= data;
+                    console.info(formData);
+                    $.ajax({
+                        url: '../Ajax/sys_InteractionLearnsManager.ashx?type=save',
+                        type: 'post',
+                        data:formData,
+                        success: function (data, obj) {
+                            var reg = $.parseJSON(data);
+                            if (reg.status == "y") {
+                                jsdialog("系统提示", reg.info, "LearnsManager.html", "Success");
+                            } else {
+                                jsdialog("系统提示",reg.info,"","Error");
+                            }
+                        },
+                        error: function (data, obj) {
+                            alert("通讯错误");
+                        }
+                    });
+                    return false;
+                }
+            });
+            LoadMsg();
+        });
+
+        function LoadMsg() {
+            //判断是添加还是修改
+            var url = window.location.href;
+            var urlStr = url.substring(url.indexOf('?') + 1)
+            var urlArr = urlStr.split('&');
+            if (urlArr.length == 2) {
+                $("#action").val(urlArr[0].split('=')[1]);
+                $("#learnid").val(urlArr[1].split('=')[1]);
+                $.getJSON('../Ajax/sys_InteractionLearnsManager.ashx?type=getModel&id=' +urlArr[1].split('=')[1] , function (msg) {
+                    if (msg) {
+                        $("#leantype").val(msg.type);
+                        $("#learntitle").val(msg.title);
+                        $("#remark").val(msg.remark);
+                        var newData = decodeURIComponent(msg.content);
+                       // console.info(newData);
+                        editor.html(newData);
+                    }
+                });
+            } else {
+                $("#action").val(urlArr[0].split('=')[1]);
+                $("#learnid").val(0);
+            }
+        }
+    </script>
+</body>
+</html>
