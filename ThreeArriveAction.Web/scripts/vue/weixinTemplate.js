@@ -198,3 +198,107 @@ Vue.component("image-template", {
         }
     }
 });
+
+Vue.component('tw-item', {
+    template:
+        '<td colspan="2">' +
+        '   <tr class="row">' +
+        '       <td>图文标题 :&nbsp;&nbsp;&nbsp;</td>                                                                ' +
+        '       <td>                                                                                                ' +
+        '           <input type="text" v-model="tw.title" />                                                        ' +
+        '           <el-tooltip class="btn-add delete" v-if="twlength > 1"                                          ' +
+        '                       effect="dark" content="删除这组图文" placement="right">                               ' +
+        '               <el-button @click="deleteTw(ind)">-</el-button>                                           ' +
+        '           </el-tooltip>                                                                                   ' +
+        '       </td>                                                                                               ' +
+        '   </tr>                                                                                                   ' +
+        '   <tr class="row">                                                                                        ' +
+        '       <td>选择封面 :&nbsp;&nbsp;&nbsp;</td>                                                                ' +
+        '       <td>                                                                                                ' +
+        '           <form method="post" enctype="multipart/form-data">                                              ' +
+        '               <input type="file" v-bind:id="\'file_\' + ind" accept="image/gif, image/jpeg" /><br />        ' +
+        '               <span class="hint">支持PNG\JPEG\JPG\GIF格式 不能超过2M</span>                                 ' +
+        '               <input type="button" v-bind:value="\'上传\'" class="btn"                                    ' +
+        '                  @click="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading" />  ' +
+        '           </form>                                                                                         ' +
+        '       </td>                                                                                               ' +
+        '   </tr>                                                                                                   ' +
+        '   <tr class="row">                                                                                        ' +
+        '       <td>图文内容 :&nbsp;&nbsp;&nbsp;</td>                                                                ' +
+        '       <td>                                                                                                ' +
+        '           <textarea style="height: 60px;width: 247px;" v-model="tw.msg"></textarea>                       ' +
+        '       </td>                                                                                               ' +
+        '   </tr>                                                                                                   ' +
+        '   <tr class="row" v-if="ind != twlength-1">                                                             ' +
+        '       <td colspan="2">                                                                                    ' +
+        '           <div style="border-top: 1px solid black;width: 105%">                                           ' +
+        '                                                                                                           ' +
+        '           </div>                                                                                          ' +
+        '       </td>                                                                                               ' +
+        '   </tr>' +
+        '</td>',
+    props: ["tw", "ind", "twlength"],
+    data: function () {
+        return {
+            fullscreenLoading: false
+        }
+    },
+    methods: {
+        deleteTw: function (index) {
+            var that = vm;
+            var temp = [];
+            for (var i = 0; i < that.twList.length; i++) {
+                if (i !== index) {
+                    temp.push({
+                        title: that.twList[i].title,
+                        msg: that.twList[i].msg
+                    });
+                }
+            }
+            that.twList = temp;
+        },
+        uploadFile: function (name) {
+            var that = this;
+            if (!$('#' + name).val()) {
+                alert("请先选择需要上传的文件");
+                return;
+            }
+            if (that.tw.yetpath === $('#' + name).val() && that.tw.path) {
+                alert("请勿重复上传");
+                return;
+            }
+            that.fullscreenLoading = true;
+            var formData = new FormData();
+            formData.append('file', $('#' + name)[0].files[0]);
+            $.ajax({
+                url: '../Ajax/upload_ajax.ashx?action=UpLoadMsgFile',
+                type: 'POST',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (res) {
+                if (res === "网络异常,请重新尝试上传") {
+                    alery(res);
+                    return;
+                }
+                that.tw.path = res;
+                that.tw.yetpath = $('#' + name).val()
+                that.fullscreenLoading = false;
+                alert("上传成功")
+            }).fail(function (res) {
+                that.fullscreenLoading = false;
+                alert(res);
+            });
+        }
+    },
+    computed: {
+        //yetUpload: function() {
+        //    if (this.tw.yetpath === $('#' + name).val() && this.tw.path) {
+        //        return "已传"
+        //    } else {
+        //        return "未传"
+        //    }
+        //}
+    }
+})

@@ -13,12 +13,12 @@ function getRequest() {
 }
 req = getRequest();
 
-sendMsg = function (openIds, msg, callback) {
+sendTemplateMsg = function (openIds, msg, callback) {
     $.ajax({
         type: "post",
         url: "../Ajax/weixinInfo.ashx",
         data: {
-            type: "sendMsg",
+            type: "sendTemplateMsg",
             openIds: openIds,
             msg: msg
         },
