@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +8,7 @@ using System.Web;
 using System.Web.SessionState;
 using ThreeArriveAction.Common;
 using System.Drawing;
-using System.Linq;
+using ThreeArriveAction.Model;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -52,7 +51,6 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-
         public void SendMsgTest(HttpContext context)
         {
             // 参数传入以及处理
@@ -69,7 +67,6 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
             }
-
             // 获取 access token 
             var aModel = CacheHelper.Get<Token>("_AccessToken");
             if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
@@ -81,7 +78,7 @@ namespace ThreeArriveAction.Web.Ajax
             var media = new MediaModel();
             if (!path.IsNullOrEmpty())
             {
-                media = HttpHelper.UploadMultimedia(@"D:\Projects\threearrive\upload\material\20170728\20170728084546824.jpg", aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+                media = HttpHelper.UploadMultimedia(path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
             }
 
             var body = new object(); // 请求参数
@@ -112,19 +109,20 @@ namespace ThreeArriveAction.Web.Ajax
             }
             else if (type == MediaType.video.GetHashCode()) // 视频消息
             {
-                var videoMedia = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=" + aModel.Value, new
+                var videoMediaStr = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=" + aModel.Value, new
                 {
                     title,
                     media.media_id,
                     description = describe
-                }.ToJson()).JsonToObject<MediaModel>();
+                }.ToJson());
+                LogHelper.Log(videoMediaStr, media.media_id);
                 body = new
                 {
                     touser = arr[0],
                     mpvideo = new
                     {
                         title,
-                        videoMedia.media_id,
+                        videoMediaStr.JsonToObject<MediaModel>().media_id,
                         description = describe
                     },
                     msgtype = "mpvideo"
@@ -133,27 +131,35 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == MediaType.news.GetHashCode()) // 图文消息
             {
                 var articles = new ArrayList();
-                LogHelper.Log(twList.ToJson());
                 foreach (var tw in twList)
                 {
                     var twMedia = HttpHelper.UploadMultimedia(tw.path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+                    var sh = new SqlHelper<sys_MajorInfoModel>(new sys_MajorInfoModel
+                    {
+                        MajorFromUserId = 1,
+                        MajorContent = tw.msg,
+                        MajorTitle = tw.title,
+                        MajorDate = DateTime.Now
+                    });
+                    var ident = sh.Insert();
                     articles.Add(new
                     {
-                        thumb_media_id = twMedia.media_id,
+                        thumb_media_id = twMedia.media_id ?? "",
+                        content_source_url = ConfigurationManager.AppSettings["Localhost"] + "/weixin/majorInfo.html?id=" + ident,
                         author = "管理员",
                         tw.title,
-                        content = tw.msg,
+                        content = tw.msg + "<br>=================================<br>请点击右下角 的阅读原文, 且提交您的阅读结果",
                         show_cover_pic = 1
                     });
+                    // 插入重要信息
+
                 }
                 var twBody = new
                 {
                     articles
                 };
-                LogHelper.Log(twBody.ToJson());
                 var twRes = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=" + aModel.Value,
                                                 twBody.ToJson());
-                LogHelper.Log(twRes.ToJson());
                 body = new
                 {
                     touser = arr[0],
@@ -163,11 +169,10 @@ namespace ThreeArriveAction.Web.Ajax
                     },
                     msgtype = "mpnews"
                 };
-                LogHelper.Log(body.ToJson());
             }
             var res = HttpHelper.HttpPost(ConfigurationManager.AppSettings["WeixinSendMsgTest"] + aModel.Value,
                                           body.ToJson());
-
+            LogHelper.Log(body.ToJson(), ConfigurationManager.AppSettings["WeixinSendMsgTest"] + aModel.Value);
             context.Response.Write(res);
         }
 
@@ -307,7 +312,7 @@ namespace ThreeArriveAction.Web.Ajax
                 + "&noncestr=" + nonceStr
                 + "&timestamp=" + timestamp
                 + "&url=" + context.Request["url"];
-            return new JDKConfig
+            return new JdkConfig
             {
                 jsApiList = new List<string>
                 {
@@ -465,7 +470,7 @@ namespace ThreeArriveAction.Web.Ajax
             public string expires_in;
         }
 
-        class JDKConfig
+        class JdkConfig
         {
             public string appId = ConfigurationManager.AppSettings["AppId"];
             public string timestamp;
@@ -481,6 +486,7 @@ namespace ThreeArriveAction.Web.Ajax
             public string created_at;
         }
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         class TwModel
         {
             public string title;

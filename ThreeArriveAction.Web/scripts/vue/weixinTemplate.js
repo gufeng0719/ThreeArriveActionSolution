@@ -208,7 +208,7 @@ Vue.component('tw-item', {
         '           <input type="text" v-model="tw.title" />                                                        ' +
         '           <el-tooltip class="btn-add delete" v-if="twlength > 1"                                          ' +
         '                       effect="dark" content="删除这组图文" placement="right">                               ' +
-        '               <el-button @click="deleteTw(ind)">-</el-button>                                           ' +
+        '               <el-button @click="deleteTw(ind)">-</el-button>                                             ' +
         '           </el-tooltip>                                                                                   ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
@@ -216,10 +216,13 @@ Vue.component('tw-item', {
         '       <td>选择封面 :&nbsp;&nbsp;&nbsp;</td>                                                                ' +
         '       <td>                                                                                                ' +
         '           <form method="post" enctype="multipart/form-data">                                              ' +
-        '               <input type="file" v-bind:id="\'file_\' + ind" accept="image/gif, image/jpeg" /><br />        ' +
-        '               <span class="hint">支持PNG\JPEG\JPG\GIF格式 不能超过2M</span>                                 ' +
-        '               <input type="button" v-bind:value="\'上传\'" class="btn"                                    ' +
-        '                  @click="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading" />  ' +
+        '               <input type="file" v-bind:id="\'file_\' + ind" accept="image/gif, image/jpeg"               ' +
+        '                   @change="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading"/>   ' +
+        '               <br />                                                                                      ' +
+        '               <span class="hint">支持PNG\JPEG\JPG\GIF格式 不能超过2M</span>                                  ' +
+        '               <input type="button" v-bind:value="\'上传\'" class="btn"                                     ' +
+        '                  style="display:none"                                                                     ' +
+        '                  @click="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading" />    ' +
         '           </form>                                                                                         ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
@@ -229,7 +232,7 @@ Vue.component('tw-item', {
         '           <textarea style="height: 60px;width: 247px;" v-model="tw.msg"></textarea>                       ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
-        '   <tr class="row" v-if="ind != twlength-1">                                                             ' +
+        '   <tr class="row" v-if="ind != twlength-1">                                                               ' +
         '       <td colspan="2">                                                                                    ' +
         '           <div style="border-top: 1px solid black;width: 105%">                                           ' +
         '                                                                                                           ' +

@@ -22,6 +22,10 @@
         .delete {
             margin-left: 100px;
         }
+
+        .yet {
+            background-color: #f0ad4e;
+        }
     </style>
 </head>
 
@@ -50,11 +54,11 @@
                         <td>消息类型 :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <el-radio-group v-model="type">
+                                <el-radio v-bind:label="4">图文</el-radio>
                                 <el-radio v-bind:label="0">文本</el-radio>
                                 <el-radio v-bind:label="1">图片</el-radio>
                                 <el-radio v-bind:label="2">语音</el-radio>
                                 <el-radio v-bind:label="3">视频</el-radio>
-                                <el-radio v-bind:label="4">图文</el-radio>
                             </el-radio-group>
                         </td>
                     </tr>
@@ -68,9 +72,14 @@
                         <td>{{typeFile}} :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <form method="post" enctype="multipart/form-data">
-                                <input type="file" id="file" v-bind:accept="mime" /><br />
+                                <input type="file" id="file" v-bind:accept="mime" onchange="$('#btnUpload').click()"/><br />
                                 <span class="hint">{{hint}}</span>
-                                <input type="button" value="上传" class="btn" @click="uploadFile('file')" v-loading.fullscreen.lock="fullscreenLoading" />
+                                <input type="button" id="btnUpload"
+                                       v-bind:value="yetUpload ? '已传' : '上传'"
+                                       class="btn"
+                                       @click="uploadFile('file')"
+                                       style="display:none"
+                                       v-loading.fullscreen.lock="fullscreenLoading" />
                             </form>
                         </td>
                     </tr>
@@ -82,7 +91,7 @@
                     </tr>
                     <!-- 图文部分 -->
                     <tr v-if="type == 4" v-for="(tw,index) in twList">
-                        <td is="tw-item" :tw="tw" :ind="index" :twlength="twList.length"></td>
+                        <td is="tw-item" :tw.sync="tw" :ind="index" :twlength="twList.length"></td>
                     </tr>
                     <tr class="row">
                         <td colspan="2">
@@ -108,11 +117,12 @@
             el: "#app",
             data: {
                 dataTree: [],
-                type: 0,
+                type: 4,
                 mime: "",
                 hint: "",
                 yetpath: "",
                 path: "",
+                yetUpload: false,
                 msg: "",
                 title: "",
                 fullscreenLoading: false,
@@ -192,7 +202,6 @@
                     $.ajax({
                         url: '../Ajax/upload_ajax.ashx?action=UpLoadMsgFile',
                         type: 'POST',
-                        cache: false,
                         data: formData,
                         processData: false,
                         contentType: false
@@ -212,7 +221,8 @@
                         alert("上传成功")
                     }).fail(function (res) {
                         that.fullscreenLoading = false;
-                        alert(res);
+                        alert("上传失败")
+                        console.error(res);
                     });
                 },
                 addTw: function () {
@@ -247,6 +257,14 @@
                         this.typeTile = "视频标题"
                         this.typeMsg = "视频描述"
                     }
+                },
+                path: function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        this.yetUpload = true;
+                    }
+                    if (newValue === "") {
+                        this.yetUpload = false;
+                    }
                 }
             },
             mounted () {
@@ -266,6 +284,12 @@
                 });
             }
         })
+        //$(function () {
+        //    $("input[type='file']").on("change", function () {
+        //        debugger;
+        //        vm.path = "";
+        //    });
+        //});
     </script>
 </body>
 </html>

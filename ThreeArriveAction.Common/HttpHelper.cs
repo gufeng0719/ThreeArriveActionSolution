@@ -8,7 +8,7 @@ namespace ThreeArriveAction.Common
     public class HttpHelper
     {
         /// <summary>
-        /// 后台发送POST请求
+        /// 发送POST请求
         /// </summary>
         /// <param name="url">服务器地址</param>
         /// <param name="data">发送的数据</param>
@@ -48,7 +48,7 @@ namespace ThreeArriveAction.Common
         }
 
         /// <summary>
-        /// 后台发送GET请求
+        /// 发送GET请求
         /// </summary>
         /// <param name="url">服务器地址</param>
         /// <returns></returns>
@@ -82,12 +82,13 @@ namespace ThreeArriveAction.Common
         /// <summary>
         /// 上传临时素材
         /// </summary>
-        /// <param name="filePath"></param>
+        /// <param name="filePath">文件在磁盘上的绝对路径</param>
         /// <param name="accessToken"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public static string UploadMultimedia(string filePath, string accessToken, MediaType type)
         {
-            string result;
+            var result = string.Empty;
             var wxurl = $"https://api.weixin.qq.com/cgi-bin/media/upload?access_token={accessToken}&type={type}";
             var myWebClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             try
@@ -97,7 +98,7 @@ namespace ThreeArriveAction.Common
             }
             catch (Exception ex)
             {
-                result = "Error:" + ex.Message;
+                LogHelper.Log(ex.ToJson(), "素材上传失败---> 请求参数: " + filePath + ";" + accessToken + ";" + type);
             }
             return result;
         }

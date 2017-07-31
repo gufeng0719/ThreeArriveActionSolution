@@ -59,6 +59,7 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetModel(HttpContext context)
         {
             var id = context.Request["id"].ToInt();
+            var userId = context.Request["userId"].ToInt();
             var sh = new SqlHelper<sys_MajorInfoModel>(new sys_MajorInfoModel());
             sh.AddWhere("MajorId", id);
             var model = sh.Select().FirstOrDefault();
@@ -68,12 +69,16 @@ namespace ThreeArriveAction.Web.Ajax
                 return;
             }
             var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserId", model.MajorFromUserId } }).FirstOrDefault();
+            var readSh = new SqlHelper<sys_ReadLogModel>(new sys_ReadLogModel());
+            readSh.AddWhere("MajorId", id);
+            readSh.AddWhere("ReadUserId", userId);
             context.Response.Write(new
             {
                 content = model.MajorContent,
                 title = model.MajorTitle,
                 userName = user?.UserName ?? "管理员",
                 time = model.MajorDate.ToString("yyyy-M-d hh:mm:ss"),
+                yetRead = readSh.Select().Any()
             }.ToJson());
         }
 

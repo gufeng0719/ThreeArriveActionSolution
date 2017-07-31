@@ -9,8 +9,6 @@ using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
 using System.Web.SessionState;
 using ThreeArriveAction.BLL;
-using ThreeArriveAction.Common;
-using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
 
 namespace ThreeArriveAction.Web.Ajax
