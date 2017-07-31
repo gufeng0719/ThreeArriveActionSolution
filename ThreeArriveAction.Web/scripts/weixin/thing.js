@@ -6,6 +6,7 @@
         familyType: -1
     },
     mounted: function () {
+
         this.$children[0].typeList.push({ key: 8, value: "其他" })
 
     }

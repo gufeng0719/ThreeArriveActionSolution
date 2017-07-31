@@ -38,6 +38,19 @@ namespace ThreeArriveAction.Common
             }
         }
 
+        public static bool ToBool(this object o)
+        {
+            try
+            {
+                return Convert.ToBoolean(o);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex.Message, o + "bool类型转换失败---VALUE:" + o);
+                return false;
+            }
+        }
+
         public static double ToDouble(this string str)
         {
             try

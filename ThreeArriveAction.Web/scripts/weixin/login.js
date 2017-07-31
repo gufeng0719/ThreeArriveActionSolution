@@ -69,7 +69,7 @@ function signIn(phone, openId) {
         url: "../Ajax/sys_UsersManager.ashx?type=signInPhone",
         success: function (d) {
             if (d == "0") {
-                alert("数据库中不存在的手机号码");
+                alert("该号码不存在,请重新输入");
             } else {
                 var obj = JSON.parse(d);
                 if (localStorage) {
