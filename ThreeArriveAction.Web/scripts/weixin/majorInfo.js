@@ -4,7 +4,8 @@
         userName: "",
         time: "",
         title: "",
-        content: ""
+        content: "",
+        yetRead: false
     },
     methods: {
         readed: function () {
@@ -18,6 +19,7 @@
                 },
                 complete: function (d) {
                     if (d.responseText > 0) {
+                        alert("提交成功")
                         window.open("major.html", "_self");
                     }
                 }
@@ -31,7 +33,8 @@
             url: "../Ajax/sys_MajorInfoManager.ashx",
             data: {
                 type: "getModel",
-                id: req["id"]
+                id: req["id"],
+                userId: JSON.parse(localStorage.getItem("current_user")).UserId
             },
             complete: function (d) {
                 var obj = JSON.parse(d.responseText);
@@ -39,6 +42,7 @@
                 that.time = obj.time;
                 that.title = obj.title;
                 that.content = obj.content;
+                that.yetRead = obj.yetRead;
             }
         });
     }

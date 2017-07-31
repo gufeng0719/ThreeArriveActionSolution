@@ -20,13 +20,13 @@ Vue.component("ddlsee", {
                     value: "留守老人户"
                 }, {
                     key: 2,
-                    value: "重大病户"
+                    value: "重大病灾户"
                 }, {
                     key: 3,
                     value: "五保户"
                 }, {
                     key: 4,
-                    value: "低保户"
+                    value: "建党立卡低收入户"
                 }, {
                     key: 5,
                     value: "离任村干部户"
@@ -39,36 +39,55 @@ Vue.component("ddlsee", {
                 }
             ],
             type: -1,
-            myfamily: -1
+            myfamily: -1,
+            allSubfamily: []
         }
     },
-    watch: {
-        type: function (newValue) {
+    methods: {
+        getAllSubfamily: function () {
             var that = this;
             $.ajax({
                 url: "../Ajax/sys_SubscriberFamilyManager.ashx?type=getsubfamily",
                 type: "post",
                 data: {
-                    value: newValue,
-                    openId: localStorage.getItem("openId")
+                    openId: localStorage.getItem("openId"),
+                    isThing: location.href.indexOf("thing") > -1
                 },
                 success: function (d) {
-                    var obj = JSON.parse(d);
-                    that.familyList = obj;
-                    if (that.familyList.length > 0) {
-                        that.myfamily = that.familyList[0].key;
-                    }
+                    that.allSubfamily = JSON.parse(d);
+                    that.type = that.allSubfamily[0].type;
                 }, error: function (d) {
                     console.log(d);
                 }
             });
+
+        },
+        getlist: function (type) {
+            var that = this;
+            var list = _.where(that.allSubfamily, { type: type });
+            that.familyList = list;
+            if (that.familyList && that.familyList.length > 0) {
+                that.myfamily = that.familyList[0].key;
+            }
+        }
+    },
+    watch: {
+        type: function (newValue) {
+            var that = this;
+            that.getlist(newValue);
             if (that.$parent.familyType) {
                 that.$parent.familyType = newValue;
             }
         },
         myfamily: function (newValue) {
             vm.family = newValue;
+        },
+        allSubfamily: function (newValue) {
+
         }
+    },
+    mounted: function () {
+        this.getAllSubfamily();
     }
 });
 
@@ -98,10 +117,12 @@ Vue.component("ddlvillage", {
     },
     watch: {
         "ddltown": function (newValue) {
-            if (newValue === -1) {
+            var that = this;
+            if (newValue < 1) {
+                that.villagelist = [];
+                that.myddlvillage = -1;
                 return;
             }
-            var that = this;
             var child = _.find(that.allvillage, function (v) {
                 return v.parent.value === newValue;
             });
@@ -120,13 +141,32 @@ Vue.component("ddlvillage", {
             type: "post",
             url: "../Ajax/sys_VillagesManager.ashx?type=getAll",
             data: {
+                openId: localStorage.getItem("openId")
             },
             complete: function (d) {
                 var obj = JSON.parse(d.responseText);
-                that.allvillage = obj;
-                obj.forEach((o) => {
+                that.allvillage = obj.list;
+                obj.list.forEach((o) => {
                     that.townlist.push(o.parent);
                 });
+                if (obj.current > 0) {
+                    var item;
+                    obj.list.forEach((n) => {
+                        var temp = _.find(n.child, function (c) {
+                            return c.value === obj.current
+                        });
+                        if (temp) {
+                            item = n;
+                        }
+                    });
+
+                    if (item) {
+                        that.ddltown = item.parent.value;
+                        setTimeout(function () {
+                            that.myddlvillage = obj.current;
+                        }, 300)
+                    }
+                }
             }
         });
     }
@@ -138,18 +178,18 @@ Vue.component("image-template", {
             '    <div v-for="(localId,index) in localIds" style="display:inline"               ' +
             '       @dblclick="removeImg(localId)">                                            ' +
             '       <a :data-id="localId">                                                     ' +
-            '           <img :src="localId" style="width: 28%;" />                             ' +
+            '           <img :src="localId" style="width: 15%;" />                             ' +
             '       </a>                                                                       ' +
             '    </div>                                                                        ' +
             '    <a @click="pz()" v-if="localIds.length < 9">                                  ' +
-            '        <img src="../images/templates/bottommenu/218.png" style="width: 28%;" />  ' +
+            '        <img src="../images/templates/bottommenu/218.png" style="width: 15%;" />  ' +
             '    </a>                                                                          ' +
             '</div>                                                                            ' +
             '<div v-else>                                                                      ' +
             '   <a @click="pz()">                                                              ' +
-            '       <img :src="srcUrl" style="width: 28%;" />                                  ' +
+            '       <img :src="srcUrl" style="width: 15%;" />                                  ' +
             '   </a>                                                                           ' +
-            '</div>                                                                            ',
+            '</div>',
     props: ["local-ids", "is-more"],
     data: function () {
         return {
@@ -208,7 +248,7 @@ Vue.component('tw-item', {
         '           <input type="text" v-model="tw.title" />                                                        ' +
         '           <el-tooltip class="btn-add delete" v-if="twlength > 1"                                          ' +
         '                       effect="dark" content="删除这组图文" placement="right">                               ' +
-        '               <el-button @click="deleteTw(ind)">-</el-button>                                           ' +
+        '               <el-button @click="deleteTw(ind)">-</el-button>                                             ' +
         '           </el-tooltip>                                                                                   ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
@@ -216,10 +256,13 @@ Vue.component('tw-item', {
         '       <td>选择封面 :&nbsp;&nbsp;&nbsp;</td>                                                                ' +
         '       <td>                                                                                                ' +
         '           <form method="post" enctype="multipart/form-data">                                              ' +
-        '               <input type="file" v-bind:id="\'file_\' + ind" accept="image/gif, image/jpeg" /><br />        ' +
-        '               <span class="hint">支持PNG\JPEG\JPG\GIF格式 不能超过2M</span>                                 ' +
-        '               <input type="button" v-bind:value="\'上传\'" class="btn"                                    ' +
-        '                  @click="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading" />  ' +
+        '               <input type="file" v-bind:id="\'file_\' + ind" accept="image/gif, image/jpeg"               ' +
+        '                   @change="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading"/>   ' +
+        '               <br />                                                                                      ' +
+        '               <span class="hint">支持PNG\JPEG\JPG\GIF格式 不能超过2M</span>                                  ' +
+        '               <input type="button" v-bind:value="\'上传\'" class="btn"                                     ' +
+        '                  style="display:none"                                                                     ' +
+        '                  @click="uploadFile(\'file_\' + ind)" v-loading.fullscreen.lock="fullscreenLoading" />    ' +
         '           </form>                                                                                         ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
@@ -229,7 +272,7 @@ Vue.component('tw-item', {
         '           <textarea style="height: 60px;width: 247px;" v-model="tw.msg"></textarea>                       ' +
         '       </td>                                                                                               ' +
         '   </tr>                                                                                                   ' +
-        '   <tr class="row" v-if="ind != twlength-1">                                                             ' +
+        '   <tr class="row" v-if="ind != twlength-1">                                                               ' +
         '       <td colspan="2">                                                                                    ' +
         '           <div style="border-top: 1px solid black;width: 105%">                                           ' +
         '                                                                                                           ' +
@@ -275,6 +318,7 @@ Vue.component('tw-item', {
                 type: 'POST',
                 cache: false,
                 data: formData,
+                timeout: 90000,
                 processData: false,
                 contentType: false
             }).done(function (res) {
@@ -293,12 +337,5 @@ Vue.component('tw-item', {
         }
     },
     computed: {
-        //yetUpload: function() {
-        //    if (this.tw.yetpath === $('#' + name).val() && this.tw.path) {
-        //        return "已传"
-        //    } else {
-        //        return "未传"
-        //    }
-        //}
     }
 })

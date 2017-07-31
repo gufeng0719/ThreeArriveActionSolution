@@ -1,9 +1,7 @@
 ﻿using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.Entities.Request;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.SessionState;

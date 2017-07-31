@@ -48,7 +48,7 @@
                     看完请点击已阅
                 </div>
             </div>
-            <input type="button" value="已阅" class="btn" @click="readed()" />
+            <input type="button" value="已阅" class="btn" @click="readed()" v-if="!yetRead" />
         </div>
     </div>
     <script src="../scripts/jquery/jquery-1.10.2.min.js" type="text/javascript"></script>

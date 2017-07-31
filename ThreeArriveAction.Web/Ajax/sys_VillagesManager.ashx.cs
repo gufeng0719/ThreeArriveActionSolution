@@ -46,7 +46,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-       
+
 
         /// <summary>
         /// 获取村居下拉选项数据
@@ -145,6 +145,8 @@ namespace ThreeArriveAction.Web.Ajax
 
         private void GetVillageAll(HttpContext context)
         {
+            var openId = context.Request["openId"];
+            var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserRemark", openId } });
             var vList = DataConfig.GetVillages();
             var list = new ArrayList();
             foreach (var item in vList.Where(x => x.VillageParId == 1))
@@ -164,7 +166,11 @@ namespace ThreeArriveAction.Web.Ajax
                     })
                 });
             }
-            context.Response.Write(list.ToJson());
+            context.Response.Write(new
+            {
+                list,
+                current = user.FirstOrDefault()?.VillageId
+            }.ToJson());
         }
 
         public bool IsReusable
