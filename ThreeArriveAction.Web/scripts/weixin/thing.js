@@ -72,12 +72,8 @@ function sendMsgToShuji() {
         },
         complete: function (d) {
             var obj = JSON.parse(d.responseText);
-            var msg = `时间 : ${obj.time}\n`;
-            msg += `${obj.fromName}拜访了${obj.toName}\n`;
-            msg += `原因 : ${obj.title}\n`;
-            msg += obj.having;
-            sendTemplateMsg([obj.toOpenId], msg, function () {
-                console.log("已发送信息给 " + obj.toOpenId);
+            sendTemplateMsg(obj.toOpenId, obj, function (msg) {
+                console.log(msg);
                 window.open("index.html", "_self");
             });
         }

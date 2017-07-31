@@ -72,7 +72,7 @@
                         <td>{{typeFile}} :&nbsp;&nbsp;&nbsp;</td>
                         <td>
                             <form method="post" enctype="multipart/form-data">
-                                <input type="file" id="file" v-bind:accept="mime" onchange="$('#btnUpload').click()"/><br />
+                                <input type="file" id="file" v-bind:accept="mime" onchange="$('#btnUpload').click()" /><br />
                                 <span class="hint">{{hint}}</span>
                                 <input type="button" id="btnUpload"
                                        v-bind:value="yetUpload ? '已传' : '上传'"
@@ -141,10 +141,10 @@
                 sendMsg: function () {
                     var that = this;
                     var openIds = that.$refs.tree.getCheckedKeys();
-                    //if (openIds.length < 1) {
-                    //    alert("请选择需要群发的对象");
-                    //    return
-                    //} todo
+                    if (openIds.length < 1) {
+                        alert("请选择需要群发的对象");
+                        return
+                    } 
                     if (that.type === 0 && that.msg.trim() === "") {
                         alert("请输入需要发送的消息");
                         return
@@ -164,7 +164,22 @@
                         }
                     }
                     if (that.type === 4) {
-                        // todo 验证
+                        var msgCount = 0;
+                        that.twList.forEach((tw) => {
+                            if (!tw.path) {
+                                msgCount++;
+                            }
+                            if (!tw.title) {
+                                msgCount++;
+                            }
+                            if (!tw.msg) {
+                                msgCount++;
+                            }
+                        });
+                        if (msgCount > 0) {
+                            alert("请完善图文信息, 不要留有空白");
+                            return;
+                        }
                     }
                     that.fullscreenLoading = true;
                     $.ajax({
@@ -203,6 +218,7 @@
                         url: '../Ajax/upload_ajax.ashx?action=UpLoadMsgFile',
                         type: 'POST',
                         data: formData,
+                        timeout: 90000,
                         processData: false,
                         contentType: false
                     }).done(function (res) {

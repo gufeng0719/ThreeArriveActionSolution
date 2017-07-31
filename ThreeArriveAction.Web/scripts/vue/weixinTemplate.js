@@ -278,6 +278,7 @@ Vue.component('tw-item', {
                 type: 'POST',
                 cache: false,
                 data: formData,
+                timeout: 90000,
                 processData: false,
                 contentType: false
             }).done(function (res) {
@@ -296,12 +297,5 @@ Vue.component('tw-item', {
         }
     },
     computed: {
-        //yetUpload: function() {
-        //    if (this.tw.yetpath === $('#' + name).val() && this.tw.path) {
-        //        return "已传"
-        //    } else {
-        //        return "未传"
-        //    }
-        //}
     }
 })

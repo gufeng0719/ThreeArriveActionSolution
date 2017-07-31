@@ -38,11 +38,15 @@ namespace ThreeArriveAction.Web.Ajax
             }
             else if (type == "sendMsg")
             {
-                SendMsg(context);
+                SendMsg(context, ConfigurationManager.AppSettings["WeixinSendMsg"], false);
             }
             else if (type == "sendMsgTest")
             {
-                SendMsgTest(context);
+                SendMsg(context, ConfigurationManager.AppSettings["WeixinSendMsgTest"], true);
+            }
+            else if (type == "sendTemplateMsg")
+            {
+                SendTemplateMsg(context);
             }
             else
             {
@@ -51,7 +55,54 @@ namespace ThreeArriveAction.Web.Ajax
             }
         }
 
-        public void SendMsgTest(HttpContext context)
+        public void SendTemplateMsg(HttpContext context)
+        {
+            var aModel = CacheHelper.Get<Token>("_AccessToken");
+            if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) < DateTime.Now))
+            {
+                aModel = GetAModel();
+            }
+            var res = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + aModel.Value,
+                                             new
+                                             {
+                                                 template_id = "xsGmpfGskSamu7S-J8PLYiWlGWWT3O1ol_uWVOPqGg0",
+                                                 touser = ConfigurationManager.AppSettings["OpenIdForAdmin"],
+                                                 data = new
+                                                 {
+                                                     first = new
+                                                     {
+                                                         value = "xxxx",
+                                                     },
+                                                     businessType = new
+                                                     {
+                                                         value = "拜访类型",
+                                                     },
+                                                     business = new
+                                                     {
+                                                         value = "有事马上到",
+                                                     },
+                                                     order = new
+                                                     {
+                                                         value = "1234567890",
+                                                     },
+                                                     time = new
+                                                     {
+                                                         value = DateTime.Now.ToString("yyyy年MM月d日 hh时mm分"),
+                                                     },
+                                                     address = new
+                                                     {
+                                                         value = "xxxxxxxxxxx"
+                                                     },
+                                                     remark = new
+                                                     {
+                                                         value = "事件：xxxxx"
+                                                     }
+                                                 }
+                                             }.ToJson());
+            context.Response.Write(res);
+        }
+
+        public string SendMsg(HttpContext context, string postUrl, bool test)
         {
             // 参数传入以及处理
             var openIds = (context.Request["openIds[]"] ?? "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
@@ -87,7 +138,7 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 body = new
                 {
-                    touser = arr[0],
+                    touser = test ? arr[0] : arr,
                     msgtype = "text",
                     text = new
                     {
@@ -99,7 +150,7 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 body = new
                 {
-                    touser = arr[0],
+                    touser = test ? arr[0] : arr,
                     image = new
                     {
                         media.media_id
@@ -118,7 +169,7 @@ namespace ThreeArriveAction.Web.Ajax
                 LogHelper.Log(videoMediaStr, media.media_id);
                 body = new
                 {
-                    touser = arr[0],
+                    touser = test ? arr[0] : arr,
                     mpvideo = new
                     {
                         title,
@@ -134,6 +185,7 @@ namespace ThreeArriveAction.Web.Ajax
                 foreach (var tw in twList)
                 {
                     var twMedia = HttpHelper.UploadMultimedia(tw.path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
+                    // 插入重要信息
                     var sh = new SqlHelper<sys_MajorInfoModel>(new sys_MajorInfoModel
                     {
                         MajorFromUserId = 1,
@@ -145,14 +197,12 @@ namespace ThreeArriveAction.Web.Ajax
                     articles.Add(new
                     {
                         thumb_media_id = twMedia.media_id ?? "",
-                        content_source_url = ConfigurationManager.AppSettings["Localhost"] + "/weixin/majorInfo.html?id=" + ident,
+                        content_source_url = ConfigurationManager.AppSettings["Localhost"] + "/weixin/majorInfo.html?id=" + ident, // 原文的地址
                         author = "管理员",
                         tw.title,
-                        content = tw.msg + "<br>=================================<br>请点击右下角 的阅读原文, 且提交您的阅读结果",
+                        content = tw.msg + "<br>===============================<br>请点击左下角(阅读原文),提交您的阅读结果", // 统一添加阅读原文提示
                         show_cover_pic = 1
                     });
-                    // 插入重要信息
-
                 }
                 var twBody = new
                 {
@@ -162,7 +212,7 @@ namespace ThreeArriveAction.Web.Ajax
                                                 twBody.ToJson());
                 body = new
                 {
-                    touser = arr[0],
+                    touser = test ? arr[0] : arr,
                     mpnews = new
                     {
                         twRes.JsonToObject<MediaModel>().media_id
@@ -170,84 +220,10 @@ namespace ThreeArriveAction.Web.Ajax
                     msgtype = "mpnews"
                 };
             }
-            var res = HttpHelper.HttpPost(ConfigurationManager.AppSettings["WeixinSendMsgTest"] + aModel.Value,
+            var res = HttpHelper.HttpPost(postUrl + aModel.Value,
                                           body.ToJson());
-            LogHelper.Log(body.ToJson(), ConfigurationManager.AppSettings["WeixinSendMsgTest"] + aModel.Value);
-            context.Response.Write(res);
-        }
-
-        public void SendMsg(HttpContext context)
-        {
-            var openIds = context.Request["openIds[]"].Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            var msg = context.Request["msg"];
-            var type = context.Request["msgType"].ToInt();
-            var path = context.Request["path"];
-            var title = context.Request["title"];
-            var arr = new ArrayList();
-            arr.AddRange(openIds);
-            if (arr.Count < 2)
-            {
-                arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
-            }
-            var aModel = CacheHelper.Get<Token>("_AccessToken");
-            if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
-            {
-                aModel = GetAModel();
-            }
-            object body;
-            if (type == MediaType.text.GetHashCode()) // 发送文本信息
-            {
-                body = new
-                {
-                    touser = arr,
-                    msgtype = "text",
-                    text = new
-                    {
-                        content = msg
-                    }
-                };
-            }
-            else if (type == MediaType.voice.GetHashCode() || type == MediaType.image.GetHashCode())// 图片和语音
-            {
-                var media = HttpHelper.UploadMultimedia(path, aModel.Value, MediaType.image).JsonToObject<MediaModel>();
-                body = new
-                {
-                    touser = openIds,
-                    image = new
-                    {
-                        media.media_id
-                    },
-                    msgtype = "image"
-                };
-            }
-            else
-            {
-                var media = HttpHelper.UploadMultimedia(path, aModel.Value, MediaType.video).JsonToObject<MediaModel>();
-                var videoMedia = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/media/uploadvideo?access_token=" + aModel.Value, new
-                {
-                    title,
-                    media.media_id,
-                    description = msg
-                }.ToJson()).JsonToObject<MediaModel>();
-                body = new
-                {
-                    touser = openIds,
-                    mpvideo = new
-                    {
-                        title,
-                        videoMedia.media_id,
-                        description = msg
-                    },
-                    msgtype = "mpvideo"
-                };
-            }
-            var res = HttpHelper.HttpPost(ConfigurationManager.AppSettings["WeixinSendMsg"] + aModel.Value, body.ToJson());
-            LogForSendMsg(aModel.Value, body, res);
-            //if (res.IndexOf("success", StringComparison.Ordinal) < 0)
-            //{
-            // todo 只有失败记录日志,目前测试在任何事件都记录了日志
-            //}
-            context.Response.Write(res);
+            LogHelper.Log(body.ToJson(), postUrl + aModel.Value);
+            return res;
         }
 
         public void GetCodeUrl(HttpContext context)
@@ -492,6 +468,13 @@ namespace ThreeArriveAction.Web.Ajax
             public string title;
             public string msg;
             public string path;
+        }
+
+        class TemplateIdModel
+        {
+            public string errcode;
+            public string errmsg;
+            public string template_id;
         }
     }
 }

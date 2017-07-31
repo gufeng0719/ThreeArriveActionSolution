@@ -117,6 +117,8 @@
     <Content Include="admin\weixin\PublicInsert.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
+    <Content Include="images\weixin\清除缓存.png" />
+    <Content Include="images\weixin\重要信息.png" />
     <Content Include="scripts\element\element.css" />
     <Content Include="scripts\element\elemrnt.js" />
     <Content Include="scripts\weixin\major.js" />
