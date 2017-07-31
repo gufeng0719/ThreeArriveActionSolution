@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>三到查询</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>三到查询</span>
+        </div>
+        <!--/导航栏-->
+        <!-- 内容 -->
+        <!-- Tab标签栏-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabsAndLoad(this);" class="selected">每日早报道查询</a></li>
+                        <li><a href="javascript:;" onclick="tabsAndLoad(this);">每周家家到查询</a></li>
+                        <li><a href="javascript:;" onclick="tabsAndLoad(this);">有事马上到查询</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Tab标签栏-->
+        <!--每日早报道-->
+        <div class="tab-content">
+            <!-- 工具栏-->
+            <div class="toolbar-wrap">
+                <div id="floatHead" class="toolbar">
+                    <div class="r-list">
+                        <div class="menu-list" style="display: inline-block; float: left;">
+                            <div class="input-date">
+                                <input type="text" id="signdate" name="signdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                       class="input date" />
+                                <i>日期</i>
+                            </div>
+                            <div class="single-select" name="divtown">
+                                <select id="town" name="town"></select>
+                            </div>
+                            <div class="single-select" name="divvillage">
+                                <select id="village" name="village"></select>
+                            </div>
+                        </div>
+                        <input type="button" id="btnSearch" class="btn-search" value="查询" />
+                    </div>
+                </div>
+            </div>
+            <!-- /工具栏-->
+            <!--列表-->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                <thead>
+                    <tr>
+                        <th align="center" width="12%">
+                            用户名
+                        </th>
+                        <th align="center" width="11%">
+                            村居
+                        </th>
+                        <th align="center" width="12%">
+                            是否签到
+                        </th>
+                        <th align="center" width="12%">
+                            签到时间
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+            </table>
+            <!--/列表-->
+            <!--内容底部-->
+            <div class="line20">
+            </div>
+            <div class="pagelist">
+                <div class="l-btns">
+                    <span>显示</span>
+                    <label class="pagenum">20</label>
+                    <span>条/页</span>
+                </div>
+                <div id="PageContent" class="default">
+                </div>
+            </div>
+            <!--/内容底部-->
+        </div>
+        <!--/每日早报道-->
+        <!-- 每周家家到-->
+        <div class="tab-content" style="display:none">
+            <!-- 工具栏-->
+            <div class="toolbar-wrap">
+                <div id="floatHead" class="toolbar">
+                    <div class="r-list">
+                        <div class="menu-list" style="display: inline-block; float: left;">
+                            <div class="input-date">
+                                <input type="text" id="weekdate" name="weekdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                       class="input date" />
+                                <i>日期</i>
+                            </div>
+                            <div class="single-select" name="divtown">
+                                <select id="weektown" name="town"></select>
+                            </div>
+                            <div class="single-select" name="divvillage">
+                                <select id="weekvillage" name="village"></select>
+                            </div>
+                        </div>
+                        <input type="button" id="btnWeekSearch" class="btn-search" value="查询" />
+                    </div>
+                </div>
+            </div>
+            <!-- /工具栏-->
+            <!--列表-->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                <thead>
+                    <tr>
+                        <th align="center" width="10%">
+                            拜访户名
+                        </th>
+                        <th align="center" width="10%">
+                            村居
+                        </th>
+                        <th align="center" width="10%">
+                            走访者
+                        </th>
+                        <th align="center" width="10%">
+                            是否被走访
+                        </th>
+                        <th align="center" width="30%">
+                            走访结论
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="weektbody"></tbody>
+            </table>
+            <!--/列表-->
+            <!--内容底部-->
+            <div class="line20">
+            </div>
+            <div class="pagelist">
+                <div class="l-btns">
+                    <span>显示</span>
+                    <label class="pagenum">20</label>
+                    <span>条/页</span>
+                </div>
+                <div id="weekPageContent" class="default">
+                </div>
+            </div>
+            <!--/内容底部-->
+        </div>
+        <!-- /每周家家到-->
+        <!-- 有事马上到 -->
+        <div class="tab-content" style="display:none">
+            <!-- 工具栏-->
+            <div class="toolbar-wrap">
+                <div id="floatHead" class="toolbar">
+                    <div class="r-list">
+                        <div class="menu-list" style="display: inline-block; float: left;">
+                            <div class="input-date">
+                                <input type="text" id="thingdate" name="thingdate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                       class="input date" />
+                                <i>日期</i>
+                            </div>
+                            <div class="single-select" name="divtown">
+                                <select id="thingtown" name="town"></select>
+                            </div>
+                            <div class="single-select" name="divvillage">
+                                <select id="thingvillage" name="village"></select>
+                            </div>
+                        </div>
+                        <input type="button" id="btnThingSearch" class="btn-search" value="查询" />
+                    </div>
+                </div>
+            </div>
+            <!-- /工具栏-->
+            <!--列表-->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                <thead>
+                    <tr>
+                        <th align="center" width="10%">
+                            受拜访户
+                        </th>
+                        <th align="center" width="10%">
+                            村居
+                        </th>
+                        <th align="center" width="10%">
+                            走访者
+                        </th>
+                        <th align="center" width="30%">
+                            事情名称
+                        </th>
+                        <th align="center" width="10%">
+                            事情是否解决
+                        </th>
+                        <th align="center" width="10%">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="thingtbody"></tbody>
+            </table>
+            <!--/列表-->
+            <!--内容底部-->
+            <div class="line20">
+            </div>
+            <div class="pagelist">
+                <div class="l-btns">
+                    <span>显示</span>
+                    <label class="pagenum">20</label>
+                    <span>条/页</span>
+                </div>
+                <div id="thingPageContent" class="default">
+                </div>
+            </div>
+            <!--/内容底部-->
+        </div>
+        <!-- /有事马上到-->
+
+
+    </form>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript">
+        Date.prototype.format = function (format) {
+            var args = {
+                "M+": this.getMonth() + 1, "d+": this.getDate(), "h+": this.getHours(), "m+": this.getMinutes(), "s+": this.getSeconds(), "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds()
+            }; if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); for (var i in args) { var n = args[i]; if (new RegExp("(" + i + ")").test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length)); } return format;
+        };
+
+        function tabsAndLoad(tabObj) {
+            var tabNum = $(tabObj).parent().index("li")
+            //设置点击后的切换样式
+            $(tabObj).parent().parent().find("li a").removeClass("selected");
+            $(tabObj).addClass("selected");
+            //根据参数决定显示内容
+            $(".tab-content").hide();
+            $(".tab-content").eq(tabNum).show();
+            if (tabNum == 0) {
+                Load(1);
+                LoadVillage($("#town"));
+            } else if (tabNum == 1) {
+                LoadWeek(1);
+                LoadVillage($("#weektown"));
+            } else {
+                LoadThing(1);
+                LoadVillage($("#thingtown"));
+            }
+        }
+
+        $(function () {
+            $("#signdate").val(new Date().format("yyyy-MM-dd"));
+            $("#weekdate").val(new Date().format("yyyy-MM-dd"));
+            $("#thingdate").val(new Date().format("yyyy-MM-dd"));
+            //加载乡镇数据
+
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
+                $("#town").append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#town").append(s);
+                    $("#weektown").append(s);
+                    $("#thingtown").append(s);
+                }
+                $("div[name='divtown']").ruleSingleSelect().addClass("rule-single-select");
+                LoadVillage($("#town"));
+            });
+
+            //乡镇下列列表改变事件
+            $("#town").change(function () {
+                LoadVillage($(this));
+            });
+            $("#weektown").change(function () {
+                LoadVillage($(this));
+            });
+
+            Load(1);
+            $("#btnSearch").click(function () {
+                Load(1);
+            });
+            $("#btnWeekSearch").click(function () {
+                LoadWeek(1);
+            });
+            $("#btnThingSearch").click(function () {
+                LoadThing(1);
+            });
+        });
+
+        //加载村居信息
+        function LoadVillage(town) {
+            var village = town.parents("div.menu-list").find("select[name='village']");
+            //console.info(village);
+            village.html("");
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: town.val() }, function (msg) {
+                village.append("<option  value=\"0\">不限</option>");
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    village.append(s);
+                }
+                village.parent("div[name='divvillage']").ruleSingleSelect().addClass("rule-single-select");
+            });
+        }
+
+        //加载每日早报道查询数据
+        function Load(page) {
+            var signdate = $("#signdate").val();
+            var town = $("#town").find("option:selected").val();
+            var vid = $("#village").find("option:selected").val();
+            //加载列表
+            $.getJSON("../Ajax/sys_SignManager.ashx?type=search", { "signdate": signdate, "page": page, "town": town, "vid": vid }, function (msg) {
+                $("#tbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr>";
+                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
+                        //if(msg.rows[i].blSign)
+                        s += "<td align=\"center\">" + (msg.rows[i].blSign == "true" ? "已拜访" : "未拜访") + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].SignDate + "</td>";
+                        s += "</tr>";
+                        $("#tbody").append(s);
+                    }
+                    //console.info(msg.pageContent);
+                    $("#PageContent").html(msg.pageContent);
+                } else {
+                    $("#PageContent").html(msg.pageContent);
+                }
+            });
+        }
+
+        //加载每周家家到查询数据
+        function LoadWeek(page) {
+            var signdate = $("#weekdate").val();
+            var town = $("#weektown").find("option:selected").val();
+            var vid = $("#weekvillage").find("option:selected").val();
+            //加载列表
+            $.getJSON("../Ajax/sys_WeekArrivesManager.ashx?type=search", { "weekdate": signdate, "page": page, "weektown": town, "weekvid": vid }, function (msg) {
+                $("#weektbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr>";
+                        s += "<td align=\"center\">" + msg.rows[i].SubscriberName + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>"
+                        //if(msg.rows[i].blSign)
+                        s += "<td align=\"center\">" + (msg.rows[i].blWeek == "true" ? "已拜访" : "未拜访") + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].ThingMessage + "</td>";
+                        s += "</tr>";
+                        $("#weektbody").append(s);
+                    }
+                    //console.info(msg.pageContent);
+                    $("#weekPageContent").html(msg.pageContent);
+                } else {
+                    $("#weekPageContent").html(msg.pageContent);
+                }
+            });
+        }
+
+        //加载有事马上到查询数据
+        function LoadThing(page) {
+            var thingdate = $("#thingdate").val();
+            var town = $("#thingtown").find("option:selected").val();
+            var vid = $("#thingvillage").find("option:selected").val();
+            //加载列表
+            $.getJSON("../Ajax/sys_ThingRecordManager.ashx?type=search", { "thingdate": thingdate, "page": page, "thingtown": town, "thingvid": vid }, function (msg) {
+                $("#thingtbody").html("");
+                if (msg.total > 0) {
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        var s = "";
+                        s += "<tr>";
+                        s += "<td align=\"center\">" + (msg.rows[i].SubscriberName==""?msg.rows[i].ExtraName:msg.rows[i].SubscriberName) + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>"
+                        s += "<td align=\"center\">"+msg.rows[i].ThingName+"</td>";
+                        //if(msg.rows[i].blSign)
+                        s += "<td align=\"center\">" + (msg.rows[i].ThingHaving == "是" ? "已经解决" : "还未解决") + "</td>";
+                        s += "<td align=\"center\"><a href=\"ThingInfo.html?tid="+msg.rows[i].ThingId+"\" title=\"查看详细\">详细</a></td>";
+                        s += "</tr>";
+                        $("#thingtbody").append(s);
+                    }
+                    //console.info(msg.pageContent);
+                    $("#thingPageContent").html(msg.pageContent);
+                } else {
+                    $("#thingPageContent").html(msg.pageContent);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

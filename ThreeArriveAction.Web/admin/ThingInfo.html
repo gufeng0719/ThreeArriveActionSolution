@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>三务公开</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <style>
+        li label {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span id="title">有事马上到详情</span>
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="line10"></div>
+        <!--有事马上到信息-->
+        <div class="nlist-2">
+            <h3><i></i>有事马上到信息</h3>
+            <ul>
+                <li>村居:<label id="lblVillage"></label></li>
+                <li>七户类型:<label id="lblSubType"></label></li>
+                <li>受访者:<label id="lblSubscriberName"></label></li>
+                <li>联系方式:<label id="lblSubscriberPhone"></label></li>
+            </ul>
+            <ul>
+                <li style="width:100%;">事件名称：<label id="lblThingName"></label></li>
+
+            </ul>
+            <ul>
+                <li style="width:100%;">
+                    事件原因：
+                    <div id="divReason" style="margin-left:65px;margin-top:-22px;  min-height:100px;width:90%; border:1px solid #dedede">
+                    </div>
+                </li>
+
+            </ul>
+            <ul>
+                <li style="width:100%;">事件解决方式：<label id="lblSolution"></label></li>
+            </ul>
+            <ul>
+                <li style="width:100%;">事情是否解决:<label id="lblThingHaving"></label></li>
+            </ul>
+            <ul>
+                <li style="width:100%;"><span style="position:relative;top:-100px;">拜访照片：</span><img id="imgThingImgUrl" style="width:200px;height:200px;" /></li>
+            </ul>
+
+            <ul>
+                <li style="width:100%;">
+                    处理者:<label id="lblUserId"></label>
+                </li>
+            </ul>
+        </div>
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-list">
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <!--/工具栏-->
+    </form>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script>
+        $(function () {
+            var url = window.location.href.split('?')[1];
+            var tid = url.split('=')[1];
+            $.getJSON('../../Ajax/sys_ThingRecordManager.ashx?type=edit', { tid: tid }, function (msg) {
+                $("label").each(function () {
+                    $(this).text("");
+                });
+                if (msg.total > 0) {
+                    $("#lblVillage").text(msg.rows[0].VillageName);
+                    $("#lblSubType").text(msg.rows[0].Dictdata_Name);
+                    $("#lblSubscriberName").text(msg.rows[0].SubscriberName);
+                    $("#lblSubscriberPhone").text(msg.rows[0].SubscriberPhone);
+                    $("#lblThingName").text(msg.rows[0].ThingName);
+                    $("#divReason").html(msg.rows[0].ThingReason);
+                    $("#lblSolution").text(msg.rows[0].ThingSolution);
+                    $("#lblThingHaving").text(msg.rows[0].ThingHaving);
+
+                    var url = msg.rows[0].ThingImgUrl == "" ? "../skin/default/noneimg.jpg" : msg.rows[0].ThingImgUrl;
+                    $("#imgThingImgUrl").attr("src", url)
+
+                    $("#lblUserId").text(msg.rows[0].UserName);
+
+                } else {
+                    history.back(-1);
+                }
+
+            });
+        });
+
+    </script>
+</body>
+</html>

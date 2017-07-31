@@ -36,6 +36,7 @@ function tabs(tabObj) {
     $(".tab-content").eq(tabNum).show();
 }
 
+
 //===========================工具类函数============================
 //只允许输入数字
 function checkNumber(e) {

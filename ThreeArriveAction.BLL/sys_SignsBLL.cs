@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.DAL;
 using ThreeArriveAction.Model;
@@ -72,8 +73,13 @@ namespace ThreeArriveAction.BLL
        public bool Exists(int userId, DateTime signDate)
        {
            return signsDAL.Exists(userId, signDate);
-
        }
+
+        public DataSet SearchUserSign(int pageSize,int pageIndex,string strWhere1,string strWhere2,string fieldOrder,out int recordCount)
+        {
+            DataSet ds = signsDAL.SearchUserSign(pageSize, pageIndex, strWhere1, strWhere2, fieldOrder, out recordCount);
+            return ds;
+        }
         #endregion
     }
 }

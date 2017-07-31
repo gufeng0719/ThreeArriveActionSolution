@@ -29,5 +29,12 @@ namespace ThreeArriveAction.BLL
            }
        }
         #endregion
+        #region 查询与统计
+        public DataSet SearchUserWeekArrive(int pageSize,int pageIndex,string strWhere1,string strWhere2,string fieldOrder,out int recordCount)
+        {
+            DataSet ds = weekDAL.SearchWeekArrive(pageSize,pageIndex,strWhere1,strWhere2,fieldOrder,out recordCount);
+            return ds;
+        }
+        #endregion
     }
 }

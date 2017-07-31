@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using ThreeArriveAction.DBUtility;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Common;
 
 namespace ThreeArriveAction.DAL
 {
@@ -134,6 +135,24 @@ namespace ThreeArriveAction.DAL
             return bl;
         }
 
+        public DataSet SearchUserSign(int pageSize,int pageIndex,string strWhere1,string strWhere2,string fieldOrder,out int recordCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select a.*,case  when b.SignId>0 then 'true' else 'false' end  as blSign,b.SignId,SignDate from  ");
+            strSql.Append("(select UserId,UserName,sys_Users.VillageId,VillageName,VillageParId  from sys_Users  inner join sys_Villages on sys_Users.VillageId = sys_Villages.VillageId ");
+            if (strWhere1.Trim() != ""){
+                strSql.Append(" where "+strWhere1);
+            }
+            strSql.Append(" ) a left join (select * from sys_Signs ");
+            if (strWhere2.Trim() != "")
+            {
+                strSql.Append(" where "+strWhere2);
+            }
+            strSql.Append(" ) b on a.UserId = b.SignUserId  ");
+            recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), fieldOrder));
+            return ds;
+        }
         #endregion
     }
 }

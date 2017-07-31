@@ -11,9 +11,9 @@ namespace ThreeArriveAction.BLL
     /// <summary>
     /// 业务逻辑类:有事马上到
     /// </summary>
-  public partial  class sys_ThingRecordsBLL
+    public partial class sys_ThingRecordsBLL
     {
-      private readonly sys_ThingRecordsDAL thingDAL = new sys_ThingRecordsDAL();
+        private readonly sys_ThingRecordsDAL thingDAL = new sys_ThingRecordsDAL();
         public string AddThingRecord(sys_ThingRecordsModel thingModel)
         {
             int number = thingDAL.AddThingRecord(thingModel);
@@ -26,5 +26,19 @@ namespace ThreeArriveAction.BLL
                 return "{\"info\":\"本次拜访提交失败\",\"status\":\"n\"}";
             }
         }
+
+        #region 查询
+
+        public DataTable GetThingModelByThingId(int thingId)
+        {
+            return thingDAL.GetThingModelByThingId(thingId);
+        }
+
+        public DataSet SearchThingRecord(int pageSize,int pageIndex,string strWhere,string fieldOrder,out int recordCount)
+        {
+            DataSet ds = thingDAL.SearchThingRecord(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            return ds;
+        }
+        #endregion
     }
 }

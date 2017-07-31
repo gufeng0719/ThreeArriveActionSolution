@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Data;
+using System.Text;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
@@ -26,6 +28,12 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "getMsgInfo":
                     GetMsgInfo(context);
+                    break;
+                case "search":
+                    SearchThingRecord(context);
+                    break;
+                case "edit":
+                    GetThingModel(context);
                     break;
             }
         }
@@ -118,6 +126,90 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 return model.UserId;
             }
+        }
+
+        #region 查询
+        private void SearchThingRecord(HttpContext context)
+        {
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryInt("page");
+            string thingdate = MXRequest.GetQueryString("thingdate");
+            int town = MXRequest.GetQueryInt("thingtown");
+            int vid = MXRequest.GetQueryInt("thingvid");
+            string strWhere = "";
+            if (thingdate.Trim() != "")
+            {
+                strWhere += " datepart(wk,ThingDate) =datepart(wk,'" + thingdate + "') ";
+            }
+            else
+            {
+                strWhere += " datepart(wk,ThingDate) =datepart(wk,getdate()) ";
+            }
+            if (town != 0 && vid == 0)
+            {
+                strWhere += " and (c.VillageId="+town+" or c.VillageParId="+town +")";
+            }else if (town != 0 && vid != 0)
+            {
+                strWhere += " and c.VillageId="+vid;
+            }else if (town == 0 && vid != 0)
+            {
+                strWhere += " and c.VillageId=" + vid;
+            }
+            int recordCount = 0;
+            string fieldOrder = "ThingId DESC ";
+            DataSet ds = thingBLL.SearchThingRecord(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            List<sys_VillagesModel> villageList = DataConfig.GetVillages();
+            foreach(DataRow dr in ds.Tables[0].Rows)
+            {
+                dr["VillageName"] =villageList.FirstOrDefault(x=>x.VillageId==int.Parse(dr["VillageParId"].ToString())).VillageName+ "--" + dr["VillageName"].ToString();
+            }
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+recordCount);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "LoadThing(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+
+            strJson.Append("}");
+            context.Response.Write(strJson.ToString());
+
+        }
+        #endregion
+
+        private void GetThingModel(HttpContext context)
+        {
+            int tid = MXRequest.GetQueryInt("tid");
+            DataTable dt = thingBLL.GetThingModelByThingId(tid);
+            List<sys_VillagesModel> villageList = DataConfig.GetVillages();
+            foreach(DataRow dr in dt.Rows)
+            {
+                dr["VillageName"] = villageList.FirstOrDefault(x => x.VillageId == int.Parse(dr["VillageParId"].ToString())).VillageName + "--" + dr["VillageName"].ToString();
+            }
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+dt.Rows.Count);
+            if (dt.Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":"+JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            strJson.Append("}");
+            context.Response.Output.Write(strJson.ToString());
         }
 
         public bool IsReusable

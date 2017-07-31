@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using ThreeArriveAction.DBUtility;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Common;
 namespace ThreeArriveAction.DAL
 {
     /// <summary>
@@ -143,6 +144,31 @@ namespace ThreeArriveAction.DAL
                     }
                 }
             }
+        }
+        #endregion
+
+        #region 查询和统计
+        public DataSet SearchWeekArrive(int pageSize,int pageIndex,string strWhere1,string strWhere2,string fieldOrder,out int recordCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select a.*,case when b.WeekArriveId > 0 then 'true' else 'false' end as blWeek,b.WeekArriveId,ThingMessage from ");
+            strSql.Append("(select SubscriberId,SubscriberName,sys_SubscriberFamily.VillageId,VillageName,VillageParId,sys_SubscriberFamily.UserId,UserName");
+            strSql.Append(" from sys_SubscriberFamily ");
+            strSql.Append("inner join sys_Villages on sys_SubscriberFamily.VillageId =sys_Villages.VillageId ");
+            strSql.Append("inner join sys_Users on sys_SubscriberFamily.UserId = sys_Users.UserId ");
+            if (strWhere1.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere1);
+            }
+            strSql.Append(" ) a left join (select * from sys_WeekArrives ");
+            if (strWhere2.Trim() != "")
+            {
+                strSql.Append(" where "+strWhere2);
+            }
+            strSql.Append(" ) b on a.SubscriberId = b.SubcriberId ");
+            recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize,pageIndex,strSql.ToString(),fieldOrder));
+            return ds; 
         }
         #endregion
     }

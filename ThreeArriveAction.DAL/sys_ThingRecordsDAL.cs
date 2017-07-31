@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using ThreeArriveAction.DBUtility;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.Common;
 namespace ThreeArriveAction.DAL
 {
     public partial class sys_ThingRecordsDAL
@@ -127,6 +128,38 @@ namespace ThreeArriveAction.DAL
                     }
                 }
             }
+        }
+        #endregion
+
+        #region 查询和统计
+
+        public DataTable GetThingModelByThingId(int thingId)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select top 1 a.*,b.UserName,c.VillageName,c.VillageParId,c.VillageId,d.SubscriberName,d.SubscriberPhone,e.Dictdata_Name ");
+            strSql.Append("from sys_ThingRecords a inner join sys_Users b on a.UserId = b.UserId inner join sys_Villages c ");
+            strSql.Append("on b.VillageId = c.VillageId left join sys_SubscriberFamily d on a.SubcriberId = d.SubscriberId ");
+            strSql.Append(" inner join(select * from sys_DictionaryData where Dict_value=1) e on d.SubscriberType =e.Dictdata_Value ");
+            strSql.Append(" where ThingId ="+thingId );
+            DataTable dt = DbHelperSQL.Query(strSql.ToString()).Tables[0];
+            return dt;
+        }
+
+        public DataSet SearchThingRecord(int pageSize,int pageIndex,string strWhere,string fieldOrder,out int recordCount)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select a.*,b.UserName,c.VillageName,c.VillageParId,c.VillageId,d.SubscriberName,e.Dictdata_Name ");
+            strSql.Append("from sys_ThingRecords a inner join sys_Users b on a.UserId = b.UserId ");
+            strSql.Append("inner join sys_Villages c on b.VillageId = c.VillageId ");
+            strSql.Append("left join sys_SubscriberFamily d on a.SubcriberId = d.SubscriberId ");
+            strSql.Append("inner join(select * from sys_DictionaryData where Dict_value=1) e on d.SubscriberType =e.Dictdata_Value ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where "+strWhere);
+            }
+            recordCount =Convert.ToInt32( DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
+            DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount,pageSize,pageIndex,strSql.ToString(),fieldOrder));
+            return ds;
         }
         #endregion
     }

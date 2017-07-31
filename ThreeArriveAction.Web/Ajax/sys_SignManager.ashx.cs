@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Web;
+using System.Data;
+using System.Text;
 using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
 using ThreeArriveAction.BLL;
 using ThreeArriveAction.Common;
 using System.Web.SessionState;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -32,6 +35,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "getSignList":
                     GetSignList(context);
+                    break;
+                case "search":
+                    SearchUserSign(context);
                     break;
             }
         }
@@ -174,6 +180,70 @@ namespace ThreeArriveAction.Web.Ajax
                 time = x.SignDate.ToString("yyyy-M-d hh:mm:ss"),
                 name = sysUsersModels.FirstOrDefault(s => s.UserId == x.SignUserId)?.UserName ?? "管理员"
             }).ToJson());
+        }
+        #endregion
+
+        #region 查询每个村每日早报道情况
+        private void SearchUserSign(HttpContext context)
+        {
+            int pageSize = 20;
+            int pageIndex = MXRequest.GetQueryInt("page");
+            string signdate = MXRequest.GetQueryString("signdate");
+            int town = MXRequest.GetQueryInt("town");
+            int vid = MXRequest.GetQueryInt("vid");
+            string strWhere2 = "";
+            if (signdate.Trim() != "")
+            {
+                strWhere2 = " Convert(varchar(100),SignDate,23)='" + signdate + "'";
+            }
+            string strWhere1 = "";
+            if (town != 0 && vid == 0)
+            {
+                strWhere1 = "sys_Villages.VillageId=" + town + " or sys_Villages.VillageParId=" + town;
+            }
+            else if (town != 0 && vid != 0)
+            {
+                strWhere1 = "sys_Villages.VillageId=" + vid;
+            }
+            else if (town == 0 && vid != 0)
+            {
+                strWhere1 = "sys_Villages.VillageId=" + vid;
+            }
+            else
+            {
+                strWhere1 = "sys_Villages.VillageId!=1";
+            }
+            string fieldOrder = " UserId ASC ";
+            int recordCount = 0;
+            DataSet ds = signsBLL.SearchUserSign(pageSize, pageIndex, strWhere1, strWhere2, fieldOrder, out recordCount);
+            List<sys_VillagesModel> villageList = DataConfig.GetVillages();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                dr["VillageName"] = villageList.FirstOrDefault(x => x.VillageId == int.Parse(dr["VillageParId"].ToString())).VillageName + "--" + dr["VillageName"].ToString();
+            }
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":" + recordCount);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+
+            strJson.Append("}");
+            context.Response.Write(strJson.ToString());
+
         }
         #endregion
 
