@@ -21,7 +21,7 @@ namespace ThreeArriveAction.DAL
                 new SqlParameter("@PublishDate",SqlDbType.DateTime),
                 new SqlParameter("@PublicType",SqlDbType.Int),
                 new SqlParameter("@ThumbnailUrl",SqlDbType.VarChar,100),
-                new SqlParameter("@ImageUrl",SqlDbType.VarChar,200),
+                new SqlParameter("@ImageUrl",SqlDbType.VarChar,5000),
                 new SqlParameter("@UserId",SqlDbType.Int),
                 new SqlParameter("@Remarks",SqlDbType.VarChar,500),
             };

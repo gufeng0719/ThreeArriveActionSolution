@@ -175,7 +175,8 @@ Vue.component("ddlvillage", {
 Vue.component("image-template", {
     template:
             '<div v-if="isMore">                                                                 ' +
-            '    <div v-for="(localId,index) in localIds" style="display:inline" class="box more"' +
+            '    <div v-for="(localId,index) in localIds" style="display:inline"                 ' +
+            '       :class="\'box \' + (index == 8 ? \'\' : \'more\')"                           ' +
             '       @dblclick="removeImg(localId)">                                              ' +
             '       <img :src="localId"  :data-id="localId"/>                                    ' +
             '    </div>                                                                          ' +

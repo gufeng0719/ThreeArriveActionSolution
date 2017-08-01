@@ -15,7 +15,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak>
+    <div class="container" id="app"  v-cloak>
         <div class="row" style="text-align: right;">
             <a class="btn" href="interactEdit.html" style="margin-right: 11px;width: 71px;height: 34px;margin-top: 19px;">去留言</a>
         </div>
@@ -51,6 +51,11 @@
                     <tr style="height: 50px" v-if="isNotMore">
                         <td colspan="2" style="text-align: center">
                             <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="height: 45px"></div>
                         </td>
                     </tr>
                 </table>

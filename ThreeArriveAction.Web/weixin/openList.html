@@ -15,7 +15,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak style="margin-top: 18px;">
+    <div class="container" id="app"  v-cloak style="margin-top: 18px;">
         <div class="row">
             <ddlvillage v-bind:ddlvillage.sync="ddlvillage"></ddlvillage>
         </div>
@@ -45,6 +45,11 @@
                     <tr v-if="isNotMore" style="height: 50px">
                         <td colspan="3" style="text-align:center">
                             <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="height: 45px"></div>
                         </td>
                     </tr>
                 </table>

@@ -18,7 +18,7 @@ namespace ThreeArriveAction.Web.Ajax
     /// sys_UserIntegralsManager 的摘要说明
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public class sys_UserIntegralsManager :ManagePage, IHttpHandler,IRequiresSessionState
+    public class sys_UserIntegralsManager : ManagePage, IHttpHandler, IRequiresSessionState
     {
         private readonly sys_UserIntergralsBLL uIBLL = new sys_UserIntergralsBLL();
         public override void ProcessRequest(HttpContext context)
@@ -35,7 +35,8 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == "get")
             {
                 GetUserIntergalList(context);
-            }else if (type == "info")
+            }
+            else if (type == "info")
             {
                 //GetIntegralInfo(context);
             }
@@ -112,6 +113,7 @@ namespace ThreeArriveAction.Web.Ajax
                 list,
                 totle = sh.Total,
                 page,
+                sql = sh.SqlString.ToString()
 
             }.ToJson());
         }
@@ -122,33 +124,36 @@ namespace ThreeArriveAction.Web.Ajax
             int vid = MXRequest.GetQueryIntValue("vid");
             int pageSize = 20;
             int pageIndex = MXRequest.GetQueryIntValue("page");
-            string sdate =context.Request.QueryString["sdate"].ToString();
+            string sdate = context.Request.QueryString["sdate"].ToString();
             sys_UsersModel userModel = GetUsersinfo();
             StringBuilder strWhere = new StringBuilder();
             if (sdate.Trim() == "")
             {
-                strWhere.Append(" IntegralYear="+DateTime.Now.Year+" and IntegralMonth="+DateTime.Now.Month);
+                strWhere.Append(" IntegralYear=" + DateTime.Now.Year + " and IntegralMonth=" + DateTime.Now.Month);
             }
             else
             {
-                strWhere.Append(" IntegralYear="+sdate.Split('-')[0]+" and IntegralMonth="+sdate.Split('-')[1]);
+                strWhere.Append(" IntegralYear=" + sdate.Split('-')[0] + " and IntegralMonth=" + sdate.Split('-')[1]);
             }
             if (town == 0 && vid == 0)
             {//如果镇和村编号全部为空，根据用户角色查询
                 if (userModel.OrganizationId == 1)
                 {//超级管理员 查询全部
                     strWhere.Append(" and  1=1");
-                }else if (userModel.OrganizationId == 2)
+                }
+                else if (userModel.OrganizationId == 2)
                 {
                     //镇管理员，查询本镇
-                    strWhere.Append(" and b.VillageId in (select VillageId from sys_Village where VillageId="+userModel.VillageId+" or VillageParId ="+userModel.VillageId+")");
-                }else
+                    strWhere.Append(" and b.VillageId in (select VillageId from sys_Village where VillageId=" + userModel.VillageId + " or VillageParId =" + userModel.VillageId + ")");
+                }
+                else
                 {
                     //村管理员和村居干部，查询本村
-                    strWhere.Append(" and b.VillageId ="+userModel.VillageId);
+                    strWhere.Append(" and b.VillageId =" + userModel.VillageId);
                 }
-              
-            }else if (town != 0 && vid == 0)
+
+            }
+            else if (town != 0 && vid == 0)
             {//如果镇不为空，村为空，则查询该镇所有
                 strWhere.Append(" and b.VillageId in (select VillageId from sys_Village where VillageId=" + town + " or VillageParId =" + town + ")");
             }
@@ -161,7 +166,7 @@ namespace ThreeArriveAction.Web.Ajax
             int recordCount = 0;
             var villageList = DataConfig.GetVillages();
             DataSet ds = uIBLL.GetList(pageSize, pageIndex, strWhere.ToString(), filedOrder, out recordCount);
-            foreach(DataRow dr in ds.Tables[0].Rows)
+            foreach (DataRow dr in ds.Tables[0].Rows)
             {
                 dr["VillageName"] = villageList.FirstOrDefault(x => x.VillageId == int.Parse(dr["VillageParId"].ToString())).VillageName + "--" + dr["VillageName"].ToString();
             }
@@ -186,7 +191,7 @@ namespace ThreeArriveAction.Web.Ajax
         }
 
         #region 获取该积分详细
-        
+
         #endregion
 
         public new bool IsReusable

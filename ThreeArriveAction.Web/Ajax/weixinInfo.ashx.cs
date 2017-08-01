@@ -401,13 +401,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
 
         }
-
-        private void LogForSendMsg(string accessToken, object body, string res)
-        {
-            LogHelper.Log(ConfigurationManager.AppSettings["WeixinSendMsg"] + accessToken, "群发消息请求链接");
-            LogHelper.Log(body.ToJson(), "群发消息Body");
-            LogHelper.Log(res, "群发消息响应");
-        }
+        
 
         public bool IsReusable
         {

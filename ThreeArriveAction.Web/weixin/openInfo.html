@@ -20,7 +20,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" style="margin-top: 18px;" id="app">
+    <div class="container" style="margin-top: 18px;" id="app"  v-cloak>
         <div class="row">
             <div class="header">
                 <div class="text">
@@ -52,7 +52,7 @@
             <div style="text-align: left;">
                 <div>
                     <div v-for="img in imgs" class="box more" style="display: inline;">
-                        <img v-bind:src="img" click="openImg(img)" />
+                        <img v-bind:src="img" @click="openImg(img)" />
                     </div>
                 </div>
             </div>

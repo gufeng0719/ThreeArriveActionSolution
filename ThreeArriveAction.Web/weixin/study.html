@@ -37,7 +37,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak>
+    <div class="container" id="app"  v-cloak>
         <div class="row">
             <div class="header">
                 <div class="text">
@@ -89,6 +89,11 @@
                 <tr v-if="isNotMore" style="height: 50px">
                     <td colspan="3" style="text-align:center">
                         <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="height: 45px"></div>
                     </td>
                 </tr>
             </table>

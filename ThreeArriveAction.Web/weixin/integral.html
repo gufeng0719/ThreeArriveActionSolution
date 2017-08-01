@@ -32,7 +32,7 @@
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak style="margin-top: 18px;">
+    <div class="container" id="app"  v-cloak style="margin-top: 18px;">
         <div class="row">
             <ddlvillage v-bind:ddlvillage="ddlvillage"></ddlvillage>
         </div>
@@ -42,7 +42,7 @@
                     积分排名
                 </div>
             </div>
-            <div style="text-align: left;">
+            <div style="text-align: left">
                 <table style="margin-left: 5%;width: 90%;">
                     <tr v-for="(model,index) in list" @click="minute(model.id)" style="border-bottom: solid 1px #d2d2d2">
                         <td style="width: 40px">
@@ -55,6 +55,11 @@
                     <tr v-if="isNotMore" style="height: 50px">
                         <td colspan="4" style="text-align:center">
                             <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="height: 45px"></div>
                         </td>
                     </tr>
                 </table>
