@@ -7,8 +7,8 @@
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title>三到行动-互动学习</title>
 </head>
 <body style="width: 94%; margin-left: 3%">
@@ -48,17 +48,9 @@
                             </td>
                         </tr>
                     </template>
-                    <tr style="border-bottom: #d2d2d2 1px solid; width: 100%;height: 50px" v-if="list.length <= 0">
+                    <tr style="height: 50px" v-if="isNotMore">
                         <td colspan="2" style="text-align: center">
-                            <b>暂无数据</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div style="margin-top:15px;padding-bottom:15px;">
-                                <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
-                                <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
-                            </div>
+                            <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
                         </td>
                     </tr>
                 </table>

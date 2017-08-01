@@ -94,17 +94,17 @@ Vue.component("ddlsee", {
 Vue.component("ddlvillage", {
     template:
         '<div>                                                                                  ' +
-            '    <select v-model="ddltown"                                                          ' +
-            '       style="height: 30px; border: 1px solid #eeeeee;padding-left: 5px; width: 40%;"> ' +
-            '        <option value="-1">-请选择-</option>                                            ' +
-            '        <option v-for="t in townlist" v-bind:value="t.value">{{t.text}}</option>       ' +
-            '    </select>                                                                          ' +
-            '    <select v-model="myddlvillage"                                                       ' +
-            '       style="height: 30px; border: 1px solid #eeeeee;padding-left: 5px; width: 40%;"> ' +
-            '        <option value="-1">-请选择-</option>                                            ' +
-            '        <option v-for="v in villagelist" v-bind:value="v.value">{{v.text}}</option>    ' +
-            '    </select>                                                                          ' +
-            '</div>',
+        '    <select v-model="ddltown"                                                          ' +
+        '       style="height: 30px; border: 1px solid #eeeeee;padding-left: 5px; width: 40%;"> ' +
+        '        <option value="-1">-请选择-</option>                                            ' +
+        '        <option v-for="t in townlist" v-bind:value="t.value">{{t.text}}</option>       ' +
+        '    </select>                                                                          ' +
+        '    <select v-model="myddlvillage"                                                     ' +
+        '       style="height: 30px; border: 1px solid #eeeeee;padding-left: 5px; width: 40%;"> ' +
+        '        <option value="-1">-请选择-</option>                                            ' +
+        '        <option v-for="v in villagelist" v-bind:value="v.value">{{v.text}}</option>    ' +
+        '    </select>                                                                          ' +
+        '</div>',
     props: ["ddlvillage"],
     data: function () {
         return {
@@ -177,18 +177,14 @@ Vue.component("image-template", {
             '<div v-if="isMore">                                                                 ' +
             '    <div v-for="(localId,index) in localIds" style="display:inline" class="box more"' +
             '       @dblclick="removeImg(localId)">                                              ' +
-            '       <div :data-id="localId" >                                                    ' +
-            '           <img :src="localId"  />                                                  ' +
-            '       </div>                                                                       ' +
+            '       <img :src="localId"  :data-id="localId"/>                                    ' +
             '    </div>                                                                          ' +
-            '    <div @click="pz()" v-if="localIds.length < 9" >                      ' +
+            '    <div @click="pz()" v-if="localIds.length < 9" >                                 ' +
             '        <img src="../images/templates/bottommenu/218.png"  />                       ' +
             '    </div>                                                                          ' +
             '</div>                                                                              ' +
-            '<div v-else>                                                            ' +
-            '   <div @click="pz()" >                                                             ' +
-            '       <img :src="srcUrl"  />                                                       ' +
-            '   </div>                                                                           ' +
+            '<div v-else class="box" @click="pz()">                                              ' +
+            '    <img :src="srcUrl"  />                                                          ' +
             '</div>',
     props: ["local-ids", "is-more"],
     data: function () {

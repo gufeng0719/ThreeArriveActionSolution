@@ -7,8 +7,8 @@
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title>三到行动-积分详细</title>
 </head>
 <body style="width: 94%; margin-left: 3%">
@@ -37,16 +37,11 @@
                     <td style="text-align: center;width: 25%">{{data.time}}</td>
                     <td style="text-align: center">{{data.type}}</td>
                 </tr>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            <div style="margin-top:15px;padding-bottom:15px;">
-                                <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
-                                <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
+                <tr v-if="isNotMore" style="height: 50px">
+                    <td colspan="3" style="text-align:center">
+                        <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>

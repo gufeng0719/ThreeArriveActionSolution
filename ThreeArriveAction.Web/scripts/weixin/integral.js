@@ -6,7 +6,8 @@ var vm = new Vue({
         page: 1,
         size: 10,
         totle: 0,
-        ddlvillage: -1
+        ddlvillage: -1,
+        isNotMore: false
     },
     methods: {
         getpage: function (page) {
@@ -24,16 +25,14 @@ var vm = new Vue({
                     var obj = JSON.parse(d.responseText);
                     that.page = obj.page;
                     that.totle = obj.totle;
-                    that.list = obj.list;
-                    if (that.page > 1) {
-                        $("#lastpage").attr("disabled", false);
+                    that.list = that.list.concat(obj.list);
+                    if (obj.list.length < 1) {
+                        that.isNotMore = true
                     } else {
-                        $("#lastpage").attr("disabled", true);
+                        that.isNotMore = false
                     }
-                    if (that.page < (that.totle / that.size)) {
-                        $("#nextpage").attr("disabled", false);
-                    } else {
-                        $("#nextpage").attr("disabled", true);
+                    if (window.scrolled) {
+                        window.scrolled = false;
                     }
                 }
             });
@@ -44,10 +43,12 @@ var vm = new Vue({
     },
     watch: {
         "ddlvillage": function () {
+            this.isNotMore = false;
+            this.list = [];
             this.getpage(1);
         }
     },
     mounted: function () {
-        this.getpage(1);
+        //this.getpage(1);
     }
 });

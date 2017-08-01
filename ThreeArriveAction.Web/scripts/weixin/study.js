@@ -6,7 +6,8 @@
         size: 10,
         totle: 0,
         type: -1,
-        title: ""
+        title: "",
+        isNotMore: false
     },
     methods: {
         getpage: function (page) {
@@ -23,19 +24,17 @@
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
-                    that.list = obj.list;
+                    that.list = that.list.concat(obj.list);
+                    if (obj.list.length < 1) {
+                        that.isNotMore = true
+                    } else {
+                        that.isNotMore = false
+                    }
+                    if (window.scrolled) {
+                        window.scrolled = false;
+                    }
                     that.page = obj.page;
                     that.totle = obj.totle;
-                    if (that.page > 1) {
-                        $("#lastpage").attr("disabled", false);
-                    } else {
-                        $("#lastpage").attr("disabled", true);
-                    }
-                    if (that.page < (that.totle / that.size)) {
-                        $("#nextpage").attr("disabled", false);
-                    } else {
-                        $("#nextpage").attr("disabled", true);
-                    }
                 }
             });
         },
@@ -45,6 +44,8 @@
     },
     watch: {
         type: function () {
+            this.isNotMore = false;
+            this.list = []
             this.getpage(1);
         }
     },
@@ -52,16 +53,3 @@
         this.getpage(1);
     }
 });
-
-function submitcontent() {
-    $.ajax({
-        type: "post",
-        url: "",
-        data: {
-
-        },
-        complete: function (d) {
-            //d.responseText
-        }
-    });
-}

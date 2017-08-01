@@ -9,6 +9,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title id="pagetitle"></title>
+    <style>
+        .more {
+            float: none;
+            margin-right: 6%;
+        }
+    </style>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <div class="banner">
@@ -31,8 +37,10 @@
                     缩略图
                 </div>
             </div>
-            <div style="text-align: left;">
-                <img v-bind:src="gimg" style="width: 30%" @click="openImg(gimg)" />
+            <div class="box">
+                <div>
+                    <img v-bind:src="gimg" @click="openImg(gimg)" />
+                </div>
             </div>
         </div>
         <div class="row">
@@ -42,7 +50,11 @@
                 </div>
             </div>
             <div style="text-align: left;">
-                <img v-for="img in imgs" v-bind:src="img" style="width: 30%" @click="openImg(img)" />
+                <div>
+                    <div v-for="img in imgs" class="box more" style="display: inline;">
+                        <img v-bind:src="img" click="openImg(img)" />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">

@@ -9,7 +9,7 @@
     },
     methods: {
         openImg: function (img) {
-            window.open(location.origin + img, "_self");
+            window.open("image.html?id=" + req["id"] + "&current=" + img, "_self");
         }
     },
     mounted: function () {
