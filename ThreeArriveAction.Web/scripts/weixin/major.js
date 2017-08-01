@@ -3,7 +3,7 @@
     data: {
         list: [],
         page: 1,
-        size: 10,
+        size: 5,
         totle: 0
     },
     methods: {

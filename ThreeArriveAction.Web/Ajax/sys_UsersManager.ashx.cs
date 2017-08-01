@@ -438,6 +438,13 @@ namespace ThreeArriveAction.Web.Ajax
             var exist = isEx.Select().Any();
             var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
             sh.AddWhere("VillageId", user.VillageId);
+            var sysUsersModels = sh.Select();
+
+            var infoSh = new SqlHelper<sys_UsersInfoModel>(new sys_UsersInfoModel());
+            var list = sysUsersModels as sys_UsersModel[] ?? sysUsersModels.ToArray();
+            infoSh.AddWhere($" AND UserId IN ({string.Join(",", list.Select(x => x.UserId))})");
+            var infoList = infoSh.Select();
+
             var village = villageList.FirstOrDefault(x => x.VillageId == user.VillageId);
             context.Response.Write(new
             {
@@ -445,10 +452,12 @@ namespace ThreeArriveAction.Web.Ajax
                 village = village?.VillageName,
                 villageId = user.VillageId,
                 exist,
-                list = sh.Select().Select(x => new
+                list = list.Select(x => new
                 {
                     value = x.UserId,
-                    text = x.UserName
+                    text = x.UserName,
+                    phone = x.UserPhone,
+                    img = infoList.FirstOrDefault(i => i.UserId == x.UserId)?.UserPhoto ?? ""
                 })
             }.ToJson());
         }

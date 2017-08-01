@@ -174,21 +174,21 @@ Vue.component("ddlvillage", {
 
 Vue.component("image-template", {
     template:
-            '<div v-if="isMore">                                                               ' +
-            '    <div v-for="(localId,index) in localIds" style="display:inline"               ' +
-            '       @dblclick="removeImg(localId)">                                            ' +
-            '       <a :data-id="localId">                                                     ' +
-            '           <img :src="localId" style="width: 15%;" />                             ' +
-            '       </a>                                                                       ' +
-            '    </div>                                                                        ' +
-            '    <a @click="pz()" v-if="localIds.length < 9">                                  ' +
-            '        <img src="../images/templates/bottommenu/218.png" style="width: 15%;" />  ' +
-            '    </a>                                                                          ' +
-            '</div>                                                                            ' +
-            '<div v-else>                                                                      ' +
-            '   <a @click="pz()">                                                              ' +
-            '       <img :src="srcUrl" style="width: 15%;" />                                  ' +
-            '   </a>                                                                           ' +
+            '<div v-if="isMore">                                                                 ' +
+            '    <div v-for="(localId,index) in localIds" style="display:inline" class="box more"' +
+            '       @dblclick="removeImg(localId)">                                              ' +
+            '       <div :data-id="localId" >                                                    ' +
+            '           <img :src="localId"  />                                                  ' +
+            '       </div>                                                                       ' +
+            '    </div>                                                                          ' +
+            '    <div @click="pz()" v-if="localIds.length < 9" >                      ' +
+            '        <img src="../images/templates/bottommenu/218.png"  />                       ' +
+            '    </div>                                                                          ' +
+            '</div>                                                                              ' +
+            '<div v-else>                                                            ' +
+            '   <div @click="pz()" >                                                             ' +
+            '       <img :src="srcUrl"  />                                                       ' +
+            '   </div>                                                                           ' +
             '</div>',
     props: ["local-ids", "is-more"],
     data: function () {

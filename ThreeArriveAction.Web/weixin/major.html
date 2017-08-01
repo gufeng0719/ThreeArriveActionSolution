@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
-    <title>三到行动-重要信息</title>
+    <title>三到行动-最新通知</title>
     <style>
         .unread {
             color: white;
@@ -30,22 +30,30 @@
         <div class="row">
             <div class="header">
                 <div class="text">
-                    重要信息列表
+                    最新通知列表
                 </div>
             </div>
         </div>
         <div class="row">
             <table style="width: 90%;margin-left: 5%">
                 <template v-for="model in list">
-                    <tr @click="toInfo(model.id)">
+                    <tr @click="toInfo(model.id)" style="height: 37px">
                         <td style="width: 78%">
-                            <div class="title">{{model.title}}</div>
+                            <div class="title">
+                                <img v-bind:src="model.type == 1 ? '../images/weixin/read.png' : '../images/weixin/unread.png'" style="height: 17px;"/>
+                                {{model.title}}
+                            </div>
                         </td>
                     </tr>
-                    <tr style="border-bottom: #d2d2d2 1px solid; font-size: 12px" @click="toInfo(model.id)">
+                    <tr @click="toInfo(model.id)">
+                        <td style="width: 78%">
+                            <div class="title">{{model.content}}</div>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: #d2d2d2 1px solid; font-size: 12px;height: 30px" @click="toInfo(model.id)">
                         <td colspan="2" style="height: 24px; text-align: right">
                             <b>
-                                by:{{model.userName}}&nbsp;&nbsp;&nbsp; 日期:{{model.time}}&nbsp;&nbsp;&nbsp; <span v-bind:class="model.type == 1 ? '' : 'unread'">{{model.type == 1 ? '已读' : '未读'}}</span>
+                                发布时间:{{model.time}}&nbsp;&nbsp;&nbsp; 
                             </b>
                         </td>
                     </tr>

@@ -23,7 +23,7 @@
             height: 30px;
             position: relative;
             top: -32px;
-            left: 87%
+            left: 87%;
         }
     </style>
 </head>
@@ -50,74 +50,76 @@
             </div>
             <div>
                 <iframe id="baiduframe" name="baiduframe" src="../editor/plugins/baidumap/weixinIndex.html?yjindu=119.156456&xweidu=33.5226"
-                        style="width: 100%;border: 0 "></iframe>
+                        style="width: 100%; border: 0;"></iframe>
                 <input type="button" class="btn small" value="定位" @click="localXy()" />
             </div>
         </div>
-         <div class="row">
-            <div class="header">
-                <div class="text">
-                    户主姓名
+        <div style="position: relative;top: -33px">
+            <div class="row">
+                <div class="header">
+                    <div class="text">
+                        户主姓名
+                    </div>
+                </div>
+                <div>
+                    <input type="text" style="width: 70%" v-model="name" />
                 </div>
             </div>
-            <div>
-                <input type="text" style="width: 70%" v-model="name" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="header">
-                <div class="text">
-                    户主联系方式
+            <div class="row">
+                <div class="header">
+                    <div class="text">
+                        户主联系方式
+                    </div>
+                </div>
+                <div>
+                    <input type="text" style="width: 70%" v-model="phone" />
                 </div>
             </div>
-            <div>
-                <input type="text" style="width: 70%" v-model="phone" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="header">
-                <div class="text">
-                    家庭住址
+            <div class="row">
+                <div class="header">
+                    <div class="text">
+                        家庭住址
+                    </div>
+                </div>
+                <div>
+                    <input type="text" style="width: 70%" v-model="address" />
                 </div>
             </div>
-            <div>
-                <input type="text" style="width: 70%" v-model="address" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="header">
-                <div class="text">
-                    家庭人口
+            <div class="row">
+                <div class="header">
+                    <div class="text">
+                        家庭人口
+                    </div>
+                </div>
+                <div>
+                    <select v-model="number">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
                 </div>
             </div>
-            <div>
-                <select v-model="number">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="row" style="position: relative;top: -49px;">
-            <div class="header">
-                <div class="text">
-                    备注
+            <div class="row">
+                <div class="header">
+                    <div class="text">
+                        备注
+                    </div>
+                </div>
+                <div>
+                    <textarea style="width: 100%;height: 110px" v-model="msg"></textarea>
                 </div>
             </div>
-            <div>
-                <textarea style="width: 100%;height: 110px" v-model="msg"></textarea>
+            <div class="row" style="margin-top: 20px">
+                <input type="button" class="btn" value="提交" @click="submitcontent()" />
             </div>
-        </div>
-        <div class="row" style="margin-top: 20px">
-            <input type="button" class="btn" value="提交" @click="submitcontent()" />
         </div>
     </div>
     <input type="hidden" id="x" />

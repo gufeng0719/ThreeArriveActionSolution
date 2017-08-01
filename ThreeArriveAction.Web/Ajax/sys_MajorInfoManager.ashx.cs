@@ -77,7 +77,7 @@ namespace ThreeArriveAction.Web.Ajax
                 content = model.MajorContent,
                 title = model.MajorTitle,
                 userName = user?.UserName ?? "管理员",
-                time = model.MajorDate.ToString("yyyy-M-d hh:mm:ss"),
+                time = model.MajorDate.ToString("yyyy-M-d"),
                 yetRead = readSh.Select().Any()
             }.ToJson());
         }
@@ -97,7 +97,7 @@ namespace ThreeArriveAction.Web.Ajax
                 },
                 Alia = "a"
             };
-            sh.AddShow("a.MajorId,a.MajorTitle,a.MajorFromUserId,a.MajorDate,b.ReadUserId");
+            sh.AddShow("a.MajorId,a.MajorTitle,a.MajorFromUserId,a.MajorDate,b.ReadUserId,a.MajorContent");
             sh.AddJoin(@" LEFT JOIN [dbo].[sys_ReadLog] as b on  a.MajorId = b.MajorId  
                         AND b.ReadUserId = " + userId + " or b.ReadUserId is NULL");
             var majorPageLists = sh.Select();
@@ -116,8 +116,10 @@ namespace ThreeArriveAction.Web.Ajax
                     userName = userList.FirstOrDefault(u => u.UserId == x.MajorFromUserId)?.UserName ?? "管理员",
                     type = x.ReadUserId > 0 ? 1 : 0,
                     time = x.MajorDate.ToString("yyyy-M-d"),
-                    title = x.MajorTitle
-                })
+                    title = x.MajorTitle,
+                    content = x.MajorContent.Length > 30 ? x.MajorContent.Substring(0, 30) + "...." : x.MajorContent
+                }),
+                sql = sh.SqlString.ToString()
             }.ToJson());
         }
 
@@ -139,6 +141,7 @@ namespace ThreeArriveAction.Web.Ajax
             public int MajorFromUserId { get; set; }
             public DateTime MajorDate { get; set; } = DateTime.Now;
             public int ReadUserId { get; set; }
+            public string MajorContent { get; set; } = string.Empty;
         }
 
         public bool IsReusable

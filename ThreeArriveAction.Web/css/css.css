@@ -145,3 +145,20 @@ body {
 [v-cloak] {
     display: none;
 }
+
+.box{
+    width:22%;
+    height: 64px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+.more {
+    float: left;
+    margin-right: 5%;
+}
+.box img{
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: 64px;
+}

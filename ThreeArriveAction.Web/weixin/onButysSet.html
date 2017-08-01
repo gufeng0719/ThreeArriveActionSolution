@@ -28,6 +28,27 @@
                 <option v-for="model in list" v-bind:value="model.value">{{model.text}}</option>
             </select>
         </div>
+        <div class="row" v-if="model">
+            <div class="header">
+                <div class="text">
+                    详细信息
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <td rowspan="4" style="padding-right: 15px; height: 95px; width: 140px;">
+                        <img v-bind:src="model.img == '' ? '../images/noneimg.jpg.png' : model.img" width="110" height="75" />
+                    </td>
+                    <td style="padding-top: 6px;">姓名 : {{model.text}}</td>
+                </tr>
+                <tr>
+                    <td>区域 : {{town}}--{{village}}</td>
+                </tr>
+                <tr>
+                    <td>联系方式 : {{model.phone}}</td>
+                </tr>
+            </table>
+        </div>
         <div class="row" style="margin-top: 50px">
             <input type="button" class="btn" value="提交" @click="submitcontent()" id="btnSub" disabled />
         </div>
