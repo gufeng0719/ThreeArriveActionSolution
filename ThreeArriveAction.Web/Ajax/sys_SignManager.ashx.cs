@@ -39,6 +39,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "search":
                     SearchUserSign(context);
                     break;
+                case "statis":
+                    StatisticSign(context);
+                    break;
             }
         }
 
@@ -243,6 +246,13 @@ namespace ThreeArriveAction.Web.Ajax
 
             strJson.Append("}");
             context.Response.Write(strJson.ToString());
+
+        }
+        #endregion
+
+        #region 统计早报道
+        private void StatisticSign(HttpContext context)
+        {
 
         }
         #endregion

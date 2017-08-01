@@ -118,7 +118,7 @@ namespace ThreeArriveAction.DAL
         }
         #endregion
 
-        #region 查询
+        #region 查询与统计
         public bool Exists(int userId, DateTime signDate)
         {
             StringBuilder strSql = new StringBuilder();
@@ -151,6 +151,22 @@ namespace ThreeArriveAction.DAL
             strSql.Append(" ) b on a.UserId = b.SignUserId  ");
             recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
             DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), fieldOrder));
+            return ds;
+        }
+
+        /// <summary>
+        /// 统计每日早报道
+        /// </summary>
+        /// <param name="strSql1">用户统计语句</param>
+        /// <param name="strSql2">早报道签到表统计语句/param>
+        /// <returns></returns>
+        public DataSet StatisticsSign(string strSql1,string strSql2)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append(strSql);
+            strSql.Append(";");
+            strSql.Append(strSql2);
+            DataSet ds = DbHelperSQL.Query(strSql.ToString());
             return ds;
         }
         #endregion

@@ -102,6 +102,7 @@
     <Content Include="admin\StudyList.html" />
     <Content Include="admin\ThingInfo.html" />
     <Content Include="admin\ThreeSearch.html" />
+    <Content Include="admin\ThreeStatistics.html" />
     <Content Include="admin\weixin\AddLeave.html" />
     <Content Include="admin\weixin\addNews.html" />
     <Content Include="admin\weixin\IntegralInfo.html" />
