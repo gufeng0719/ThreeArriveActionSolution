@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body style="height: 100%;margin: 0;">
+    <div style="width: 100%; background-color: black;display: table; height: 100%"
+         id="app">
+        <div style="display: table-cell; vertical-align: middle; height: 100%">
+            <img src="" id="img" style="width: 100%;" />
+        </div>
+    </div>
+    <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../scripts/weixin/main.js"></script>
+    <script>
+        var imgs = [];
+        var current = req["current"];
+        $(function () {
+            _touch()
+            $("#img").attr("src", current);
+            if (req["type"] === "g")
+                return;
+            $.ajax({
+                type: "post",
+                url: "../Ajax/sys_PublicMessagesManager.ashx",
+                data: {
+                    type: "getModel",
+                    id: req["id"]
+                },
+                complete: function (d) {
+                    var obj = JSON.parse(d.responseText);
+                    imgs = obj.imgs;
+                }
+            });
+        });
+
+        function _touch() {
+            var startx;
+            var endx;
+            var el = document.getElementById('app');
+
+            function cons() {
+                var ind = imgs.indexOf(current);
+                if (ind < 0)
+                    return;
+                if ((startx - endx) > 222) {
+                    current = ind === imgs.length - 1 ? imgs[0] : imgs[ind + 1];
+                    $("#img").attr("src", current);
+                }
+                if ((endx - startx) > 222) {
+                    current = ind === 0 ? imgs[imgs.length - 1] : imgs[ind - 1];
+                    $("#img").attr("src", current);
+                }
+            }
+
+            el.addEventListener('touchstart',
+                function (e) {
+                    var touch = e.changedTouches;
+                    startx = touch[0].clientX;
+                    starty = touch[0].clientY;
+                });
+            el.addEventListener('touchend',
+                function (e) {
+                    var touch = e.changedTouches;
+                    endx = touch[0].clientX;
+                    endy = touch[0].clientY;
+                    cons();
+                });
+        }
+
+    </script>
+</body>
+</html>

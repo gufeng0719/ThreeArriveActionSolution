@@ -7,23 +7,23 @@
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title>三到行动-发布留言</title>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak style="margin-top: 18px;">
+    <div class="container" id="app"  v-cloak style="margin-top: 18px;">
         <div class="row">
             <div class="header">
                 <div class="text">
-                    图片(最多9张)
+                    图片
                 </div>
             </div>
             <div style="text-align: left;">
-                <image-template v-bind:local-ids.sync="localIds" v-bind:is-more="true"></image-template>
+                <image-template v-bind:local-ids.sync="localIds" v-bind:is-more="false"></image-template>
             </div>
         </div>
         <div class="row">

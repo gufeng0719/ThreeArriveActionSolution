@@ -5,8 +5,7 @@
         ],
         page: 1,
         size: 6,
-        tbfoot: false,
-        tbfootMsg: ""
+        isNotMore: false
     },
     methods: {
         getpage: function (page) {
@@ -21,33 +20,23 @@
                 },
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
-                    that.list = obj.list;
                     that.totle = obj.totle;
                     that.page = obj.page;
 
-                    if (that.page > 1) {
-                        $("#lastpage").attr("disabled", false);
+                    that.list = that.list.concat(obj.list);
+                    if (obj.list.length < 1) {
+                        that.isNotMore = true
                     } else {
-                        $("#lastpage").attr("disabled", true);
+                        that.isNotMore = false
                     }
-                    if (that.page < (that.totle / that.size)) {
-                        $("#nextpage").attr("disabled", false);
-                    } else {
-                        $("#nextpage").attr("disabled", true);
+                    if (window.scrolled) {
+                        window.scrolled = false;
                     }
                 }
             });
         },
         select: function (id) {
             window.open("interactInfo.html?id=" + id, "_self");
-        }
-    },
-    watch: {
-        "list.length": function (newValue) {
-            if (newValue <= 0) {
-                this.tbfoot = true;
-                this.tbfootMsg = "暂无数据";
-            }
         }
     },
     mounted: function () {

@@ -8,8 +8,8 @@
         msg: ""
     },
     methods: {
-        openImg: function (img) {
-            window.open(location.origin + img, "_self");
+        openImg: function (img, type) {
+            window.open("image.html?id=" + req["id"] + "&type=" + type + "&current=" + img, "_self");
         }
     },
     mounted: function () {

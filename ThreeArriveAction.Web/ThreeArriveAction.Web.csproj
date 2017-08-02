@@ -121,6 +121,8 @@
     <Content Include="images\weixin\clearStorage.png" />
     <Content Include="images\weixin\majorinfo.png" />
     <Content Include="images\noneimg.jpg.png" />
+    <Content Include="images\weixin\read.png" />
+    <Content Include="images\weixin\unread.png" />
     <Content Include="images\weixin\清除缓存.png" />
     <Content Include="images\weixin\重要信息.png" />
     <Content Include="scripts\element\element.css" />
@@ -1385,6 +1387,7 @@
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
     <Content Include="weixin\appIndex.html" />
+    <Content Include="weixin\image.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />
     <Content Include="weixin\interact.html" />
@@ -1652,11 +1655,7 @@
   <ItemGroup>
     <Content Include="Ajax\sys_UsersManager.ashx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="upload\20170721\" />
-    <Folder Include="upload\20170724\" />
-    <Folder Include="upload\20170725\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

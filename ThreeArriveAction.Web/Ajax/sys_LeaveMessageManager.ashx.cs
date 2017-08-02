@@ -40,19 +40,24 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == "get")
             {
                 GetLeaveList(context);
-            }else if (type == "edit")
+            }
+            else if (type == "edit")
             {
                 GetLeaveModel(context);
-            }else if (type == "save")
+            }
+            else if (type == "save")
             {
                 PublishLeaveMessage(context);
-            }else if (type == "praise")
+            }
+            else if (type == "praise")
             {
                 SetPraiseNumber(context);
-            }else if (type == "del")
+            }
+            else if (type == "del")
             {
                 DeleteLeave(context);
-            }else if (type == "insert")
+            }
+            else if (type == "insert")
             {
                 InsertLeave(context);
             }
@@ -118,7 +123,7 @@ namespace ThreeArriveAction.Web.Ajax
             sh.AddWhere("LeaveId", id);
             var model = sh.Select().FirstOrDefault();
             sys_UsersModel user = new ManagePage().GetUsersinfo();
-            if (model == null )
+            if (model == null)
             {
                 context.Response.Write("{\"info\":\"获取失败\",\"status\":\"n\"}");
                 return;
@@ -150,23 +155,25 @@ namespace ThreeArriveAction.Web.Ajax
                     PageIndex = page
                 }
             };
-            sh.AddWhere("LeaveStae", 1);
-            var list = sh.Select();
-            var sysLeaveMessageModels = list as sys_LeaveMessageModel[] ?? list.ToArray();
+            sh.AddWhere("LeaveState", 1);
+            var sysLeaveMessageModels = sh.Select();
+            var list = sysLeaveMessageModels as sys_LeaveMessageModel[] ?? sysLeaveMessageModels.ToArray();
 
             // 获取回复
             var reSh = new SqlHelper<sys_ReplaysModel>(new sys_ReplaysModel());
-            reSh.AddWhere(" AND InteractionId IN (" + string.Join(",", sysLeaveMessageModels.Select(x => x.LeaveId)) + ")");
+            var sqlIn = string.Join(",", list.Select(x => x.LeaveId));
+            sqlIn = sqlIn.IsNullOrEmpty() ? "0" : sqlIn;
+            reSh.AddWhere(" AND InteractionId IN (" + sqlIn + ")");
             var reList = reSh.Select();
 
             // 获取人员
             var userSh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
-            reSh.AddWhere(" AND UserId IN (" + string.Join(",", sysLeaveMessageModels.Select(x => x.UserId)) + ")");
+            reSh.AddWhere(" AND UserId IN (" + string.Join(",", list.Select(x => x.UserId)) + ")");
             var userList = userSh.Select();
 
             context.Response.Write(new
             {
-                list = sysLeaveMessageModels.Select(x => new
+                list = list.Select(x => new
                 {
                     id = x.LeaveId,
                     img = x.LeaveImages.Split(',').FirstOrDefault() ?? "",

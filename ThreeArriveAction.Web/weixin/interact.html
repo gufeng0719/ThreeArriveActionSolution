@@ -7,19 +7,19 @@
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../css/css.css">
     <title>三到行动-互动学习</title>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app" v-cloak>
+    <div class="container" id="app"  v-cloak>
         <div class="row" style="text-align: right;">
-            <a class="btn" href="interactEdit.html" style="margin-right: 11px;width: 71px;height: 34px;margin-top: 19px;">去留言</a>
+            <a class="btn" href="interactEdit.html" style="margin-right: 11px;width: 89px;height: 32px;margin-top: 22px;">去留言</a>
         </div>
-        <div class="row">
+        <div class="row" style="position: relative;top: -20px;">
             <div class="header">
                 <div class="text">
                     留言列表
@@ -48,17 +48,14 @@
                             </td>
                         </tr>
                     </template>
-                    <tr style="border-bottom: #d2d2d2 1px solid; width: 100%;height: 50px" v-if="list.length <= 0">
+                    <tr style="height: 50px" v-if="isNotMore">
                         <td colspan="2" style="text-align: center">
-                            <b>暂无数据</b>
+                            <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <div style="margin-top:15px;padding-bottom:15px;">
-                                <input class="btn btn-default" @click="getpage(page-1)" id="lastpage" disabled type="button" value="上一页" style="width:45%">
-                                <input class="btn btn-default" @click="getpage(page+1)" id="nextpage" disabled type="button" value="下一页" style="width:45%;margin-left:5%">
-                            </div>
+                        <td>
+                            <div style="height: 45px"></div>
                         </td>
                     </tr>
                 </table>

@@ -6,7 +6,8 @@
         villageId: 0,
         userValue: -1,
         list: [],
-        exist: false
+        exist: false,
+        model: undefined
     },
     methods: {
         submitcontent: function () {
@@ -37,6 +38,18 @@
             });
         }
     },
+    watch: {
+        userValue: function (newValue) {
+            var that = this;
+            if (newValue < 1) {
+                that.model = undefined;
+            }
+            var temp = _.find(that.list, function (n) {
+                return n.value == newValue;
+            });
+            that.model = temp;
+        }
+    },
     mounted: function () {
         var that = this;
         $.ajax({
@@ -55,7 +68,7 @@
                 if (that.exist) {
                     $("#btnSub").attr("disabled", true);
                     alert("今天已经设置过值班人员");
-                    window.open("index.html", "_self");
+                    //window.open("index.html", "_self");
                 } else {
                     $("#btnSub").attr("disabled", false);
                 }
