@@ -40,7 +40,7 @@ window.onscroll = function () {
         console.log({ t: t, t1: t1, h: h });
         if (!scrolled) {
             //下拉加载
-            if (t1 >= h) {
+            if (t1 >= h - 30) {
                 if (vm.getpage) {
                     scrolled = true;
                     vm.getpage(vm.page + 1);

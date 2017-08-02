@@ -19,6 +19,9 @@
         var current = req["current"];
         $(function () {
             _touch()
+            $("#img").attr("src", current);
+            if (req["type"] === "g")
+                return;
             $.ajax({
                 type: "post",
                 url: "../Ajax/sys_PublicMessagesManager.ashx",
@@ -29,7 +32,6 @@
                 complete: function (d) {
                     var obj = JSON.parse(d.responseText);
                     imgs = obj.imgs;
-                    $("#img").attr("src", current);
                 }
             });
         });
@@ -41,12 +43,14 @@
 
             function cons() {
                 var ind = imgs.indexOf(current);
+                if (ind < 0)
+                    return;
                 if ((startx - endx) > 222) {
-                    current = ind === 0 ? imgs[imgs.length - 1] : imgs[ind - 1];
+                    current = ind === imgs.length - 1 ? imgs[0] : imgs[ind + 1];
                     $("#img").attr("src", current);
                 }
                 if ((endx - startx) > 222) {
-                    current = ind === imgs.length - 1 ? imgs[0] : imgs[ind + 1];
+                    current = ind === 0 ? imgs[imgs.length - 1] : imgs[ind - 1];
                     $("#img").attr("src", current);
                 }
             }

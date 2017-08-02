@@ -64,7 +64,7 @@
         </div>
         <div class="row" v-if="imgs.length > 0">
             <div class="div-img">
-                <img v-for="img in imgs" v-bind:src="'../'+img" />
+                <img v-for="img in imgs" v-bind:src="'../'+img" @click="openImg(img)" />
             </div>
         </div>
         <div class="row">
@@ -74,7 +74,7 @@
         </div>
         <div class="row">
             <div style="font-size: 12px; font-weight: 700; text-align: right;height: 24px;">
-                by:{{userName}}&nbsp;&nbsp;发布时间:{{time}}&nbsp;&nbsp;
+                发布人:{{userName}}&nbsp;&nbsp;发布时间:{{time}}&nbsp;&nbsp;
                 <span v-bind:class="yetPraise ? 'span-praise yet-praise' : 'span-praise praise'"
                       @click="pushPraise()">{{yetPraise  ? "已赞" : "赞"}}:{{praise}}</span> &nbsp;&nbsp;&nbsp;&nbsp;
             </div>
@@ -82,7 +82,7 @@
         <div class="row">
             <div style="margin-top: 8px">
                 <input type="text" v-bind:placeholder="'回复：'+userName" v-model="reContent" />
-                <input type="button" value="回复" class="btn" @click="comment(userId)" />
+                <input type="button" value="回复" class="btn" @click="comment(userId)" style="position: relative;top: 13px;" />
             </div>
         </div>
         <div class="row" style="margin-bottom: -11px;">

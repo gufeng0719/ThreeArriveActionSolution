@@ -39,7 +39,7 @@
             </div>
             <div class="box">
                 <div>
-                    <img v-bind:src="gimg" @click="openImg(gimg)" />
+                    <img v-bind:src="gimg" @click="openImg(gimg,'g')" />
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
             <div style="text-align: left;">
                 <div>
                     <div v-for="img in imgs" class="box more" style="display: inline;">
-                        <img v-bind:src="img" @click="openImg(img)" />
+                        <img v-bind:src="img" @click="openImg(img,'t')" />
                     </div>
                 </div>
             </div>

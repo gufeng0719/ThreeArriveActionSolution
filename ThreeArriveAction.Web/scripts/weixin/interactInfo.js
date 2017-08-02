@@ -76,7 +76,6 @@ var vm = new Vue({
                 cancelButtonText: "取消",
                 inputPlaceholder: "回复：" + toPlayerName
             }, function (inputValue) {
-                debugger;
                 if (inputValue === false) return false;
                 if (inputValue === "") {
                     swal.showInputError("请输入回复内容");
@@ -85,6 +84,9 @@ var vm = new Vue({
                 that.reContent = inputValue;
                 that.comment(toPlayer);
             });
+        },
+        openImg: function (img) {
+            window.open('image.html?type=g&current=' + img, '_self');
         }
     },
     mounted: function () {

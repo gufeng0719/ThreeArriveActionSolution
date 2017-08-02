@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ThreeArriveAction.Model
 {
@@ -9,7 +6,7 @@ namespace ThreeArriveAction.Model
     /// <summary>
     /// 在线学习实体类
     /// </summary>
-   public partial class sys_OnlineInteractionsModel
+   public  class sys_OnlineInteractionsModel
     {
         private int interactionId;
        /// <summary>
