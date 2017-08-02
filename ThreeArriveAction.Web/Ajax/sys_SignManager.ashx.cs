@@ -253,9 +253,107 @@ namespace ThreeArriveAction.Web.Ajax
         #region 统计早报道
         private void StatisticSign(HttpContext context)
         {
+            int rtype = MXRequest.GetQueryInt("rtype");
+            StringBuilder strJson = new StringBuilder();
+            int town = MXRequest.GetQueryInt("town");
+            int vid = MXRequest.GetQueryInt("vid");
+            StringBuilder strSql1 = new StringBuilder();
+            StringBuilder strSql2 = new StringBuilder();
+            if (town != 0 && vid == 0)
+            {
+                //每个镇的每个村委单位
+                strSql1.Append("select count(1) as TotalNumber,VillageName as Name,a.VillageId as Id,0 HavNumber from");
+                strSql1.Append(" sys_Users a inner join sys_Villages b on a.VillageId=b.VillageId");
+                strSql1.Append(" where b.VillageParId=" + town);
+                strSql1.Append(" group by VillageName,a.VillageId ");
+                strSql2.Append("select count(1) as SignNumber from sys_Signs a inner join sys_Users b on a.SignUserId=b.UserId ");
+                if (rtype == 0)
+                {
+                    //按周统计
+                    string swdate = MXRequest.GetQueryString("swdate");
+                    strSql2.Append(" where  datepart(wk,SignDate) = datepart(wk,'" + swdate + "') and VillageId =");
+                }
+                else
+                {
+                    //按月统计
+                    string smdate = MXRequest.GetQueryString("smdate");
+                    strSql2.Append(" where  Convert(varchar(7),SignDate,23) ='" + smdate + "' and VillageId=");
+                }
 
+            }
+            else if (town != 0 && vid != 0)
+            {
+                //村每个工作人员为单位
+                strSql1.Append("select count(1) as TotalNumber,UserName as Name,UserId as Id,0 HavNumber from sys_Users ");
+                strSql1.Append(" where VillageId=" + vid);
+                strSql1.Append("Group by UserName,UserId  ");
+                strSql2.Append("select count(1) as SignNumber from sys_Signs a inner join sys_Users b on a.SignUserId=b.UserId ");
+                if (rtype == 0)
+                {
+                    //按周统计
+                    string swdate = MXRequest.GetQueryString("swdate");
+                    strSql2.Append(" where  datepart(wk,SignDate) = datepart(wk,'" + swdate + "') and SignUserId =");
+                }
+                else
+                {
+                    //按月统计
+                    string smdate = MXRequest.GetQueryString("smdate");
+                    strSql2.Append(" where  Convert(varchar(7),SignDate,23) ='" + smdate + "' and SignUserId=");
+                }
+            }
+            
+            DataTable dt = signsBLL.StatisticsSign(strSql1.ToString(), strSql2.ToString());
+            strJson.Append("{\"total\":"+dt.Rows.Count);
+            if (dt.Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":"+JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            if (rtype == 0)
+            {
+                strJson.Append(",\"workdays\":5");
+            }
+            else
+            {
+                strJson.Append(",\"workdays\":"+ GetWorkDay(MXRequest.GetQueryString("smdate")));
+            }
+            strJson.Append("}");
+            context.Response.Output.Write(strJson.ToString());
         }
         #endregion
+
+        private int GetWorkDay(string searchTimes)
+        {
+            DateTime dt = Convert.ToDateTime(searchTimes + "-01");    // 当前日期月份的第一天
+            int year =dt.Year; // 获得年
+            int month = dt.Month;// 获得月
+            int days = DateTime.DaysInMonth(year, month);     // 获得该月总共多少天
+
+            // 休息天数
+            int weekDays = 0;
+
+            for (int i = 0; i < days; i++)
+            {
+                // 判断是否为周六，周日，是则记录天数。
+                switch (dt.DayOfWeek)
+                {
+                    case DayOfWeek.Saturday:
+                        weekDays++;
+                        break;
+                    case DayOfWeek.Sunday:
+                        weekDays++;
+                        break;
+                }
+                dt = dt.AddDays(1);
+            }
+            // 工作日
+            int workDays = days - weekDays;
+            return workDays;
+        }
+        
 
         public bool IsReusable
         {

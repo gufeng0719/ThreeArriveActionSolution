@@ -39,6 +39,12 @@ namespace ThreeArriveAction.BLL
             DataSet ds = thingDAL.SearchThingRecord(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
             return ds;
         }
+
+        public DataTable StatisThingRecord(int town,string strWhere)
+        {
+            DataTable dt = thingDAL.StatisThingRecord(town,strWhere);
+            return dt;
+        }
         #endregion
     }
 }

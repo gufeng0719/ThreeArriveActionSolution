@@ -87,7 +87,7 @@ namespace ThreeArriveAction.BLL
         /// <param name="strSql1">用户统计语句</param>
         /// <param name="strSql2">早报道签到表统计语句/param>
         /// <returns></returns>
-        public DataSet StatisticsSign(string strSql1, string strSql2)
+        public DataTable StatisticsSign(string strSql1, string strSql2)
         {
             return signsDAL.StatisticsSign(strSql1, strSql2);
         }

@@ -161,6 +161,29 @@ namespace ThreeArriveAction.DAL
             DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount,pageSize,pageIndex,strSql.ToString(),fieldOrder));
             return ds;
         }
+
+        public DataTable StatisThingRecord(int town,string strWhere)
+        {
+            string strSql1 = "select  VillageId,VillageName,0 TotalNumber,0 HavNumber,0 NoNumber from sys_Villages ";
+            strSql1+=" where VillageParId="+town +" order by VillageId ASC ";
+            
+            DataTable dt = DbHelperSQL.Query(strSql1).Tables[0];
+            foreach(DataRow dr in dt.Rows)
+            {
+                StringBuilder strSql2 = new StringBuilder();
+                strSql2.Append("select count(1) as TotalNumber,sum(case when ThingHaving='是' then 1 else 0 end) as HavNumber,");
+                strSql2.Append("SUM(case when ThingHaving='否' then 1 else 0 end) NoNumber from sys_ThingRecords a ");
+                strSql2.Append(" inner join sys_Users b on a.UserId = b.UserId ");
+                strSql2.Append(" where b.VillageId="+dr["VillageId"].ToString());
+                strSql2.Append(" and "+strWhere);
+                DataTable dt2 = DbHelperSQL.Query(strSql2.ToString()).Tables[0];
+                dr["TotalNumber"] = int.Parse(dt2.Rows[0]["TotalNumber"].ToString());
+                dr["HavNumber"] = dt2.Rows[0]["HavNumber"] == DBNull.Value ? 0 : dt2.Rows[0]["HavNumber"];
+                dr["NoNumber"] = dt2.Rows[0]["NoNumber"] ==DBNull.Value ? 0 : dt2.Rows[0]["NoNumber"];
+
+            }
+            return dt;
+        }
         #endregion
     }
 }

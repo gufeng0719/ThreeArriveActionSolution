@@ -17,7 +17,6 @@
             cursor: pointer;
             text-indent: -9999px;
         }
-
     </style>
 </head>
 <body class="mainbody">
@@ -48,7 +47,7 @@
                 <dt>选择统计类型</dt>
                 <dd>
                     <div class="rule-multi-radio">
-                        <input type="radio" id="rblResponseType_0" name="rblResponseType" value="0" /><label for="rblResponseType_0">按周统计</label>
+                        <input type="radio" id="rblResponseType_0" name="rblResponseType" value="0" checked="checked" /><label for="rblResponseType_0">按周统计</label>
                         <input type="radio" id="rblResponseType_1" name="rblResponseType" value="1" /><label for="rblResponseType_1">按月统计</label>
                     </div>
                 </dd>
@@ -57,8 +56,13 @@
                 <dt>日期(选择一周中任意一天)</dt>
                 <dd>
                     <div class="menu-list" style="display: inline-block; float: left;">
-                        <div class="input-date">
-                            <input type="text" id="swdate" name="swdate" onfocus="WdatePicker({ isShowWeek:true,dateFmt: 'yyyy-MM-dd' })"
+                        <div class="input-date" id="swdiv">
+                            <input type="text" id="swdate" name="swdate" onfocus="WdatePicker({ isShowWeek: true, dateFmt: 'yyyy-MM-dd', firstDayOfWeek:1 })"
+                                   class="input date" />
+                            <i>日期</i>
+                        </div>
+                        <div class="input-date" id="smdiv" style="display:none;">
+                            <input type="text" id="smdate" name="smdate" onfocus="WdatePicker({ dateFmt: 'yyyy-MM' })"
                                    class="input date" />
                             <i>日期</i>
                         </div>
@@ -73,29 +77,107 @@
                     <div class="line10"></div>
                     <!--列表-->
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
-                        <thead>
-                            <tr>
-                                <th align="center" width="12%">
-                                    用户名
-                                </th>
-                                <th align="center" width="11%">
-                                    人员
-                                </th>
-                                <th align="center" width="12%">
-                                    签到结果
-                                </th>
-                                <th align="center" width="12%">
-                                    比率
-                                </th>
-                            </tr>
+                        <thead id="swthead">
                         </thead>
-                        <tbody id="tbody"></tbody>
+                        <tbody id="swtbody"></tbody>
                     </table>
                     <!--/列表-->
                 </dd>
             </dl>
         </div>
         <!--/每日早报道-->
+        <!--每周家家到-->
+        <div class="tab-content" style="display:none;">
+            <dl class="signweek">
+                <dt>日期(选择一周中任意一天)</dt>
+                <dd>
+                    <div class="menu-list" style="display: inline-block; float: left;">
+                        <div class="input-date" id="wwdiv">
+                            <input type="text" id="wwdate" name="wwdate" onfocus="WdatePicker({ isShowWeek: true, dateFmt: 'yyyy-MM-dd', firstDayOfWeek:1 })"
+                                   class="input date" />
+                            <i>日期</i>
+                        </div>
+                        <div class="single-select" name="divtown">
+                            <select id="wwtown" name="town"></select>
+                        </div>
+                    </div>
+                    <input type="button" id="btnWWSearch" class="btn-search" value="查询" />
+                    <div class="line10"></div>
+                    <!--列表-->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                        <thead>
+                            <tr id="wwtr">
+                                <th align="center" width="15%">
+
+                                </th>
+                                <th align="center" width="15%">
+                                    村居
+                                </th>
+                                <th align="center" width="15%">
+                                    七户总人数
+                                </th>
+                                <th align="center" width="30%" colspan="2">
+                                    签到结果(人次)
+                                </th>
+                                <th>比率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wwtbody"></tbody>
+                    </table>
+                    <!--/列表-->
+                </dd>
+            </dl>
+        </div>
+        <!--/每周家家到-->
+        <!-- 有事马上到-->
+        <div class="tab-content" style="display:none;">
+            <dl>
+                <dt>选择统计类型</dt>
+                <dd>
+                    <div class="rule-multi-radio">
+                        <input type="radio" id="rblResponseType1_0" name="rblResponseType1" value="0" checked="checked" /><label for="rblResponseType1_0">按周统计</label>
+                        <input type="radio" id="rblResponseType1_1" name="rblResponseType1" value="1" /><label for="rblResponseType1_1">按月统计</label>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="signweek">
+                <dt>日期(选择一周中任意一天)</dt>
+                <dd>
+                    <div class="menu-list" style="display: inline-block; float: left;">
+                        <div class="input-date" id="twdiv">
+                            <input type="text" id="twdate" name="twdate" onfocus="WdatePicker({ isShowWeek: true, dateFmt: 'yyyy-MM-dd', firstDayOfWeek:1 })"
+                                   class="input date" />
+                            <i>日期</i>
+                        </div>
+                        <div class="input-date" id="tmdiv" style="display:none;">
+                            <input type="text" id="tmdate" name="tmdate" onfocus="WdatePicker({ dateFmt: 'yyyy-MM' })"
+                                   class="input date" />
+                            <i>日期</i>
+                        </div>
+                        <div class="single-select" name="divtown">
+                            <select id="twtown" name="town"></select>
+                        </div>
+                    </div>
+                    <input type="button" id="btnTWSearch" class="btn-search" value="查询" />
+                    <div class="line10"></div>
+                    <!--列表-->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+                        <thead>
+                            <tr id="twtr">
+                                <th align="center" width="15%"></th>
+                                <th align="center" width="20%">村居</th>
+                                <th align="center" width="15%">上报数</th>
+                                <th align="center" width="40%" colspan="2">处理结果</th>
+                            </tr>
+                        </thead>
+                        <tbody id="twtbody"></tbody>
+                    </table>
+                    <!--/列表-->
+                </dd>
+            </dl>
+        </div>
+        <!-- /有事马上到-->
+
     </form>
     <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
@@ -118,52 +200,78 @@
             $(".tab-content").hide();
             $(".tab-content").eq(tabNum).show();
             if (tabNum == 0) {
-                Load(1);
-                LoadVillage($("#town"));
-            } else if (tabNum == 1) {
-                LoadWeek(1);
-                LoadVillage($("#weektown"));
-            } else {
-                LoadThing(1);
-                LoadVillage($("#thingtown"));
+                //Load();
+                LoadVillage($("#swtown"));
             }
         }
 
         $(function () {
             $("#swdate").val(new Date().format("yyyy-MM-dd"));
-            $("#weekdate").val(new Date().format("yyyy-MM-dd"));
-            $("#thingdate").val(new Date().format("yyyy-MM-dd"));
+            $("#smdate").val(new Date().format("yyyy-MM"));
+            $("#wwdate").val(new Date().format("yyyy-MM-dd"));
+            $("#twdate").val(new Date().format("yyyy-MM-dd"));
+            $("#tmdate").val(new Date().format("yyyy-MM"));
             //加载乡镇数据
-
             $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
-                $("#town").append("<option  value=\"0\">不限</option>");
+                //$("#town").append("<option  value=\"0\">不限</option>");
                 for (var i = 0; i < msg.total; i++) {
-                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    var s;
+                    if (i == 0) {
+                        s = "<option  value=" + msg.rows[i].VillageId + " selected=\"selected\">" + msg.rows[i].VillageName + "</option>";
+                    } else {
+                        s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    }
                     $("#swtown").append(s);
-                    $("#weektown").append(s);
-                    $("#thingtown").append(s);
+                    $("#wwtown").append(s);
+                    $("#twtown").append(s);
                 }
                 $("div[name='divtown']").ruleSingleSelect().addClass("rule-single-select");
-                LoadVillage($("#town"));
+                LoadVillage($("#swtown"));
             });
 
             //乡镇下列列表改变事件
-            $("#town").change(function () {
-                LoadVillage($(this));
-            });
-            $("#weektown").change(function () {
+            $("#swtown").change(function () {
                 LoadVillage($(this));
             });
 
-            Load(1);
-            $("#btnSearch").click(function () {
-                Load(1);
+            $("#btnSWSearch").click(function () {
+                Load();
             });
-            $("#btnWeekSearch").click(function () {
-                LoadWeek(1);
+
+            $("#btnWWSearch").click(function () {
+                LoadWeek();
             });
-            $("#btnThingSearch").click(function () {
-                LoadThing(1);
+
+            $("#btnTWSearch").click(function () {
+                LoadThing();
+            });
+
+            //每日早报道统计方式
+            $("input[name='rblResponseType1']").click(function () {
+                if ($(this).val() == "0") {
+                    //按周
+                    $("#twdiv").show();
+                    $("#tmdiv").hide();
+                }
+                else if ($(this).val() == "1") {
+                    //按月
+                    $("#twdiv").hide();
+                    $("#tmdiv").show();
+                }
+            });
+
+            //有事马上到统计方式
+            $("input[name='rblResponseType']").click(function () {
+                if ($(this).val() == "0") {
+                    //按周
+                    $("#swdiv").show();
+                    $("#smdiv").hide();
+                }
+                else if ($(this).val() == "1") {
+                    //按月
+                    $("#swdiv").hide();
+                    $("#smdiv").show();
+                }
             });
         });
 
@@ -183,90 +291,153 @@
         }
 
         //加载每日早报道统计数据
-        function Load(page) {
+        function Load() {
             var swdate = $("#swdate").val();
-            var town = $("#town").find("option:selected").val();
-            var vid = $("#village").find("option:selected").val();
+            var smdate = $("#smdate").val();
+            var rType = $("input[name='rblResponseType']:checked").val();
+            var town = $("#swtown").val();
+            var vid = $("#swvillage").val();//.find("option:selected")
+            $("#swthead").html("");
+            var th = "<tr>";
+            if (rType == "0") {
+                //按周统计
+                th += "<th align=\"center\" width=\"15%\">" + getStart(swdate) + "至" + getEnd(swdate) + "</th>";
+            } else {
+                //按月统计
+                th += "<th align=\"center\" width=\"15%\">" + smdate + "</th>";
+            }
+            if (vid == "0") {//以村单位查询
+                th += "<th align=\"center\">村居</th>";
+                th += "<th align=\"center\">人数</th>";
+                th += "<th align=\"center\" colspan=\"2\">签到结果(人次)</th>";
+            } else {//以人为单位
+                th += "<th align=\"center\">人员</th>";
+                th += "<th align=\"center\" colspan=\"2\">签到结果</th>";
+            }
+            th += "<th>比率</th>";
+            th += "</tr>";
+            $("#swthead").append(th);
             //加载列表
-            $.getJSON("../Ajax/sys_SignManager.ashx?type=search", { "signdate": signdate, "page": page, "town": town, "vid": vid }, function (msg) {
-                $("#tbody").html("");
+            $.getJSON("../Ajax/sys_SignManager.ashx?type=statis", { "swdate": swdate, "smdate": smdate, "town": town, "vid": vid, "rtype": rType }, function (msg) {
+                $("#swtbody").html("");
                 if (msg.total > 0) {
                     for (var i = 0; i < msg.rows.length; i++) {
-                        var s = "";
-                        s += "<tr>";
-                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
-                        //if(msg.rows[i].blSign)
-                        s += "<td align=\"center\">" + (msg.rows[i].blSign == "true" ? "已拜访" : "未拜访") + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].SignDate + "</td>";
+                        var s = "<tr>";
+                        s += "<td align=\"center\">" + (i + 1) + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].Name + "</td>";
+                        if (vid == "0") {
+                            s += "<td align=\"center\">" + msg.rows[i].TotalNumber + "</td>";
+                        }
+
+                        s += "<td align=\"right\" style=\"border-right:1px solid #EBEBEB; padding-right:10px;\">" + msg.rows[i].HavNumber + "&nbsp;&nbsp;已签到</td>";
+                        s+="<td align=\"left\" style=\"padding-left:10px;\">"+(msg.rows[i].TotalNumber * msg.workdays - msg.rows[i].HavNumber) + "&nbsp;&nbsp;未签到</td>"
+                        s += "<td align=\"center\">" + Math.floor((msg.rows[i].HavNumber / msg.rows[i].TotalNumber) * 100) + "%</td>";
                         s += "</tr>";
-                        $("#tbody").append(s);
+                        $("#swtbody").append(s);
                     }
-                    //console.info(msg.pageContent);
-                    $("#PageContent").html(msg.pageContent);
+
                 } else {
-                    $("#PageContent").html(msg.pageContent);
+                    $("#swtbody").html("暂无统计记录");
                 }
             });
         }
 
-        //加载每周家家到查询数据
-        function LoadWeek(page) {
-            var signdate = $("#weekdate").val();
-            var town = $("#weektown").find("option:selected").val();
-            var vid = $("#weekvillage").find("option:selected").val();
+        //加载每周家家到统计数据
+        function LoadWeek() {
+            var wwdate = $("#wwdate").val();
+            var town = $("#wwtown").find("option:selected").val();
+            $("#wwtr th:first").html(getStart(wwdate) + "至" + getEnd(wwdate));
             //加载列表
-            $.getJSON("../Ajax/sys_WeekArrivesManager.ashx?type=search", { "weekdate": signdate, "page": page, "weektown": town, "weekvid": vid }, function (msg) {
-                $("#weektbody").html("");
+            $.getJSON("../Ajax/sys_WeekArrivesManager.ashx?type=statis", { "wwdate": wwdate, "wwtown": town }, function (msg) {
+                $("#wwtbody").html("");
                 if (msg.total > 0) {
                     for (var i = 0; i < msg.rows.length; i++) {
-                        var s = "";
-                        s += "<tr>";
-                        s += "<td align=\"center\">" + msg.rows[i].SubscriberName + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>"
-                        //if(msg.rows[i].blSign)
-                        s += "<td align=\"center\">" + (msg.rows[i].blWeek == "true" ? "已拜访" : "未拜访") + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].ThingMessage + "</td>";
+                        var s = "<tr>";
+                        s += "<td align=\"center\">" + (i + 1) + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].Name + "</td>";
+                        s += "<td align=\"center\">" + msg.rows[i].TotalNumber + "</td>";
+                        s += "<td align=\"right\" style=\"border-right:1px solid #EBEBEB;padding-right；10px;\">" + msg.rows[i].HavNumber + "&nbsp;&nbsp;已走访</td>";
+                        s += "<td align=\"left\" style=\"padding-left；10px;\" >" + (msg.rows[i].TotalNumber * msg.workdays - msg.rows[i].HavNumber) + "&nbsp;&nbsp;未走访</td>";
+                        s += "<td align=\"center\">" + Math.floor((msg.rows[i].HavNumber / msg.rows[i].TotalNumber) * 100) + "%</td>";
                         s += "</tr>";
-                        $("#weektbody").append(s);
+                        $("#wwtbody").append(s);
                     }
-                    //console.info(msg.pageContent);
-                    $("#weekPageContent").html(msg.pageContent);
+
                 } else {
-                    $("#weekPageContent").html(msg.pageContent);
+                    $("#wwtbody").html("暂无统计记录");
                 }
             });
         }
 
         //加载有事马上到查询数据
-        function LoadThing(page) {
-            var thingdate = $("#thingdate").val();
-            var town = $("#thingtown").find("option:selected").val();
-            var vid = $("#thingvillage").find("option:selected").val();
+        function LoadThing() {
+            var twdate = $("#twdate").val();
+            var tmdate = $("#tmdate").val();
+            var rType = $("input[name='rblResponseType1']:checked").val();
+            var town = $("#twtown").find("option:selected").val();
+            if (rType == "0") {
+                $("#twtr th:first").html(getStart(twdate)+"&nbsp;&nbsp;至&nbsp;&nbsp;"+getEnd(twdate));
+            } else {
+                $("#twtr th:first").html(tmdate);
+            }
             //加载列表
-            $.getJSON("../Ajax/sys_ThingRecordManager.ashx?type=search", { "thingdate": thingdate, "page": page, "thingtown": town, "thingvid": vid }, function (msg) {
-                $("#thingtbody").html("");
+            $.getJSON("../Ajax/sys_ThingRecordManager.ashx?type=statis", { "twdate": twdate, "tmdate": tmdate, "twtown": town, "rtype": rType }, function (msg) {
+                $("#twtbody").html("");
                 if (msg.total > 0) {
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "";
                         s += "<tr>";
-                        s += "<td align=\"center\">" + (msg.rows[i].SubscriberName==""?msg.rows[i].ExtraName:msg.rows[i].SubscriberName) + "</td>";
+                        s += "<td align=\"center\">" + (i+1) + "</td>";
                         s += "<td align=\"center\">" + msg.rows[i].VillageName + "</td>";
-                        s += "<td align=\"center\">" + msg.rows[i].UserName + "</td>"
-                        s += "<td align=\"center\">"+msg.rows[i].ThingName+"</td>";
-                        //if(msg.rows[i].blSign)
-                        s += "<td align=\"center\">" + (msg.rows[i].ThingHaving == "是" ? "已经解决" : "还未解决") + "</td>";
-                        s += "<td align=\"center\"><a href=\"ThingInfo.html?tid="+msg.rows[i].ThingId+"\" title=\"查看详细\">详细</a></td>";
+                        s += "<td align=\"center\">" + "共&nbsp;&nbsp;"+msg.rows[i].TotalNumber+"&nbsp;&nbsp;件" + "</td>"
+                        s += "<td align=\"right\" style=\"border-right:1px solid #EBEBEB;padding-right:10px;\">" + msg.rows[i].HavNumber+"&nbsp;&nbsp;已处理" + "</td>";
+                        s += "<td align=\"left\" style=\"padding-left:10px;\">"+msg.rows[i].NoNumber+"&nbsp;&nbsp;未处理</td>";
                         s += "</tr>";
-                        $("#thingtbody").append(s);
+                        $("#twtbody").append(s);
                     }
-                    //console.info(msg.pageContent);
-                    $("#thingPageContent").html(msg.pageContent);
+                    
                 } else {
-                    $("#thingPageContent").html(msg.pageContent);
+                    $("#twbody").html("暂无记录");
                 }
             });
+        }
+
+        //获取周一日期
+        function getStart(nowTime) {
+            var now = new Date(nowTime);
+            var nowTime = now.getTime();
+            var day = now.getDay();
+            var oneDayLong = 24 * 60 * 60 * 1000;
+            var MondayTime = nowTime - (day - 1) * oneDayLong;
+            var monday = new Date(MondayTime);
+            var year = monday.getFullYear();
+            var month = monday.getMonth() + 1;
+            var day = monday.getDate();
+            //var day2 = monday.getDate() + 5;
+            var startTime = year + '-' + month + '-' + day;
+            return startTime;
+        }
+
+        //获取周日日期
+        function getEnd(nowTime) {
+            var now = new Date(nowTime);
+            var nowTime = now.getTime();//当前时间描述
+            var day = now.getDay();//获得星期几
+            var oneDayLong = 24 * 60 * 60 * 1000;//每天的秒数
+
+            var MondayTime = nowTime - (day - 1) * oneDayLong;
+            var monday = new Date(MondayTime);//得到周一
+            var sunday = monday;
+            sunday.setDate(monday.getDate() + 6);
+            console.info(sunday);
+            //var day2 = monday.getDate() + 5;
+            //if (day > 30) {
+            //    month = month + 1;
+            //    day2 = day2 - 30;
+            //}
+            var endTime = sunday.getFullYear() + '-' + (sunday.getMonth() + 1) + '-' + sunday.getDate();
+
+            return endTime;
         }
     </script>
 </body>

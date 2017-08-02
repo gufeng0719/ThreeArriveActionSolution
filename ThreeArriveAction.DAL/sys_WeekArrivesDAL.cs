@@ -170,6 +170,16 @@ namespace ThreeArriveAction.DAL
             DataSet ds = DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize,pageIndex,strSql.ToString(),fieldOrder));
             return ds; 
         }
+
+        public DataTable StatisWeekArrive(string strSql1,string strSql2)
+        {
+            DataTable dt = DbHelperSQL.Query(strSql1).Tables[0];
+            foreach(DataRow dr in dt.Rows)
+            {
+                dr["HavNumber"] = Convert.ToInt32(DbHelperSQL.GetSingle(strSql2+dr["Id"].ToString()));
+            }
+            return dt;
+        }
         #endregion
     }
 }

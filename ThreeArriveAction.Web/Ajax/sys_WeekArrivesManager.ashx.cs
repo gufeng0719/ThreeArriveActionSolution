@@ -31,6 +31,10 @@ namespace ThreeArriveAction.Web.Ajax
                 case "search":
                     SearchUserWeekArrive(context);
                     break;
+                case "statis":
+                    StatisWeekArrive(context);
+                    break;
+
             }
 
 
@@ -144,6 +148,35 @@ namespace ThreeArriveAction.Web.Ajax
 
             strJson.Append("}");
             context.Response.Write(strJson.ToString());
+        }
+
+        private void StatisWeekArrive(HttpContext context)
+        {
+            string wwdate = MXRequest.GetQueryString("wwdate");
+            int town = MXRequest.GetQueryInt("wwtown");
+            StringBuilder strSql1 = new StringBuilder();//统计本镇每个村七户总数
+            strSql1.Append("select COUNT(1) as TotalNumber,a.VillageId Id ,VillageName as Name,0 HavNumber");
+            strSql1.Append(" from sys_SubscriberFamily a inner join sys_Villages b on a.VillageId = b.VillageId ");
+            strSql1.Append(" where b.VillageParId="+town+" group by VillageName,a.VillageId");
+            StringBuilder strSql2 = new StringBuilder();//统计本村七户一周来走访人数
+            strSql2.Append("select count(1) as Number from sys_WeekArrives a ");
+            strSql2.Append("inner join sys_Users b on a.UserId = b.UserId  ");
+            strSql2.Append("where datepart(wk,WeekArriveDate) = datepart(wk,'" + wwdate + "') and ");
+            strSql2.Append(" b.VillageId =");
+            DataTable dt = weekBLL.StatisWeekArrive(strSql1.ToString(), strSql2.ToString());
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+dt.Rows.Count);
+            if (dt.Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":"+JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            strJson.Append(",\"workdays\":5");
+            strJson.Append("}");
+            context.Response.Output.Write(strJson.ToString());            
         }
 
         public bool IsReusable

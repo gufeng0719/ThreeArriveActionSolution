@@ -35,6 +35,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "edit":
                     GetThingModel(context);
                     break;
+                case "statis":
+                    StatisThingRecord(context);
+                    break;
             }
         }
 
@@ -210,6 +213,37 @@ namespace ThreeArriveAction.Web.Ajax
             }
             strJson.Append("}");
             context.Response.Output.Write(strJson.ToString());
+        }
+
+        private void StatisThingRecord(HttpContext context)
+        {
+            int type = MXRequest.GetQueryInt("rtype");
+            string strWhere = "";
+            int town = MXRequest.GetQueryInt("twtown");
+            if (type == 0)
+            {
+                //按周统计
+                string twdate = MXRequest.GetQueryString("twdate");
+                strWhere = " datepart(wk,ThingDate) = datepart(wk,'" + twdate + "')";
+            }
+            else
+            {
+                //按月统计
+                string tmdate = MXRequest.GetQueryString("tmdate");
+                strWhere = " Convert(varchar(7),ThingDate,23)='" + tmdate+"'";
+            }
+            DataTable dt = thingBLL.StatisThingRecord(town,strWhere);
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+dt.Rows.Count);
+            if (dt.Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":"+JsonHelper.ToJson(dt));
+            }
+            else {
+                strJson.Append(",\"rows\":[]");
+            }
+            strJson.Append("}");
+            context.Response.Write(strJson.ToString());
         }
 
         public bool IsReusable

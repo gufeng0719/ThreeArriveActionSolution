@@ -160,14 +160,18 @@ namespace ThreeArriveAction.DAL
         /// <param name="strSql1">用户统计语句</param>
         /// <param name="strSql2">早报道签到表统计语句/param>
         /// <returns></returns>
-        public DataSet StatisticsSign(string strSql1,string strSql2)
+        public DataTable StatisticsSign(string strSql1,string strSql2)
         {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append(strSql);
-            strSql.Append(";");
-            strSql.Append(strSql2);
-            DataSet ds = DbHelperSQL.Query(strSql.ToString());
-            return ds;
+            //得到基础的统计数据
+            DataTable dt = DbHelperSQL.Query(strSql1.ToString()).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                foreach(DataRow dr in dt.Rows)
+                {
+                    dr["HavNumber"] = Convert.ToInt32(DbHelperSQL.GetSingle(strSql2+dr["Id"].ToString()));
+                }
+            }
+            return dt;
         }
         #endregion
     }

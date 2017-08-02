@@ -35,6 +35,12 @@ namespace ThreeArriveAction.BLL
             DataSet ds = weekDAL.SearchWeekArrive(pageSize,pageIndex,strWhere1,strWhere2,fieldOrder,out recordCount);
             return ds;
         }
+
+        public DataTable StatisWeekArrive(string strSql1,string strSql2)
+        {
+            DataTable dt = weekDAL.StatisWeekArrive(strSql1, strSql2);
+            return dt;
+        }
         #endregion
     }
 }
