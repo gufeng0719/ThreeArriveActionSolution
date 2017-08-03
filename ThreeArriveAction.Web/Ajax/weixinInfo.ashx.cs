@@ -62,13 +62,13 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 aModel = GetAModel();
             }
-            var fromName = context.Request[""];
-            var toName = context.Request[""];
-            var toOpenId = context.Request[""];
-            var time = context.Request[""];
-            var title = context.Request[""];
-            var having = context.Request[""];
-            var res = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + aModel.Value,
+            var fromName = context.Request["obj[fromName]"];
+            var toName = context.Request["obj[toName]"];
+            var toOpenId = context.Request["obj[toOpenId]"];
+            var time = context.Request["obj[time]"];
+            var title = context.Request["obj[title]"];
+            var having = context.Request["obj[having]"];
+            var res = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=b4XSnZh4G2KW6CpHzQBsCDz0-G8KHnJFLVPMX54_vvHtP_CBhjNPqt774LmvGGaIAa0yYgh7xeUf34kWrM1OHpXjrBUCJUx_WkYJV6eJsMN1WRitRk96UjGqoBWNrL9ySDUhAGAEPG",
                                              new
                                              {
                                                  template_id = "H8N_H43s_RVHY9jtvEo7-9JKhr4rCUB8YrxFZ5ReQt8",

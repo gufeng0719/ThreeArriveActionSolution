@@ -44,7 +44,8 @@ function submit(callback) {
                                                 window.wx.getLocation({
                                                     type: 'gcj02',
                                                     success: function (res) {
-                                                        callback(paths, res.latitude, res.longitude);
+                                                        var gcj02tobd09 = coordtransform.gcj02tobd09(res.longitude, res.latitude);
+                                                        callback(paths, gcj02tobd09[1], gcj02tobd09[0]);
                                                     }, error: function () {
                                                         callback(paths, 0, 0);
                                                     }
@@ -60,7 +61,8 @@ function submit(callback) {
                                 window.wx.getLocation({
                                     type: 'gcj02',
                                     success: function (res) {
-                                        callback(paths, res.latitude, res.longitude);
+                                        var gcj02tobd09 = coordtransform.gcj02tobd09(res.longitude, res.latitude);
+                                        callback(paths, gcj02tobd09[1], gcj02tobd09[0]);
                                     }, error: function () {
                                         callback(paths, 0, 0);
                                     }

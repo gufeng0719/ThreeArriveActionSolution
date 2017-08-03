@@ -128,6 +128,7 @@
     <Content Include="scripts\element\element.css" />
     <Content Include="scripts\element\elemrnt.js" />
     <Content Include="scripts\weixin\appOfficer.js" />
+    <Content Include="scripts\weixin\convertCoord.js" />
     <Content Include="scripts\weixin\major.js" />
     <Content Include="scripts\weixin\majorInfo.js" />
     <Content Include="scripts\weixin\openInfo.js" />
