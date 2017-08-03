@@ -530,7 +530,7 @@ namespace ThreeArriveAction.Web.Ajax
                     img = x.UserPhoto,
                     phone = x.UserPhone,
                     duty = x.UserDuties,
-                    village = villageList.FirstOrDefault(v => v.VillageId == villageModel?.VillageParId)?.VillageName ?? "淮安" + "--" + villageModel?.VillageName
+                    village = (villageList.FirstOrDefault(v => v.VillageId == villageModel?.VillageParId)?.VillageName ?? "淮安") + "--" + villageModel?.VillageName
                 });
             }
             context.Response.Write(new
@@ -547,7 +547,7 @@ namespace ThreeArriveAction.Web.Ajax
             public string UserPhoto { get; set; } = string.Empty;
             public string UserPhone { get; set; } = string.Empty;
             public string UserName { get; set; } = string.Empty;
-            public int VillageId { get; set; } 
+            public int VillageId { get; set; }
             public string UserDuties { get; set; } = string.Empty;
         }
 

@@ -37,13 +37,13 @@
     },
     watch: {
         ddlvillage: function (newValue) {
-            if (newValue < 1) return
-            this.isNotMore = false;
             this.list = [];
+            if (newValue < 1) {
+                this.isNotMore = true;
+                return
+            }
+            this.isNotMore = false;
             this.getpage(1);
         }
-    },
-    mounted: function () {
-
     }
 });

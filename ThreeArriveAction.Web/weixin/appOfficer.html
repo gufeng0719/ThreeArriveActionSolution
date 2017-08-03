@@ -49,10 +49,15 @@
                     </tr>
                 </template>
                 <tr v-if="isNotMore" style="height: 40px">
-                    <td colspan="2">
-                        <div style="text-align: center">
-                            <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
-                        </div>
+                <td colspan="2">
+                    <div style="text-align: center">
+                        <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                    </div>
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="height: 45px"></div>
                     </td>
                 </tr>
                 <tr>
