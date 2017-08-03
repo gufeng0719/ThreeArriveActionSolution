@@ -143,7 +143,7 @@ namespace ThreeArriveAction.Web.Ajax
             public int ReadUserId { get; set; }
             public string MajorContent { get; set; } = string.Empty;
         }
-
+        
         public bool IsReusable
         {
             get

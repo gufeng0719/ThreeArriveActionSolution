@@ -64,6 +64,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "getUsersByVillage":
                     GetUsersByVillage(context);
                     break;
+                case "getUserPage":
+                    GetUserPage(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -494,6 +497,59 @@ namespace ThreeArriveAction.Web.Ajax
         }
 
         #endregion
+
+        private void GetUserPage(HttpContext context)
+        {
+            var village = context.Request["ddlvillage"].ToInt();
+
+            var page = context.Request["page"].ToInt();
+            var sh = new SqlHelper<UserInfo>(new UserInfo(), "UserId", "UserId", "sys_Users")
+            {
+                PageConfig = new PageConfig
+                {
+                    PageSortField = "OrganizationId",
+                    PageSize = context.Request["size"].ToInt(),
+                    PageIndex = page,
+                    SortEnum = SortEnum.Asc
+                },
+                Alia = "u"
+            };
+            sh.AddShow("i.UserPhoto,u.UserId,u.UserPhone,u.UserName,u.UserDuties,u.VillageId");
+            sh.AddWhere("u.VillageId", village);
+            sh.AddJoin(" LEFT JOIN sys_UsersInfo as i ON i.UserId = u.UserId");
+            var list = sh.Select();
+            var villageList = DataConfig.GetVillages();
+            var arr = new ArrayList();
+            foreach (var x in list)
+            {
+                var villageModel = villageList.FirstOrDefault(v => x.VillageId == v.VillageId);
+                arr.Add(new
+                {
+                    id = x.UserId,
+                    name = x.UserName,
+                    img = x.UserPhoto,
+                    phone = x.UserPhone,
+                    duty = x.UserDuties,
+                    village = villageList.FirstOrDefault(v => v.VillageId == villageModel?.VillageParId)?.VillageName ?? "淮安" + "--" + villageModel?.VillageName
+                });
+            }
+            context.Response.Write(new
+            {
+                list = arr,
+                page,
+                sql = sh.SqlString.ToString(),
+            }.ToJson());
+        }
+
+        class UserInfo
+        {
+            public int UserId { get; set; }
+            public string UserPhoto { get; set; } = string.Empty;
+            public string UserPhone { get; set; } = string.Empty;
+            public string UserName { get; set; } = string.Empty;
+            public int VillageId { get; set; } 
+            public string UserDuties { get; set; } = string.Empty;
+        }
 
         public bool IsReusable
         {

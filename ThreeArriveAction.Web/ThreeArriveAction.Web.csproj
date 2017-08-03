@@ -127,6 +127,7 @@
     <Content Include="images\weixin\重要信息.png" />
     <Content Include="scripts\element\element.css" />
     <Content Include="scripts\element\elemrnt.js" />
+    <Content Include="scripts\weixin\appOfficer.js" />
     <Content Include="scripts\weixin\major.js" />
     <Content Include="scripts\weixin\majorInfo.js" />
     <Content Include="scripts\weixin\openInfo.js" />
@@ -1387,6 +1388,7 @@
     <Content Include="scripts\weixin\jweixin-1.2.0.js" />
     <Content Include="scripts\weixin\sign.js" />
     <Content Include="weixin\appIndex.html" />
+    <Content Include="weixin\appOfficer.html" />
     <Content Include="weixin\image.html" />
     <Content Include="weixin\integral.html" />
     <Content Include="weixin\integralInfo.html" />

@@ -13,13 +13,12 @@ function getRequest() {
 }
 req = getRequest();
 
-sendTemplateMsg = function (openId, obj, callback) {
+sendTemplateMsg = function (obj, callback) {
     $.ajax({
         type: "post",
         url: "../Ajax/weixinInfo.ashx",
         data: {
             type: "sendTemplateMsg",
-            openId: openId,
             obj: obj
         },
         complete: function (d) {
@@ -30,14 +29,13 @@ sendTemplateMsg = function (openId, obj, callback) {
 
 
 var scrolled = false;
-/*下拉加载*/
-window.onscroll = function () {
+// 下拉加载
+window.onscroll = function() {
     event.stopPropagation()
     if (!scrolled && typeof (vm) !== "undefined") {
         var t = document.documentElement.scrollTop || document.body.scrollTop;
         var t1 = t + $(window).height();
         var h = document.body.scrollHeight;
-        console.log({ t: t, t1: t1, h: h });
         if (!scrolled) {
             //下拉加载
             if (t1 >= h - 30) {
