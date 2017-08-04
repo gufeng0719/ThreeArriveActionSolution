@@ -187,15 +187,15 @@ a {
     }
 
 .header {
-    background: #33B5E5;
+    background: black;
 }
 
 .logo {
     display: block;
     float: left;
     width: 180px;
-    height: 42px;
-    border-right: 1px solid #1da0d0;
+    height: 32px;
+    border-right: 1px solid black;
     text-indent: -9999px;
     overflow: hidden;
 }
@@ -204,7 +204,7 @@ a {
     display: block;
     float: left;
     height: 100%;
-    border-right: 1px solid #4dc4f0;
+    border-right: 1px solid black;
 }
 
     .nav li {
@@ -212,8 +212,8 @@ a {
         float: left;
         margin: 0;
         padding: 0px 15px;
-        border-left: 1px solid #4dc4f0;
-        border-right: 1px solid #1da0d0;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
         color: #fff;
         cursor: pointer;
         font-size: 14px;
@@ -289,7 +289,7 @@ a {
         padding: 0 10px 0 34px;
         height: 42px;
         line-height: 42px;
-        border-right: 1px solid #1da0d0;
+        border-right: 1px solid black;
         background: url(skin_icons.png) no-repeat 0 -429px;
     }
 
@@ -308,8 +308,8 @@ a {
         float: left;
         padding: 0 15px;
         height: 42px;
-        border-left: 1px solid #4dc4f0;
-        background: #16a0d3;
+        border-left: 1px solid black;
+        background: black;
     }
 
         .nav-right .icon-option i {

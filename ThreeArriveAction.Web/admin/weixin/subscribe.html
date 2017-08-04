@@ -10,13 +10,6 @@
 <body class="mainbody">
     <form id="form1">
         <!--导航栏-->
-        <div class="location" style="display:none;">
-            <a href="javascript:;" class="home">
-                <i></i><span>
-                <label id="postion"></label>
-                </span>
-            </a>
-        </div>
         <div class="line10"></div>
         <!--/导航栏-->
         <!--内容-->
@@ -42,7 +35,7 @@
                 <dd>
                     <div class="rule-multi-radio">
                         <input type="radio" id="rblResponseType_0" name="rblResponseType" value="0" /><label for="rblResponseType_0">文本</label>
-                        <input type="radio" id="rblResponseType_1" name="rblResponseType" value="1" /><label for="rblResponseType_1">图文</label>
+                        <input type="radio" id="rblResponseType_1" name="rblResponseType" value="1" /><label for="rblResponseType_1">图片</label>
                         <input type="radio" id="rblResponseType_2" name="rblResponseType" value="2" /><label for="rblResponseType_2">语音</label>
                     </div>
                 </dd>
@@ -79,37 +72,23 @@
             </dl>
 
             <dl class="picnews" style="display: none;">
-                <dt></dt>
+                <dt>上传图片</dt>
                 <dd>
-                    <a id="itemAddButton" class="icon-btn add"><i></i><span>添加内容</span></a>
-                    <span class="Validform_checktip"></span>
+                    <input type="text" id="txtImageUrl" class="input normal upload-path" />
+                    <div class="upload-box upload-img1"></div>
+                    <span class="Validform_checktip">*支持jpg,png,bmp格式,但不支持gif格式，可以填写网上的链接，也可以本地上传！</span>
                 </dd>
             </dl>
-
             <dl class="picnews" style="display: none;">
-                <dt></dt>
                 <dd>
-                    <table border="0" cellspacing="0" cellpadding="0" class="border-table" width="98%">
-                        <thead>
-                            <tr>
-                                <th width="20%">图片</th>
-                                <th width="40%">标题</th>
-                                <th width="25%">链接</th>
-                                <th width="5%">排序</th>
-                                <th width="10%">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="var_box">
-                            
-                        </tbody>
-                    </table>
+                    <img id="picUrl" style="width:200px; height:200px;" />
                 </dd>
             </dl>
         </div><!--/内容-->
         <!--工具栏-->
         <div class="page-footer" id="div_gongju">
             <div class="btn-list">
-                <button type="submit" id="btnSubmit" class="btn">提交保存</button>
+                <button type="button" id="btnSubmit" class="btn">提交保存</button>
             </div>
             <div class="clear"></div>
         </div>
@@ -144,21 +123,8 @@
                         $("#txtContent").val(msg.txtContent);
                         $(".wenben").show();
                     } else if (msg.responseType == 1) {
-                        if (msg.rows.length > 0) {
-                            $("#var_box").html("");
-                            for (var i = 0; i < msg.rows.length; i++) {
-                                var str = "<tr>";
-                                str += "<td><img id='img" + i + "' width='50px' height='50px' stryle='max-height:50px;max-width:100px; width:50px;height:50px;' src='" + msg.rows[i].picUrl + "' /></td>";
-                                str += "<td>" + msg.rows[i].rContent + "</td>";
-                                str += "<td>" + msg.rows[i].detailUrl + "</td>";
-                                str += "<td>" + msg.rows[i].seq + "</td>";
-                                str += "<td><a title='编辑' href='javascript:showGuiZeDialog("+msg.rows[i].id+")'>编辑</a>&nbsp;&nbsp;<a title='删除' href='javascript:Delete("+msg.rows[i].id+")'>删除</a></td>";
-                                str += "</tr>";
-                                $("#var_box").append(str);
-                            }
-                        }
+                        $("#picUrl").attr("src", msg.imgFile);
                         $(".picnews").show();
-                        $("#div_gongju").hide();
                     } else {
                         $("#txtMusicTitle").val(msg.musicTitle);
                         $("#txtMusicUrl").val(msg.musicFile);
@@ -167,12 +133,21 @@
                     }
                 }
             });
-           
+
             //初始化上传控件
             $(".upload-img").each(function () {
                 $(this).InitSWFUpload({ sendurl: "../../Ajax/upload_ajax.ashx", flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpge;*.png;*.gif;*.rar;*.zip;*.doc;*.xls;*.mp3;*.mp4" });
             });
+            //初始化上传控件
+            $(".upload-img1").each(function () {
+                $(this).InitSWFUpload({ sendurl: "../../Ajax/upload_ajax.ashx", flashurl: "../../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpge;*.png" });
+            });
 
+            $("#txtImageUrl").change(function () {
+                $("#picUrl").attr("src", $(this).val());
+            });
+
+            
             $("input[name='rblResponseType']").click(function () {
                 console.info($(this).val());
                 if ($(this).val() == "0") {
@@ -180,22 +155,20 @@
                     $(".wenben").show();
                     $(".music").hide();
                     $(".picnews").hide();
-                    $("#div_gongju").show();
+
                 }
                 else if ($(this).val() == "1") {
                     //图文
                     $(".picnews").show();
                     $(".music").hide();
                     $(".wenben").hide();
-                    $("#div_gongju").hide();
-
                 }
                 else if ($(this).val() == "2") {
                     //语音
                     $(".wenben").hide();
                     $(".music").show();
                     $(".picnews").hide();
-                    $("#div_gongju").show();
+
                 }
 
             });
@@ -203,19 +176,25 @@
             $("#form1").initValidform();
             $("#btnSubmit").click(function () {
                 var rType = $("input[name='rblResponseType']:checked").val();
-
-                if (rType == "0") {
+                if (rType == "0") {//文本回复
                     var txtContent = $("#txtContent").val();
-
                     if ($.trim(txtContent) == "") {
                         $.dialog.alert("请填写内容");
                         return false;
                     }
-
+                }
+                if (rType == "1") {
+                    //图片回复
+                    var txtImgFile = $("#txtImageUrl").val();
+                    if ($.trim(txtImgFile) == "") {
+                        $.dialog.alert("请填写图片链接");
+                        return false;
+                    }
                 }
                 if (rType == "2") {
+                    //语音回复
                     var txtMusicTitle = $("#txtMusicTitle").val();
-                    var txtMusicFile = $("#txtMusicFile").val();
+                    var txtMusicFile = $("#txtMusicUrl").val();
 
                     if ($.trim(txtMusicTitle) == "") {
                         $.dialog.alert("请填写音乐标题");
@@ -231,66 +210,31 @@
                 var data = {
                     requestType: $("#lblreqestType").text(),
                     txtContent: $("#txtContent").val(),
-                    txtMusicTitle : $("#txtMusicTitle").val(),
-                    txtMusicFile :$("#txtMusicFile").val(),
+                    txtMusicTitle: $("#txtMusicTitle").val(),
+                    txtMusicFile: $("#txtMusicUrl").val(),
                     txtMusicRemark: $("#txtMusicRemark").val(),
+                    txtImgFile: $("#txtImageUrl").val(),
                     rId: $("#hidId").val(),
-                    responseType:$("input[name='rblResponseType']:checked").val()
+                    responseType: $("input[name='rblResponseType']:checked").val()
 
                 };
-                $.post('../../Ajax/wxrequestRulesManager.ashx?type=save',data, function (msg) {
+                $.post('../../Ajax/wxrequestRulesManager.ashx?type=save', data, function (msg) {
                     var result = $.parseJSON(msg);
-                    if (reg.status == "y") {
-                        alert(reg.info);
+                    if (result.status == "y") {
+                        alert(result.info);
                         window.location.reload();
                     } else {
-                        alert(reg.info);
+                        alert(result.info);
                     }
                 });
             });
-
-            //图文添加按钮
-            $("#itemAddButton").click(function () {
-                showGuiZeDialog(0);
-            });
-
         });
-
-        //创建图文的窗口
-        function showGuiZeDialog(id) {
-
-            var rid = $("#hidId").val();
-            var act = $("#lblreqestType").text();
-
-            var contenturl = "";
-            if (id == 0) {
-                contenturl = "url:weixin/addNews.html?option=add&rid=" + rid + "&act=" + act;
-            }
-            else {
-                contenturl = "url:weixin/addNews.html?option=edit&rid=" + rid + "&id=" + id + "&act=" + act;
-            }
-            var m = $.dialog({
-                id: 'dialogGuiZe',
-                fixed: true,
-                lock: true,
-                max: false,
-                min: false,
-                title: "添加回复规则",
-                content: contenturl,
-                height: 420,
-                width: 750,
-
-                close: function () {
-                    this.reload();
-                }
-            });
-        }
 
         //执行回传函数
         function Delete(id) {
             $.post("../../Ajax/wxrequestRulesManager.ashx?type=delete", { id: id }, function (msg) {
                 var result = $.parseJSON(msg);
-                if (msg && msg.status == "y") {
+                if (result && result.status == "y") {
                     window.location.reload();
                 }
             });

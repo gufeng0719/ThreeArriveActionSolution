@@ -20,6 +20,7 @@ using System.Web.Configuration;
 using Senparc.Weixin.MP.Agent;
 using Senparc.Weixin.Context;
 using Senparc.Weixin.Exceptions;
+
 using Senparc.Weixin.Helpers;
 using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Request;
@@ -52,16 +53,11 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
         wx_requestRuleContentBLL rcBll = new wx_requestRuleContentBLL();
         WeiXCommFun wxcomm = new WeiXCommFun();
 
-#if DEBUG
+
         string agentUrl = "http://wx.haqdj.gov.cn/Ajax/token_ajax.ashx";
         string agentToken = "Token2017";
         string wiweihiKey = "jtU2xBgEnE8bQayvnpLR0KAp9JcmypG2Eq4J3qmSfQp";
-        #else
-        //下面的Url和Token可以用其他平台的消息，或者到www.weiweihi.com注册微信用户，将自动在“微信营销工具”下得到
-        private string agentUrl = WebConfigurationManager.AppSettings["WeixinAgentUrl"];//这里使用了www.weiweihi.com微信自动托管平台
-        private string agentToken = WebConfigurationManager.AppSettings["WeixinAgentToken"];//Token
-        private string wiweihiKey = WebConfigurationManager.AppSettings["WeixinAgentWeiweihiKey"];//WeiweihiKey专门用于对接www.Weiweihi.com平台，获取方式见：http://www.weiweihi.com/ApiDocuments/Item/25#51
-        #endif
+        
 
         private string appId = WebConfigurationManager.AppSettings["AppId"];
         private string appSecret = WebConfigurationManager.AppSettings["AppSecret"];

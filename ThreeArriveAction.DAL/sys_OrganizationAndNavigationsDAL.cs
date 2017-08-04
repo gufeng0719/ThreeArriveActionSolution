@@ -51,6 +51,7 @@ namespace ThreeArriveAction.DAL
             strSql.Append("select Id,OrganizationId,NavigationId ");
             strSql.Append(" from sys_OrganizationANDNavigations ");
             strSql.Append(" where OrganizationId=@OrganizationId ");
+            strSql.Append(" order by NavigationId ASC ");
             SqlParameter[] parameters ={
                                          new SqlParameter("@OrganizationId",SqlDbType.Int,4)
                                      };

@@ -10,7 +10,19 @@
   <span id='hoursa'></span>小时
   <span id='minua'></span>分
   <span id='secoa'></span>秒
+  <button id="btnTest" > 测试</button>
 </div>
+   <script src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script>
+        $(function () {
+            $("#btnTest").click(function () {
+                $.post("../Ajax/token_ajax.ashx", { signature: '2042aa7b03619332695a5022ed5298497d1125fc', timestamp: '1501821059', nonce: '1505235558', echostr: '' }, function (msg) {
+                    console.info(msg);
+                });
+            });
+        });
+
+    </script>
 <script type="text/javascript">
     /**
     *

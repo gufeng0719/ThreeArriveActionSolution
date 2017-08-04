@@ -27,6 +27,10 @@ namespace ThreeArriveAction.BLL
             DataSet ds = uIDAL.GetList(pageSize, PageIndex, strWhere, filedOrder, out recordCount);
             return ds;
         }
+        public DataTable UserIntergralsChart(int town,int year,int month)
+        {
+            return uIDAL.UserIntergralsChart(town, year, month);
+        }
         #endregion
     }
 }

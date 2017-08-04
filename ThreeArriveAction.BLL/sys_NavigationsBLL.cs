@@ -45,10 +45,22 @@ namespace ThreeArriveAction.BLL
        }
         #endregion
         #region 删除
+        public string DeleteNavigation(string ids)
+        {
+            int number = navDAL.DeleteNavigation(ids);
+            if (number > 0)
+            {
+                return "{\"info\":\"菜单删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"菜单删除失败\",\"status\":\"n\"}";
+            }
+        }
         #endregion
         #region 查询
 
-       public int GetNavLayer(int parentId)
+        public int GetNavLayer(int parentId)
        {
            return navDAL.GetNavLayer(parentId);
        }

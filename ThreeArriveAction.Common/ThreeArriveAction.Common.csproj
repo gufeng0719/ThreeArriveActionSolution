@@ -81,6 +81,7 @@
     <Compile Include="ThumbnailByLp.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="WaterMark.cs" />
+    <Compile Include="WxMessage.cs" />
     <Compile Include="XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +90,8 @@
     <Content Include="Reference\Newtonsoft.Json.dll" />
     <Content Include="Reference\Senparc.Weixin.dll" />
     <Content Include="Reference\Senparc.Weixin.MP.dll" />
+    <Content Include="Reference\Senparc.Weixin.MP.XML" />
+    <Content Include="Reference\Senparc.Weixin.XML" />
     <Content Include="Reference\SqlHelper.dll" />
     <Content Include="Reference\SqlHelper.XML" />
   </ItemGroup>

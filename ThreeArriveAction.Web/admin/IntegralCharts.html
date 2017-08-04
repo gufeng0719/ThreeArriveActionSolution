@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>积分统计</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>积分统计</span>
+        </div>
+        <!--/导航栏-->
+        <!-- 内容 -->
+        <!-- Tab标签栏-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabsAndLoad(this);" class="selected">积分统计</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Tab标签栏-->
+        <!--积分统计-->
+        <div class="tab-content">
+            <!-- 工具栏-->
+            <div class="toolbar-wrap">
+                <div id="floatHead" class="toolbar">
+                    <div class="r-list">
+                        <div class="menu-list" style="display: inline-block; float: left;">
+                            <div class="input-date">
+                                <input type="text" id="sdate" name="sdate" onfocus="WdatePicker({dateFmt:'yyyy-MM'})"
+                                       class="input date" />
+                                <i>日期</i>
+                            </div>
+                            <div class="single-select" name="divtown">
+                                <select id="town" name="town"></select>
+                            </div>
+                        </div>
+                        <input type="button" id="btnSearch" class="btn-search" value="统计" />
+                    </div>
+                </div>
+            </div>
+            <!-- /工具栏-->
+            <!--图表-->
+            <div class="line10">
+            </div>
+            <div id="charts" style="width:1000px; height:600px;margin:10px auto;padding:0;"></div>
+            <!--/图标-->
+        </div>
+        <!--/积分统计-->
+    </form>
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../../scripts/datepicker/WdatePicker.js"></script>
+    <script src="../scripts/echarts.min.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript">
+        Date.prototype.format = function (format) {
+            var args = {
+                "M+": this.getMonth() + 1, "d+": this.getDate(), "h+": this.getHours(), "m+": this.getMinutes(), "s+": this.getSeconds(), "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+                "S": this.getMilliseconds()
+            }; if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); for (var i in args) { var n = args[i]; if (new RegExp("(" + i + ")").test(format)) format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? n : ("00" + n).substr(("" + n).length)); } return format;
+        };
+
+        $(function () {
+            $("#sdate").val(new Date().format("yyyy-MM"));
+            //加载乡镇数据
+
+            $.getJSON('../../Ajax/sys_VillagesManager.ashx?type=getpar', { parid: 1 }, function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].VillageId + ">" + msg.rows[i].VillageName + "</option>";
+                    $("#town").append(s);
+                }
+                $("div[name='divtown']").ruleSingleSelect().addClass("rule-single-select");
+               
+            });
+            //执行统计事件
+            $("#btnSearch").click(function () {
+                Load();
+            });
+           
+        });
+
+        //加载用户积分统计数据
+        function Load() {
+            var sdate = $("#sdate").val();
+            var town = $("#town").find("option:selected").val();
+            //加载列表
+            $.getJSON("../Ajax/sys_UserIntegralsManager.ashx?type=chart", { "sdate": sdate, "town": town }, function (msg) {
+                if (msg.total > 0) {
+                    var xData = [];
+                    var yData = [];
+                    for (var i = 0; i < msg.rows.length; i++) {
+                        xData.push(msg.rows[i].VillageName);
+                        yData.push(msg.rows[i].AvgIntergral);
+                    }
+                    option.series[0].data = yData;
+                    option.xAxis[0].data = xData;
+                    option.title.text = sdate + " " + $("#town").find("option:selected").text() + "镇(街道)各村平均积分";
+                    myChart.setOption(option);
+                    //console.info(msg.pageContent);
+                    
+                } else {
+                    
+                }
+            });
+        }
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('charts'));
+
+        // 指定图表的配置项和数据
+        option = {
+            title: {
+                text:''
+            },
+            color: ['#3398DB'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: [],
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '平均分',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: []
+                }
+            ]
+        };
+    </script>
+</body>
+</html>

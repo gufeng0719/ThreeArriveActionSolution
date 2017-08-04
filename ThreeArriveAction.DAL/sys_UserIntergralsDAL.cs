@@ -61,6 +61,22 @@ namespace ThreeArriveAction.DAL
             recordCount = Convert.ToInt32(DbHelperSQL.GetSingle(PagingHelper.CreateCountingSql(strSql.ToString())));
             return DbHelperSQL.Query(PagingHelper.CreatePagingSql(recordCount, pageSize, pageIndex, strSql.ToString(), filedOrder));
         }
+
+        public DataTable UserIntergralsChart(int town,int year,int month)
+        {
+            string strSql1 = "select VillageId,VillageName,0 as AvgIntergral from sys_Villages where VillageParId=" + town;
+            DataTable dt = DbHelperSQL.Query(strSql1).Tables[0];
+            foreach (DataRow dr in dt.Rows)
+            {
+                string strSql2 = "select count(1) from sys_Users where VillageId="+dr["VillageId"].ToString();
+                int unumber =Convert.ToInt32( DbHelperSQL.GetSingle(strSql2));//该村总人数
+                string strSql3 = "select sum(IntegralScore)  from sys_UserIntegrals a left join sys_Users b on a.UserId =b.UserId";
+                strSql3+=" where IntegralYear = "+year+" and IntegralMonth ="+month+" and b.VillageId ="+dr["VillageId"].ToString();
+                int suminter = Convert.ToInt32(DbHelperSQL.GetSingle(strSql3));
+                dr["AvgIntergral"] = suminter / unumber;
+            }
+            return dt;
+        }
         #endregion
     }
 }

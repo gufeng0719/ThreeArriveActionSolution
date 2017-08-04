@@ -21,8 +21,8 @@ using Senparc.Weixin.MP.Helpers;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP;
 using ThreeArriveAction.WeiXinComm.Utilities;
-using System.Threading.Tasks;
-using ThreeArriveAction.DAL;
+using ThreeArriveAction.BLL;
+using ThreeArriveAction.Model;
 
 namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
 {
@@ -31,15 +31,57 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
     /// </summary>
     public partial class CustomMessageHandler
     {
-        private string  GetWelcomeInfo()
-        {
-            //获取Senparc.Weixin.MP.dll版本信息
-            var fileVersionInfo = FileVersionInfo.GetVersionInfo(HttpContext.Current.Server.MapPath("~/bin/Senparc.Weixin.MP.dll"));
-            var version = string.Format("{0}.{1}.{2}", fileVersionInfo.FileMajorPart, fileVersionInfo.FileMinorPart, fileVersionInfo.FileBuildPart);
-            return string.Format(@"",version);
-            
-        }
+        //获取数据库中关注回复内容
+        //private string GetWelcomeInfo()
+        //{
+        //    IResponseMessageBase reponseMessage = null;
+        //    wx_requestRuleBLL rBLL = new wx_requestRuleBLL();
+        //    wx_requestRuleContentBLL rcBLL = new wx_requestRuleContentBLL();
+        //    wx_requestRuleModel rModel = rBLL.GetModelList(" reqestType=6 and wId=1")[0];
+        //    wx_requestRuleContentModel rcModel = rcBLL.GetModelList(" rId="+rModel.id)[0];
+        //    if (rModel.responseType == 1)//文本回复
+        //    {
+        //        var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
+        //        reponseMessage = strongResponseMessage;
+        //        strongResponseMessage.Content = rcModel.rContent ;
+        //    }
+        //    else if(rModel.responseType==2)//图片回复
+        //    {
+        //        var accessToken = Senparc.Weixin.MP.Containers.AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+        //        var uploadResult = Senparc.Weixin.MP.AdvancedAPIs.MediaApi.UploadTemporaryMedia(accessToken, UploadMediaFileType.image,
+        //                                                     Server.GetMapPath("~/"+rcModel.picUrl));
+        //        //设置图片信息
+        //        var strongResponseMessage = CreateResponseMessage<ResponseMessageImage>();
+        //        reponseMessage = strongResponseMessage;
+        //        strongResponseMessage.Image.MediaId = uploadResult.media_id;
 
+        //    }
+        //    else if (rModel.responseType == 3)
+        //    {
+        //        //音频回复
+        //        //上传缩略图
+        //        var accessToken = Senparc.Weixin.MP.Containers.AccessTokenContainer.TryGetAccessToken(appId, appSecret);
+        //        var uploadResult = Senparc.Weixin.MP.AdvancedAPIs.MediaApi.UploadTemporaryMedia(accessToken, UploadMediaFileType.thumb,
+        //                                                     Server.GetMapPath("~/"+rcModel.picUrl));
+        //        //设置音乐信息
+        //        var strongResponseMessage = CreateResponseMessage<ResponseMessageMusic>();
+        //        reponseMessage = strongResponseMessage;
+        //        strongResponseMessage.Music.Title = "欢迎关注";
+        //        strongResponseMessage.Music.Description = "欢迎关注";
+        //        strongResponseMessage.Music.MusicUrl = "http://wx.haqdj.gov.cn/"+rcModel.mediaUrl;
+        //        strongResponseMessage.Music.HQMusicUrl = "http://wx.haqdj.gov.cn/"+rcModel.meidaHDUrl;
+        //        strongResponseMessage.Music.ThumbMediaId = uploadResult.thumb_media_id;
+        //    }
+        //    return reponseMessage;
+        //}
+        private string GetWelecomeInfo()
+        {
+            return string.Format(
+                    @"凝聚党群心，问计富民路,携手奔小康。
+                    
+                    欢迎关注“淮安区三到行动”！"
+                      );
+        }
 
         public override IResponseMessageBase OnTextOrEventRequest(RequestMessageText requestMessage)
         {
@@ -197,7 +239,7 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
                 case "Description":
                     {
                         var strongResponseMessage = CreateResponseMessage<ResponseMessageText>();
-                        strongResponseMessage.Content = GetWelcomeInfo();
+                        strongResponseMessage.Content = "欢迎关注";
                         reponseMessage = strongResponseMessage;
                     }
                     break;
@@ -275,8 +317,9 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
         {
             //通过扫描关注
             var responseMessage = CreateResponseMessage<ResponseMessageText>();
+            responseMessage.Content = GetWelecomeInfo();
 
-            //下载文档
+            ////下载文档
             //if (!string.IsNullOrEmpty(requestMessage.EventKey))
             //{
             //    var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
@@ -293,7 +336,7 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
             //    }
             //}
 
-            //responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
+            // responseMessage.Content = responseMessage.Content ?? string.Format("通过扫描二维码进入，场景值：{0}", requestMessage.EventKey);
 
 
 
@@ -331,37 +374,13 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
         /// <returns></returns>
         public override IResponseMessageBase OnEvent_SubscribeRequest(RequestMessageEvent_Subscribe requestMessage)
         {
+            
             var responseMessage = ResponseMessageBase.CreateFromRequestMessage<ResponseMessageText>(requestMessage);
-            responseMessage =(ResponseMessageText)EventProcess(6,requestMessage);
-            if (!string.IsNullOrEmpty(requestMessage.EventKey))
-            {
-                responseMessage.Content += "\r\n============\r\n场景值：" + requestMessage.EventKey;
-            }
-
-            //推送消息
-            //下载文档
-            //if (requestMessage.EventKey.StartsWith("qrscene_"))
+            responseMessage.Content = GetWelecomeInfo();
+            //if (!string.IsNullOrEmpty(requestMessage.EventKey))
             //{
-            //    var sceneId = long.Parse(requestMessage.EventKey.Replace("qrscene_", ""));
-            //    //var configHelper = new ConfigHelper(new HttpContextWrapper(HttpContext.Current));
-            //    var codeRecord =
-            //        ConfigHelper.CodeCollection.Values.FirstOrDefault(z => z.QrCodeTicket != null && z.QrCodeId == sceneId);
-
-            //    if (codeRecord != null)
-            //    {
-            //        if (codeRecord.AllowDownload)
-            //        {
-            //            Task.Factory.StartNew(() => AdvancedAPIs.CustomApi.SendTextAsync(null, WeixinOpenId, "下载已经开始，如需下载其他版本，请刷新页面后重新扫一扫。"));
-            //        }
-            //        else
-            //        {
-            //            //确认可以下载
-            //            codeRecord.AllowDownload = true;
-            //            Task.Factory.StartNew(() => AdvancedAPIs.CustomApi.SendTextAsync(null, WeixinOpenId, GetDownloadInfo(codeRecord)));
-            //        }
-            //    }
+            //    responseMessage.Content += "\r\n============\r\n场景值：" + requestMessage.EventKey;
             //}
-
 
             return responseMessage;
         }
@@ -480,54 +499,6 @@ namespace ThreeArriveAction.WeiXinComm.CustomMessageHandler
             //return requestMessage
             //    .CreateResponseMessage<ResponseMessageNoResponse>();
             return null;
-        }
-
-        private IResponseMessageBase EventProcess(int type, RequestMessageEventBase requestMessage)
-        {
-            
-            string EventName = "";
-            if (requestMessage.Event.ToString().Trim() != "")
-            {
-                EventName = requestMessage.Event.ToString();
-            }
-            
-
-            //if (!wxcomm.ExistApiidAndWxId(1, requestMessage.ToUserName))
-            //{  //验证接收方是否为我们系统配置的帐号，即验证微帐号与微信原始帐号id是否一致，如果不一致，说明【1】配置错误，【2】数据来源有问题
-            //    wxResponseBaseMgrDAL.Add(1, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "none", "未取到关键词对应的数据", requestMessage.ToUserName);
-            //    return wxcomm.GetResponseMessageTxtByContent(requestMessage, "验证微帐号与微信原始帐号id不一致，可能原因【1】系统配置错误，【2】非法的数据来源", 1);
-            //}
-
-
-            int responseType = 0;
-            int rid = rBll.GetRuleIdAndResponseType(1, "reqestType=" + type, out responseType);  //取消关注
-            if (rid <= 0 || responseType <= 0)
-            {
-                wxResponseBaseMgrDAL.Add(1, requestMessage.FromUserName, requestMessage.MsgType.ToString(), EventName, "none", "未取到关键词对应的数据", requestMessage.ToUserName);
-                return null;
-            }
-
-            IResponseMessageBase reponseMessage = null;
-            switch (responseType)
-            {
-                case 1:
-                    //发送纯文字
-                    reponseMessage = wxcomm.GetResponseMessageTxt(requestMessage, rid, 1);
-                    break;
-                case 2:
-                    //发送多图文
-                    reponseMessage = wxcomm.GetResponseMessageNews(requestMessage, rid, 1);
-                    break;
-                case 3:
-                    //发送语音
-                    reponseMessage = wxcomm.GetResponseMessageeMusic(requestMessage, rid, 1);
-                    break;
-                default:
-                    break;
-            }
-
-            return reponseMessage;
-
         }
     }
 }

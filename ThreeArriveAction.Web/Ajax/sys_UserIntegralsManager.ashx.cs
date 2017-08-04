@@ -36,9 +36,9 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 GetUserIntergalList(context);
             }
-            else if (type == "info")
+            else if (type == "chart")
             {
-                //GetIntegralInfo(context);
+                UserIntegralsCharts(context);
             }
             else
             {
@@ -192,6 +192,34 @@ namespace ThreeArriveAction.Web.Ajax
 
         #region 获取该积分详细
 
+        #endregion
+
+        #region 用户积分柱状图统计
+        private void UserIntegralsCharts(HttpContext context)
+        {
+            int town = MXRequest.GetQueryInt("town");
+            string sdate = MXRequest.GetQueryString("sdate");
+            int year = DateTime.Now.Year;
+            int month = DateTime.Now.Month;
+            if (sdate.Trim() != "")
+            {
+                year = int.Parse(sdate.Split('-')[0]);
+                month = int.Parse(sdate.Split('-')[1]);
+            }
+            DataTable dt = uIBLL.UserIntergralsChart(town, year, month);
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+dt.Rows.Count);
+            if (dt.Rows.Count > 0) {
+                strJson.Append(",\"rows\":" + JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            strJson.Append("}");
+            context.Response.Output.Write(strJson.ToString());
+            
+        }
         #endregion
 
         public new bool IsReusable

@@ -34,10 +34,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Senparc.Weixin">
+    <Reference Include="Senparc.Weixin, Version=4.11.9.29160, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThreeArriveAction.Common\Reference\Senparc.Weixin.dll</HintPath>
     </Reference>
-    <Reference Include="Senparc.Weixin.MP">
+    <Reference Include="Senparc.Weixin.MP, Version=14.3.143.29161, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThreeArriveAction.Common\Reference\Senparc.Weixin.MP.dll</HintPath>
     </Reference>
     <Reference Include="System" />

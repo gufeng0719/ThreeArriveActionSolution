@@ -90,6 +90,22 @@ namespace ThreeArriveAction.DAL
        }
         #endregion
         #region 删除
+        public int DeleteNavigation(string ids)
+        {
+            //删除菜单，同时删除起子级菜单，并删除用户选择的菜单
+            //先删除用户选择的菜单
+            StringBuilder strSql1 = new StringBuilder();
+            strSql1.Append("Delete from sys_OrganizationANDNavigations where NavigationId in ");
+            strSql1.Append(" (select NavigationId from sys_Navigations where NavigationId in ("+ids+") or ParentId in ("+ids+")) ");
+
+            StringBuilder strSql2 = new StringBuilder();
+            strSql2.Append("Delete from sys_Navigations where NavigationId in ("+ids+") or ParentId in ("+ids+")");
+            List<string> sqlList = new List<string>();
+            sqlList.Add(strSql1.ToString());
+            sqlList.Add(strSql2.ToString());
+            int number = DbHelperSQL.ExecuteSqlTran(sqlList);
+            return number;
+        }
         #endregion
         #region 查询
        public int GetNavLayer(int parentid)

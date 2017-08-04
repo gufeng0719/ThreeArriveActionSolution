@@ -38,6 +38,9 @@ namespace ThreeArriveAction.Web.Ajax
                 case "save":
                     SaveNavigation(context);
                     break;
+                case "del":
+                    DeleteNavigation(context);
+                    break;
             }   
         }
 
@@ -72,6 +75,7 @@ namespace ThreeArriveAction.Web.Ajax
         {
             DataRow[] dr = oldData.Select("ParentId="+parentId);
             bool isWrite=false;
+            bool isFirst = true;
             for (int i = 0; i < dr.Length; i++)
             {
                 //检查是否显示在界面上
@@ -91,10 +95,11 @@ namespace ThreeArriveAction.Web.Ajax
                     continue;
                 }
                 //输出开始标记
-                if (i == 0 && parentId > 0)
+                if (isFirst && parentId > 0)
                 {
                     isWrite = true;
                     context.Response.Write("<ul>\n");
+                    isFirst = false;
                 }
                 //以下是输出选项内容====
                 //根目录
@@ -182,6 +187,15 @@ namespace ThreeArriveAction.Web.Ajax
 
             }
             context.Response.Write(result);
+        }
+        #endregion
+
+        #region 删除菜单信息
+        private void DeleteNavigation(HttpContext context)
+        {
+            string ids = MXRequest.GetFormString("str");
+            string result = navBLL.DeleteNavigation(ids);
+            context.Response.Output.Write(result);
         }
         #endregion
         public bool IsReusable

@@ -81,17 +81,10 @@ namespace ThreeArriveAction.Web.Ajax
                         strJson.Append(",\"txtContent\":\"" + rc.rContent + "\"");
                         break;
                     case 2:
-                        //图文
+                        //图片                        
+                        rc = rcBLL.GetModelList("rId=" + ruleList[0].id)[0];
                         strJson.Append(",\"responseType\":1");
-                        DataTable rclist = rcBLL.GetList("rId=" + ruleList[0].id + " order by seq").Tables[0];
-                        if (rclist.Rows.Count > 0)
-                        {
-                            strJson.Append(",\"rows\":" + JsonHelper.ToJson(rclist));
-                        }
-                        else
-                        {
-                            strJson.Append(",\"rows\":[]");
-                        }
+                        strJson.Append(",\"imgFile\":\""+rc.picUrl+"\"");
                         break;
                     case 3:
                         //语音
@@ -164,17 +157,17 @@ namespace ThreeArriveAction.Web.Ajax
                     json = "{\"info\":\"编辑" + ruleName + "成功！\",\"status\":\"y\"}";
                 }
                 else if (responseType == "1")
-                {//图文
+                {//图片
                     rule.responseType = 2;
                     int rId = rBLL.Add(rule);
                     rc = new wx_requestRuleContentModel();
                     rc.rId = rId;
                     rc.uId = usersModel.UserId;
-                    rc.rContent = MXRequest.GetFormString("txtTitle");
-                    rc.picUrl = MXRequest.GetFormString("txtImgUrl");
-                    rc.rContent2 = MXRequest.GetFormString("txtContent");
-                    rc.detailUrl = MXRequest.GetFormString("txtUrl");
-                    rc.seq = MXRequest.GetFormIntValue("txtSortId");
+                   // rc.rContent = MXRequest.GetFormString("txtTitle");
+                    rc.picUrl = MXRequest.GetFormString("txtImgFile");
+                    //rc.rContent2 = MXRequest.GetFormString("txtContent");
+                    //rc.detailUrl = MXRequest.GetFormString("txtUrl");
+                    //rc.seq = MXRequest.GetFormIntValue("txtSortId");
                     rc.createDate = DateTime.Now;
                     rcBLL.Add(rc);
                     new ManagePage().AddAdminLog(MXEnums.ActionEnum.Edit.ToString(), "编辑" + ruleName); //记录日志
@@ -203,7 +196,11 @@ namespace ThreeArriveAction.Web.Ajax
             {
                  json = "{\"info\":\"编辑" + ruleName + "失败！\",\"status\":\"n\"}";
             }
-            context.Response.Write(json);
+            finally
+            {
+                context.Response.Write(json);
+            }
+            
         }
 
         private void GetRequestContent(HttpContext context)
