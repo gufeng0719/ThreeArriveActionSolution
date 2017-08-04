@@ -65,11 +65,12 @@ var vm = new Vue({
                         window.wx.getLocation({
                             type: 'gcj02',
                             success: function (res) {
+                                var gcj02tobd09 = coordtransform.gcj02tobd09(res.longitude, res.latitude);
                                 $("#baiduframe").attr("src",
                                     "../editor/plugins/baidumap/weixinIndex.html?yjindu=" +
-                                    res.longitude +
+                                    gcj02tobd09[0] +
                                     "&xweidu=" +
-                                    res.latitude);
+                                    gcj02tobd09[1]);
                             },
                             error: function () {
                                 alert("定位失败,请重试");
@@ -85,7 +86,12 @@ var vm = new Vue({
             window.wx.getLocation({
                 type: 'gcj02',
                 success: function (res) {
-                    $("#baiduframe").attr("src", "../editor/plugins/baidumap/weixinIndex.html?yjindu=" + res.longitude + "&xweidu=" + res.latitude);
+                    var gcj02tobd09 = coordtransform.gcj02tobd09(res.longitude, res.latitude);
+                    $("#baiduframe").attr("src",
+                        "../editor/plugins/baidumap/weixinIndex.html?yjindu=" +
+                        gcj02tobd09[0] +
+                        "&xweidu=" +
+                        gcj02tobd09[1]);
                 }, error: function () {
                     alert("定位失败,请重试");
                 }
@@ -96,6 +102,9 @@ var vm = new Vue({
         family: function (newValue) {
             this.getSubfamilyModel(newValue);
         }
+    },
+    mounted: function () {
+        localXy();
     }
 });
 

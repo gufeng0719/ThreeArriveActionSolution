@@ -9,20 +9,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link href="../css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../css/css.css">
-    <title>三到行动-值班人员查询</title>
+    <title>三到行动-干部查询</title>
 </head>
 <body style="width: 94%; margin-left: 3%">
     <div class="banner">
         <img src="../images/weixin/banner.png">
     </div>
-    <div class="container" id="app"  v-cloak style="margin-top: 18px;">
+    <div class="container" id="app" style="margin-top: 18px;">
         <div class="row">
             <ddlvillage v-bind:ddlvillage="ddlvillage"></ddlvillage>
         </div>
         <div class="row">
             <div class="header">
                 <div class="text">
-                    值班人员
+                    干部信息
                 </div>
             </div>
             <table style="width: 90%; margin-left: 5%">
@@ -40,7 +40,7 @@
                         <td>联系方式 : {{model.phone}}</td>
                     </tr>
                     <tr>
-                        <td style="padding-bottom: 6px;">日期 : {{model.time}}</td>
+                        <td style="padding-bottom: 6px;">职务 : {{model.duty}}</td>
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -49,10 +49,15 @@
                     </tr>
                 </template>
                 <tr v-if="isNotMore" style="height: 40px">
-                    <td colspan="2">
-                        <div style="text-align: center">
-                            <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
-                        </div>
+                <td colspan="2">
+                    <div style="text-align: center">
+                        <b>{{isNotMore ? "暂无更多数据" : "上拉加载更多"}}</b>
+                    </div>
+                </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="height: 45px"></div>
                     </td>
                 </tr>
                 <tr>
@@ -68,6 +73,6 @@
     <script src="../scripts/lodash.min.js"></script>
     <script src="../scripts/vue/weixinTemplate.js"></script>
     <script src="../scripts/weixin/main.js"></script>
-    <script src="../scripts/weixin/onButys.js"></script>
+    <script src="../scripts/weixin/appOfficer.js"></script>
 </body>
 </html>

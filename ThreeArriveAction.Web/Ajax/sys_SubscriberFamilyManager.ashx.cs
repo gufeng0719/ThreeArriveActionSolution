@@ -55,7 +55,6 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetSubfamily(HttpContext context)
         {
             var openId = context.Request["openId"];
-            var isThing = context.Request["isThing"].ToBool();
             var sh = new SqlHelper<sys_UsersModel>(new sys_UsersModel());
             sh.AddWhere(" AND UserRemark='" + openId + "'");
             var user = sh.Select().FirstOrDefault();
@@ -65,10 +64,8 @@ namespace ThreeArriveAction.Web.Ajax
                 return;
             }
             var sh1 = new SqlHelper<sys_SubscriberFamilyModel>(new sys_SubscriberFamilyModel());
-            if (!isThing)
-            {
-                sh1.AddWhere("UserId", user.UserId);
-            }
+
+            sh1.AddWhere("UserId", user.UserId);
             context.Response.Write(
                 sh1.Select().OrderBy(x => x.SubscriberType)
                     .Select(x => new

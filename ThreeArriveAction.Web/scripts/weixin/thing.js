@@ -73,7 +73,7 @@ function sendMsgToShuji() {
         },
         complete: function (d) {
             var obj = JSON.parse(d.responseText);
-            sendTemplateMsg(obj.toOpenId, obj, function (msg) {
+            sendTemplateMsg(obj, function (msg) {
                 console.log(msg);
                 window.open("index.html", "_self");
             });

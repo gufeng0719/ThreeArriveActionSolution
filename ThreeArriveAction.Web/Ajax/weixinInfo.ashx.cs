@@ -62,40 +62,42 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 aModel = GetAModel();
             }
-            var res = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + aModel.Value,
+            var fromName = context.Request["obj[fromName]"];
+            var toName = context.Request["obj[toName]"];
+            var toOpenId = context.Request["obj[toOpenId]"];
+            var time = context.Request["obj[time]"];
+            var title = context.Request["obj[title]"];
+            var having = context.Request["obj[having]"];
+            var res = HttpHelper.HttpPost("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=b4XSnZh4G2KW6CpHzQBsCDz0-G8KHnJFLVPMX54_vvHtP_CBhjNPqt774LmvGGaIAa0yYgh7xeUf34kWrM1OHpXjrBUCJUx_WkYJV6eJsMN1WRitRk96UjGqoBWNrL9ySDUhAGAEPG",
                                              new
                                              {
-                                                 template_id = "xsGmpfGskSamu7S-J8PLYiWlGWWT3O1ol_uWVOPqGg0",
-                                                 touser = ConfigurationManager.AppSettings["OpenIdForAdmin"],
+                                                 template_id = "H8N_H43s_RVHY9jtvEo7-9JKhr4rCUB8YrxFZ5ReQt8",
+                                                 touser = toOpenId,
                                                  data = new
                                                  {
                                                      first = new
                                                      {
-                                                         value = "xxxx",
+                                                         value = fromName.Substring(0, fromName.IndexOf("(", StringComparison.Ordinal)) + "拜访通知",
                                                      },
-                                                     businessType = new
+                                                     keyword1 = new
                                                      {
-                                                         value = "拜访类型",
+                                                         value = fromName,
                                                      },
-                                                     business = new
+                                                     keyword2 = new
                                                      {
-                                                         value = "有事马上到",
+                                                         value = toName,
                                                      },
-                                                     order = new
+                                                     keyword3 = new
                                                      {
-                                                         value = "1234567890",
+                                                         value = time,
                                                      },
-                                                     time = new
+                                                     keyword4 = new
                                                      {
-                                                         value = DateTime.Now.ToString("yyyy年MM月d日 hh时mm分"),
-                                                     },
-                                                     address = new
-                                                     {
-                                                         value = "xxxxxxxxxxx"
+                                                         value = title,
                                                      },
                                                      remark = new
                                                      {
-                                                         value = "事件：xxxxx"
+                                                         value = having
                                                      }
                                                  }
                                              }.ToJson());
@@ -401,7 +403,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
 
         }
-        
+
 
         public bool IsReusable
         {

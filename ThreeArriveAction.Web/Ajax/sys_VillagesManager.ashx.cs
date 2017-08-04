@@ -146,7 +146,11 @@ namespace ThreeArriveAction.Web.Ajax
         private void GetVillageAll(HttpContext context)
         {
             var openId = context.Request["openId"];
-            var user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserRemark", openId } });
+            sys_UsersModel user = null;
+            if (openId.Length > 10)
+            {
+                user = DataConfig.GetUsers(new Dictionary<string, object> { { "UserRemark", openId } }).FirstOrDefault();
+            }
             var vList = DataConfig.GetVillages();
             var list = new ArrayList();
             foreach (var item in vList.Where(x => x.VillageParId == 1))
@@ -169,7 +173,7 @@ namespace ThreeArriveAction.Web.Ajax
             context.Response.Write(new
             {
                 list,
-                current = user.FirstOrDefault()?.VillageId
+                current = user?.VillageId ?? 0
             }.ToJson());
         }
 
