@@ -103,7 +103,7 @@
                     option.xAxis[0].data = xData;
                     option.title.text = sdate + " " + $("#town").find("option:selected").text() + "镇(街道)各村平均积分";
                     myChart.setOption(option);
-                    //console.info(msg.pageContent);
+                    console.info(xData);
                     
                 } else {
                     
@@ -138,6 +138,10 @@
                     data: [],
                     axisTick: {
                         alignWithLabel: true
+                    },
+                    axisLabel: {
+                        interval: 0,//横轴信息全部显示  
+                        rotate: -30,//-30度角倾斜显示  
                     }
                 }
             ],
