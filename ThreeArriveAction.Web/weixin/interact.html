@@ -36,13 +36,13 @@
                                 {{model.content}}
                             </td>
                         </tr>
-                        <tr style="border-bottom: #d2d2d2 1px solid;width: 120%">
+                        <tr style="border-bottom: #d2d2d2 1px solid;width: 120%" @click="select(model.id)">
                             <td v-bind:colspan="model.img ? 1 : 2"
                                 style="font-size: 12px; font-weight: 700; text-align: right;height: 24px;">
                                 by:{{model.userName}}&nbsp;&nbsp;发布时间:{{model.time}}&nbsp;&nbsp;赞:{{model.praise}}&nbsp;&nbsp;评论:{{model.comment}}
                             </td>
                         </tr>
-                        <tr style="height: 15px;">
+                        <tr style="height: 15px;" @click="select(model.id)">
                             <td>
                                 <span></span>
                             </td>

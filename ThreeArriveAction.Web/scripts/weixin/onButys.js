@@ -12,30 +12,30 @@ var vm = new Vue({
     },
     methods: {
         getpage: function (page) {
-            //var that = this;
-            //$.ajax({
-            //    type: "post",
-            //    url: "../Ajax/sys_OnButysManager.ashx?type=getOnButysList",
-            //    data: {
-            //        page: page,
-            //        size: that.size,
-            //        ddlvillage: that.ddlvillage
-            //    },
-            //    complete: function (d) {
-            //        var obj = JSON.parse(d.responseText);
-            //        that.page = obj.page;
-            //        that.totle = obj.totle;
-            //        that.list = that.list.concat(obj.list);
-            //        if (obj.list.length < 1) {
-            //            that.isNotMore = true
-            //        } else {
-            //            that.isNotMore = false
-            //        }
-            //        if (window.scrolled) {
-            //            window.scrolled = false;
-            //        }
-            //    }
-            //});
+            var that = this;
+            $.ajax({
+                type: "post",
+                url: "../Ajax/sys_OnButysManager.ashx?type=getOnButysList",
+                data: {
+                    page: page,
+                    size: that.size,
+                    ddlvillage: that.ddlvillage
+                },
+                complete: function (d) {
+                    var obj = JSON.parse(d.responseText);
+                    that.page = obj.page;
+                    that.totle = obj.totle;
+                    that.list = that.list.concat(obj.list);
+                    if (obj.list.length < 1) {
+                        that.isNotMore = true
+                    } else {
+                        that.isNotMore = false
+                    }
+                    if (window.scrolled) {
+                        window.scrolled = false;
+                    }
+                }
+            });
         }
     },
     watch: {

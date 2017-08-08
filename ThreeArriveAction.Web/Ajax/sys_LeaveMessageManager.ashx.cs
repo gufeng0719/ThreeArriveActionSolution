@@ -109,7 +109,7 @@ namespace ThreeArriveAction.Web.Ajax
                 userName = DataConfig.GetUsers(new Dictionary<string, object> { { "UserId", model.UserId } }).FirstOrDefault()?.UserName ?? "管理员",
                 content = model.LeaveContent,
                 praise = model.LeavePraiseNumber,
-                imgs = (model.LeaveImages ?? "").Split(','),
+                imgs = (model.LeaveImages ?? "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries),
                 time = model.LeaveDateTime.ToString("yyyy-MM-dd"),
                 yetPraise = (model.LeavePraiseUserIds ?? "").Split(',').Any(x => x == user.UserId.ToString()),
                 userId = model.UserId
