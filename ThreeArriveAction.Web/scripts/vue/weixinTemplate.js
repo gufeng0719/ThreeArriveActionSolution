@@ -181,7 +181,7 @@ Vue.component("image-template", {
             '       <img :src="localId"  :data-id="localId"/>                                    ' +
             '    </div>                                                                          ' +
             '    <div @click="pz()" v-if="localIds.length < 9" >                                 ' +
-            '        <img src="../images/templates/bottommenu/218.png"  />                       ' +
+            '        <img src="../images/weixin/218.png"  />                       ' +
             '    </div>                                                                          ' +
             '</div>                                                                              ' +
             '<div v-else class="box" @click="pz()">                                              ' +
@@ -226,12 +226,12 @@ Vue.component("image-template", {
         srcUrl: function () {
             if (!this.isMore) {
                 if (this.localIds.length <= 0) {
-                    return "../images/templates/bottommenu/218.png";
+                    return "../images/weixin/218.png";
                 } else {
                     return this.localIds[0];
                 }
             }
-            return "../images/templates/bottommenu/218.png";
+            return "../images/weixin/218.png";
         }
     }
 });

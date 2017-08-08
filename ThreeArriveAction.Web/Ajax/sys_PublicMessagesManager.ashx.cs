@@ -14,10 +14,10 @@ namespace ThreeArriveAction.Web.Ajax
     /// <summary>
     /// sys_PublicMessagesManager 的摘要说明
     /// </summary>
-    public class sys_PublicMessagesManager :IHttpHandler, IRequiresSessionState
+    public class sys_PublicMessagesManager : IHttpHandler, IRequiresSessionState
     {
         private sys_PublicMessagesBLL pBLL = new sys_PublicMessagesBLL();
-        public  void ProcessRequest(HttpContext context)
+        public void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
             switch (type)
@@ -39,6 +39,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "insert":
                     Insert(context);
+                    break;
+                case "del":
+                    DeletePublicMessage(context);
                     break;
             }
         }
@@ -108,24 +111,25 @@ namespace ThreeArriveAction.Web.Ajax
             int ptype = MXRequest.GetFormIntValue("ptype");
             string th = MXRequest.GetFormString("thumbnail");
             string imgurl = context.Request.Form["imgurl"];
-            
+
             string remark = MXRequest.GetFormString("remark");
-            sys_UsersModel userModel =new ManagePage().GetUsersinfo();
+            sys_UsersModel userModel = new ManagePage().GetUsersinfo();
             sys_PublicMessagesModel publicModel = new sys_PublicMessagesModel();
             publicModel.VillageId = userModel.VillageId;
             publicModel.PublishDate = DateTime.Now;
             publicModel.PublicType = ptype;
             publicModel.ThumbnailUrl = th;
-            publicModel.ImageUrl =imgurl;
+            publicModel.ImageUrl = imgurl;
             publicModel.UserId = userModel.UserId;
             publicModel.Remarks = remark;
             int number = pBLL.Add(publicModel);
             JsonMessage json = new JsonMessage();
-            if (number>0)
+            if (number > 0)
             {
                 json.success = true;
                 json.msg = "公务发布成功";
-            }else
+            }
+            else
             {
                 json.success = false;
                 json.msg = "公务发布失败";
@@ -187,7 +191,7 @@ namespace ThreeArriveAction.Web.Ajax
         public void GetOpenList(HttpContext context)
         {
             //获取当前登录的操作者信息
-            sys_UsersModel model =new ManagePage(). GetUsersinfo();
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
             int pageSize = 20;
             int pageIndex = MXRequest.GetQueryIntValue("page");
             int town = MXRequest.GetQueryInt("town");
@@ -195,8 +199,13 @@ namespace ThreeArriveAction.Web.Ajax
             string opendate = MXRequest.GetQueryString("opendate");
             int opentype = MXRequest.GetQueryIntValue("opentype");
             StringBuilder strWhere = new StringBuilder();
-            strWhere.Append(" PublicType=" + opentype);
-
+            if (opentype != 0)
+            {
+                strWhere.Append(" PublicType = "+opentype);
+            }else
+            {
+                strWhere.Append(" 1=1 ");
+            }
             if (town != 0)
             {
                 if (vid == 0)
@@ -224,7 +233,7 @@ namespace ThreeArriveAction.Web.Ajax
             }
             if (opendate != "")
             {
-                strWhere.Append(" and Convert(varchar(100),PublishDate,23)='" + opendate + "'");
+                strWhere.Append(" and Convert(varchar(7),PublishDate,23)='" + opendate + "'");
             }
             string result = pBLL.GetListJson(pageSize, pageIndex, strWhere.ToString(), "PublicId DESC ");
             context.Response.Write(result);
@@ -242,7 +251,25 @@ namespace ThreeArriveAction.Web.Ajax
         }
         #endregion
 
-        public  bool IsReusable
+        #region 删除三务公开
+        private void DeletePublicMessage(HttpContext context)
+        {
+            string str = MXRequest.GetFormString("str");
+            string result = "";
+            if (str.Trim() != "")
+            {
+                result = pBLL.DeletePublicMessage(str);
+            }
+            else
+            {
+                result = "{\"info\":\"请至少选择一条记录\",\"status\":\"n\"}";
+            }
+            context.Response.Output.Write(result);
+        }
+        #endregion
+
+
+        public bool IsReusable
         {
             get
             {

@@ -45,6 +45,7 @@
     <Compile Include="sys_IntegralInfoDAL.cs" />
     <Compile Include="sys_InteractionLearnsDAL.cs" />
     <Compile Include="sys_LeaveMessageDAL.cs" />
+    <Compile Include="sys_MajorInfoDAL.cs" />
     <Compile Include="sys_NavigationsDAL.cs" />
     <Compile Include="sys_OnButysDAL.cs" />
     <Compile Include="sys_OnSignsDAL.cs" />

@@ -10,10 +10,40 @@ namespace ThreeArriveAction.BLL
     {
         private sys_PublicMessagesDAL dal = new sys_PublicMessagesDAL();
 
+        #region 添加
         public int Add(sys_PublicMessagesModel model)
         {
             return dal.Add(model);
         }
+        #endregion
+
+        #region 删除
+        public string DeletePublicMessage(int publicId)
+        {
+            int number = dal.DeletePublicMessage(publicId);
+            if (number > 0)
+            {
+                return "{\"info\":\"三务公开消息删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"三务公开消息删除失败\",\"status\":\"n\"}";
+            }
+        }
+
+        public string DeletePublicMessage(string ids)
+        {
+            int number = dal.DeletePublicMessage(ids);
+            if (number > 0)
+            {
+                return "{\"info\":\"三务公开消息删除成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"三务公开消息删除失败\",\"status\":\"n\"}";
+            }
+        }
+        #endregion 
 
         #region 查询
 

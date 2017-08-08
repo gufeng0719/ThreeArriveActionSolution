@@ -106,25 +106,29 @@ namespace ThreeArriveAction.Web.Ajax
 
         public string SendMsg(HttpContext context, string postUrl, bool test)
         {
+            // 获取 access token 
+            var aModel = CacheHelper.Get<Token>("_AccessToken");
+
             // 参数传入以及处理
-            var openIds = (context.Request["openIds[]"] ?? "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            //var openIds = (context.Request["openIds[]"] ?? "").Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             var msg = context.Request["msg"];
             var type = context.Request["msgType"].ToInt();
             var path = context.Request["path"];
             var title = context.Request["title"];
             var describe = context.Request["describe"];
             var twList = context.Request["twList"].Replace(@"\\", "/").JsonToObject<List<TwModel>>();
-            var arr = new ArrayList();
-            arr.AddRange(openIds);
-            if (arr.Count < 2)
-            {
-                arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
-            }
-            // 获取 access token 
-            var aModel = CacheHelper.Get<Token>("_AccessToken");
+            
             if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
             {
                 aModel = GetAModel();
+            }
+            //获取所有关注本公众号的用户
+            var openIdJson = HttpHelper.HttpGet("https://api.weixin.qq.com/cgi-bin/user/get?access_token=" + aModel.Value + "&next_openid=NEXT_OPENID").JsonToObject<OpenListModel>();
+            var arr = new ArrayList(openIdJson.data.openid.Split(','));
+
+            if (arr.Count < 2)
+            {
+                arr.Add(ConfigurationManager.AppSettings["OpenIdForAdmin"]);
             }
 
             // 如果有文件则先获取文件的madiaId
@@ -251,7 +255,7 @@ namespace ThreeArriveAction.Web.Ajax
 
         public void GetJsapiTicket(HttpContext context)
         {
-            var openId = context.Request["openid"];
+            var openId = ConfigurationManager.AppSettings["OpenIdForAdmin"];
             var jModel = CacheHelper.Get<Token>("_JsapiTicket");
             if (!(jModel != null && !jModel.Value.IsNullOrEmpty() && jModel.Time.AddHours(2) >= DateTime.Now))
             {
@@ -272,7 +276,7 @@ namespace ThreeArriveAction.Web.Ajax
         public void FileDown(HttpContext context)
         {
             var mediaId = context.Request["mediaId"];
-            var openId = context.Request["openId"] ?? "";
+            var openId = ConfigurationManager.AppSettings["OpenIdForAdmin"] ?? "";
             var aModel = CacheHelper.Get<Token>("_AccessToken");
             if (!(aModel != null && !aModel.Value.IsNullOrEmpty() && aModel.Time.AddHours(2) >= DateTime.Now))
             {
@@ -471,6 +475,17 @@ namespace ThreeArriveAction.Web.Ajax
             public string errcode;
             public string errmsg;
             public string template_id;
+        }
+        class OpenListModel
+        {
+            public int total;
+            public int count;
+            public DataModel data;
+            public string next_openid;
+
+        }
+        class DataModel {
+            public string openid;
         }
     }
 }

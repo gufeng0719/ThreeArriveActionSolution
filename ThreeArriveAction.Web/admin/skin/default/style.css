@@ -437,7 +437,7 @@ a {
             }
 
             .sidebar-nav .list-box .list-group ul li .item.selected {
-                background: #16a0d3;
+                background: black;
             }
 
                 .sidebar-nav .list-box .list-group ul li .item.selected .folder.open {

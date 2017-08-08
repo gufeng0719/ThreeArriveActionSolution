@@ -40,14 +40,14 @@
     <div class="line10"></div>
     <div id="app"  v-cloak>
         <el-row>
-            <el-col v-bind:span="6">
+            <!--<el-col v-bind:span="6">
                 <el-tree v-bind:data="dataTree"
                          ref="tree"
                          show-checkbox
                          accordion
                          node-key="id">
                 </el-tree>
-            </el-col>
+            </el-col>-->
             <el-col v-bind:span="18">
                 <table style="margin-left: 15%">
                     <tr class="row">
@@ -140,11 +140,11 @@
             methods: {
                 sendMsg: function () {
                     var that = this;
-                    var openIds = that.$refs.tree.getCheckedKeys();
-                    if (openIds.length < 1) {
-                        alert("请选择需要群发的对象");
-                        return
-                    } 
+                    //var openIds = that.$refs.tree.getCheckedKeys();
+                    //if (openIds.length < 1) {
+                    //    alert("请选择需要群发的对象");
+                    //    return
+                    //} 
                     if (that.type === 0 && that.msg.trim() === "") {
                         alert("请输入需要发送的消息");
                         return
@@ -187,7 +187,6 @@
                         url: "../Ajax/weixinInfo.ashx",
                         data: {
                             type: "sendMsgTest",
-                            openIds: openIds,
                             msg: that.msg,
                             path: that.path,
                             msgType: that.type,

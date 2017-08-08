@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>在线互动管理</title>
+    <title>重要通知管理</title>
     <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
     <link href="../css/pagination.css" rel="stylesheet" type="text/css" />
 </head>
@@ -10,7 +10,7 @@
         <!--导航栏-->
         <div class="location">
             <a href="javascript:history.back(-1);" class="back"><i></i><span>返回上一页</span></a>
-            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>在线互动管理</span>
+            <a href="#" class="home"><i></i><span>首页</span></a> <i class="arrow"></i><span>重要通知</span>
         </div>
         <!--/导航栏-->
         <!--工具栏-->
@@ -18,20 +18,12 @@
             <div id="floatHead" class="toolbar">
                 <div class="l-list">
                     <ul class="icon-list">
+                        <li><a class="add" href="MajorInfoEdit.html?type=add"><i></i><span>新增</span></a></li>
                         <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
                         <li><a class="del" href="javascript:Delete();"><i></i><span>删除</span></a> </li>
                     </ul>
                 </div>
                 <div class="r-list">
-                    <div style="float: left;">
-                        <div class="rule-single-select">
-                            <select id="leavestate" name="leavestate">
-                                <option value="0">不限</option>
-                                <option value="1">未审核</option>
-                                <option value="2">已审核</option>
-                            </select>
-                        </div>
-                    </div>
                     <div style="float: left;">
                         <input type="text" class="keyword" id="keywords" />
                         <input type="button" id="btnSearch" class="btn-search" value="查询" />
@@ -48,19 +40,13 @@
                         选择
                     </th>
                     <th align="left" width="10%">
-                        图片
+                        标题
                     </th>
                     <th align="left" width="30%">
                         内容
-                    </th>                    
-                    <th align="left" width="11%">
-                        发布者
                     </th>
                     <th align="left" width="11%">
                         发布日期
-                    </th>
-                    <th align="left" width="10%">
-                        状态
                     </th>
                     <th width="10%">
                         操作
@@ -90,6 +76,30 @@
     <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
     <script type="text/javascript" src="js/layout.js"></script>
     <script type="text/javascript">
+        // 对Date的扩展，将 Date 转化为指定格式的String   
+        // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，   
+        // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)   
+        // 例子：   
+        // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423   
+        // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18   
+        Date.prototype.Format = function (fmt) { //author: meizz   
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份   
+                "d+": this.getDate(),                    //日   
+                "h+": this.getHours(),                   //小时   
+                "m+": this.getMinutes(),                 //分   
+                "s+": this.getSeconds(),                 //秒   
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度   
+                "S": this.getMilliseconds()             //毫秒   
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
         $(function () {
             Load(1);
             $("#btnSearch").click(function () {
@@ -99,48 +109,23 @@
 
         function Load(page) {
             var key = $("#keywords").val();
-            var leavestate = $("#leavestate").find("option:selected").val();
             //加载列表
-            $.getJSON("../Ajax/sys_LeaveMessageManager.ashx?type=get", { "keywords": key, "page": page, "leavestate": leavestate }, function (msg) {
+            $.getJSON("../Ajax/sys_MajorInfoManager.ashx?type=get", { "keywords": key, "page": page }, function (msg) {
                 //console.info(msg.rows.length);
                 $("#tbody").html("");
                 if (msg.total > 0) {
                     for (var i = 0; i < msg.rows.length; i++) {
                         var s = "";
                         s += "<tr><td align=\"center\"><span class=\"checkall\" style=\"vertical-align:middle;\">";
-                        s += "<input id=\"chkId" + msg.rows[i].LeaveId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].LeaveId + "\" /> </span>";
+                        s += "<input id=\"chkId" + msg.rows[i].MajorId + "\" type=\"checkbox\"  enabled='enabled' value=\"" + msg.rows[i].MajorId + "\" /> </span>";
                         s += "</td>";
-                        s += "<td>";
-                        s += "<img src=" + (msg.rows[i].LeaveImages.split(',')[0] == "" ? "skin/default/noneimg.png" : msg.rows[i].LeaveImages.split(',')[0]) + " style=\"max-height:60px;max-width:60px;\" />";
-                        s += "</td>";
-                        s += "<td><a href='LeavesEdit.html?lid=" + msg.rows[i].LeaveId + "'>" + msg.rows[i].LeaveContent + "</a></td>";
-                        s += "<td>" + msg.rows[i].UserName + "</td>";
-                        s += "<td>" + msg.rows[i].LeaveDateTime + "</td>";
-                        var ltype = "";
-                        var alink = "";
-                        switch(msg.rows[i].LeaveState){
-                            case 1:
-                                ltype = "<span style=\"color:green\">已审核</span>";
-                                alink = "<a href='LeavesEdit.html?lid=" + msg.rows[i].LeaveId + "'>查看</a>";
-                                break;
-                            case 2:
-                                ltype = "<span style=\"color:orangle\">已删除</span>";
-                                break;
-                            case 0:
-                                ltype = "<span style=\"color:red\">未审核</span>";
-                                alink = "<a href='LeavesEdit.html?lid=" + msg.rows[i].LeaveId + "'>审核</a>";
-                                break;
-                            default:
-                                ltype="其他";
-                                break;
-
-                        }
-                        s += "<td>"+ltype+"</td>";
-                        s += "<td align=\"center\">"+alink+"</td>";
+                        s += "<td><a href='MajorInfoEdit.html?type=edit&id=" + msg.rows[i].MajorId + "'>" + msg.rows[i].MajorTitle + "</a></td>";
+                        s += "<td>" + decodeURIComponent(msg.rows[i].MajorContent).substring(0, 100) + ".....</td>";
+                        s += "<td>" + new Date(msg.rows[i].MajorDate).Format("yyyy-MM-dd") + "</td>";
+                        s += "<td align=\"center\"><a href='MajorInfoEdit.html?type=edit&id=" + msg.rows[i].MajorId + "'>操作</a></td>";
                         s += "</tr>";
                         $("#tbody").append(s);
                     }
-                    //console.info(msg.pageContent);
                     $("#PageContent").html(msg.pageContent);
                 }
             });
@@ -149,7 +134,7 @@
         function Delete() {
             if ($(".checkall input:checked").size() < 1) {
                 $.dialog.alert("对不起,请选中您要操作的记录!");
-                return false;
+                return ;
             }
             $.dialog.confirm("删除记录后,不可恢复,您确定吗?", function () {
                 var str = "";
@@ -157,12 +142,12 @@
                     str += $(this).val() + ",";
                 });
                 str = str.substring(0, str.length - 1);
-                $.post("../Ajax/sys_LeaveMessageManager.ashx?type=del", { "str": str }, function (msg) {
+                $.post("../Ajax/sys_MajorInfoManager.ashx?type=del", { "str": str }, function (msg) {
                     var result = $.parseJSON(msg);
                     if (result.status == "y") {
-                        jsdialog("系统提示", result.info, "LeaveManage.html", "Success");
+                        jsdialog("系统提示", result.info, "MajorInfo.html", "Success");
                     } else {
-                        jsdialog("系统提示", result.info, "LeaveManage.html", "Error");
+                        jsdialog("系统提示", result.info, "MajorInfo.html", "Error");
                     }
                 });
             });

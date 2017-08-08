@@ -97,6 +97,10 @@
     <Content Include="admin\LearnsManager.html" />
     <Content Include="admin\LeaveManage.html" />
     <Content Include="admin\LeavesEdit.html" />
+    <Content Include="admin\MajorInfo.html" />
+    <Content Include="admin\MajorInfoEdit.html" />
+    <Content Include="admin\PublicMessageDetails.html" />
+    <Content Include="admin\PublicMessages.html" />
     <Content Include="admin\sendMsg.html" />
     <Content Include="admin\skin\default\noneimg.jpg" />
     <Content Include="admin\skin\default\noneimg.jpg.png" />
@@ -120,6 +124,7 @@
     <Content Include="admin\weixin\PublicInsert.html" />
     <Content Include="admin\weixin\subscribe.html" />
     <Content Include="admin\weixin\wxMenu.html" />
+    <Content Include="images\weixin\218.png" />
     <Content Include="images\weixin\clearStorage.png" />
     <Content Include="images\weixin\majorinfo.png" />
     <Content Include="images\noneimg.jpg.png" />

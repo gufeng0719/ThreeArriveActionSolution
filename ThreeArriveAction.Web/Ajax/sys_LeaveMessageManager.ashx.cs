@@ -236,9 +236,9 @@ namespace ThreeArriveAction.Web.Ajax
 
             string fieldOrder = "LeaveDateTime DESC,LeaveState DESC ";
             StringBuilder strJson = new StringBuilder();
-            int recordCound = 0;
-            DataSet ds = lmBLL.GetList(pageSize, pageIndex, strWhere.ToString(), fieldOrder, out recordCound);
-            strJson.Append("{\"total\":" + recordCound);
+            int recordCount = 0;
+            DataSet ds = lmBLL.GetList(pageSize, pageIndex, strWhere.ToString(), fieldOrder, out recordCount);
+            strJson.Append("{\"total\":" + recordCount);
             if (ds.Tables[0].Rows.Count > 0)
             {
                 strJson.Append(",\"rows\":" + JsonHelper.ToJson(ds.Tables[0]));
@@ -247,7 +247,7 @@ namespace ThreeArriveAction.Web.Ajax
             {
                 strJson.Append(",\"rows\":[]");
             }
-            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCound, "Load(__id__)", 8);
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
             if (pageContent == "")
             {
                 strJson.Append(",\"pageContent\":\"\"");

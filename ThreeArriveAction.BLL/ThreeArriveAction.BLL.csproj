@@ -46,6 +46,7 @@
     <Compile Include="sys_IntegralInfoBLL.cs" />
     <Compile Include="sys_InteractionLearnsBLL.cs" />
     <Compile Include="sys_LeaveMessageBLL.cs" />
+    <Compile Include="sys_MajorInfoBLL.cs" />
     <Compile Include="sys_NavigationsBLL.cs" />
     <Compile Include="sys_OnButysBLL.cs" />
     <Compile Include="sys_OnSignsBLL.cs" />

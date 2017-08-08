@@ -11,6 +11,7 @@ namespace ThreeArriveAction.DAL
     public class sys_PublicMessagesDAL
     {
 
+        #region 添加公开信息
         public int Add(sys_PublicMessagesModel model)
         {
             var sql =
@@ -35,6 +36,24 @@ namespace ThreeArriveAction.DAL
             return DbHelperSQL.ExecuteSql(sql, parameters);
 
         }
+        #endregion
+
+        #region 删除公开信息
+        public int DeletePublicMessage(int publicId)
+        {
+            string strSql = "Delete from sys_PublicMessages where PublicId="+publicId;
+            int number = DbHelperSQL.ExecuteSql(strSql);
+            return number;
+        }
+
+        public int DeletePublicMessage(string ids)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("Delete from sys_PublicMessages where PublicId in ("+ids+")");
+            int number = DbHelperSQL.ExecuteSql(strSql.ToString());
+            return number;
+        }
+        #endregion
 
         #region 查询
 

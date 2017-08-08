@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Text;
 using ThreeArriveAction.Common;
 using ThreeArriveAction.Model;
+using ThreeArriveAction.BLL;
+using System.Web.SessionState;
+using ThreeArriveAction.Web.UI;
 
 namespace ThreeArriveAction.Web.Ajax
 {
     /// <summary>
     /// sys_MajorInfoManager 的摘要说明
     /// </summary>
-    public class sys_MajorInfoManager : IHttpHandler
+    public class sys_MajorInfoManager : IHttpHandler,IRequiresSessionState
     {
-
+        private sys_MajorInfoBLL mBLL = new sys_MajorInfoBLL();
         public void ProcessRequest(HttpContext context)
         {
             var type = context.Request["type"];
@@ -31,6 +36,19 @@ namespace ThreeArriveAction.Web.Ajax
             else if (type == "readed")
             {
                 Readed(context);
+            }else if (type == "get")
+            {
+                GetMajorInfoList(context);
+            }else if (type == "edit")
+            {
+                GetMajorModel(context);
+            }
+            else if (type == "save")
+            {
+                SaveMajor(context);
+            }else if (type == "del")
+            {
+                DeleteMajor(context);
             }
         }
 
@@ -143,7 +161,92 @@ namespace ThreeArriveAction.Web.Ajax
             public int ReadUserId { get; set; }
             public string MajorContent { get; set; } = string.Empty;
         }
-        
+
+        #region 查询列表
+        private void GetMajorInfoList(HttpContext context)
+        {
+            string keywords = MXRequest.GetQueryString("keywords");
+            int pageIndex = MXRequest.GetQueryInt("page");
+            int pageSize = 20;
+            string strWhere = "";
+            if (keywords.Trim() != "")
+            {
+                strWhere = " MajorTitle like '%"+keywords+"%' or MajorContent like '%"+keywords+"%'";
+            }
+            string fieldOrder = " MajorId ASC ";
+            int recordCount = 0;
+            DataTable dt = mBLL.GetList(pageSize, pageIndex, strWhere, fieldOrder, out recordCount);
+            StringBuilder strJson = new StringBuilder();
+            strJson.Append("{\"total\":"+recordCount);
+            if (dt.Rows.Count > 0)
+            {
+                strJson.Append(",\"rows\":"+JsonHelper.ToJson(dt));
+            }
+            else
+            {
+                strJson.Append(",\"rows\":[]");
+            }
+            string pageContent = Utils.OutPageList(pageSize, pageIndex, recordCount, "Load(__id__)", 8);
+            if (pageContent == "")
+            {
+                strJson.Append(",\"pageContent\":\"\"");
+            }
+            else
+            {
+                strJson.Append(",\"pageContent\":" + pageContent);
+            }
+
+            strJson.Append("}");
+            context.Response.Write(strJson.ToString());
+
+        }
+        #endregion
+        #region 查询重要通知具体
+        private void GetMajorModel(HttpContext context)
+        {
+            int id = MXRequest.GetQueryInt("id");
+            sys_MajorInfoModel model = mBLL.GetModel(id);
+            if (model != null)
+            {
+                context.Response.Output.Write(JsonHelper.ToJson(model));
+            }
+            else
+            {
+                context.Response.Output.Write("");
+            }
+        }
+        #endregion
+        #region 保存重要通知
+        private void SaveMajor(HttpContext context)
+        {
+            string action = MXRequest.GetFormString("action");
+            sys_MajorInfoModel model = new sys_MajorInfoModel();
+            model.MajorTitle = MXRequest.GetFormString("title");
+            model.MajorContent = MXRequest.GetFormString("content");
+            string result = "";
+            if (action == "add")
+            {
+                model.MajorFromUserId = new ManagePage().GetUsersinfo().UserId;
+                model.MajorDate = DateTime.Now;
+                result= mBLL.AddMajor(model);
+            }
+            else
+            {
+                model.MajorId = MXRequest.GetFormInt("id");
+                result = mBLL.UpdateMajor(model);
+            }
+            context.Response.Output.Write(result);
+        }
+        #endregion
+        #region 删除重要通知
+        private void DeleteMajor(HttpContext context)
+        {
+            string ids = MXRequest.GetFormString("str");
+            string result = mBLL.DeleteMajors(ids);
+            context.Response.Output.Write(result);
+        }
+        #endregion
+
         public bool IsReusable
         {
             get
