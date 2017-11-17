@@ -99,6 +99,12 @@ namespace ThreeArriveAction.BLL
                 return "{\"info\":\"用户修改失败\",\"status\":\"n\"}";
             }
         }
+
+        public bool ChangePassword(int uid, string password)
+        {
+            bool bl = userDAL.ChangePassword(uid,password);
+            return bl;
+        }
         #endregion
 
         #region 删除

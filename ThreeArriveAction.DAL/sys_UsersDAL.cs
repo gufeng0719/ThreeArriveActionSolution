@@ -255,6 +255,37 @@ namespace ThreeArriveAction.DAL
                 return false;
             }
         }
+
+        /// <summary>
+        /// 根据用户编号修改用户密码
+        /// </summary>
+        /// <param name="uid">用户编号</param>
+        /// <param name="password">用户新密码</param>
+        /// <returns></returns>
+        public bool ChangePassword(int uid, string password)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update sys_Users set ");
+            strSql.Append("UserPassword=@UserPassword ");
+            strSql.Append(" where UserId=@UserId");
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@UserPassword", SqlDbType.VarChar, 50),
+                new SqlParameter("@UserId", SqlDbType.Int, 4)
+            };
+            parameters[0].Value = password;
+            parameters[1].Value = uid;
+            int rows = DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
         #endregion
 
         #region 删除用户

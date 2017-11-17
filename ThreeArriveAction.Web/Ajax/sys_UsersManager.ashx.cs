@@ -11,6 +11,7 @@ using ThreeArriveAction.Model;
 using ThreeArriveAction.Web.UI;
 using System.Data;
 using System.Reflection;
+using System.Web.UI.WebControls;
 
 namespace ThreeArriveAction.Web.Ajax
 {
@@ -66,6 +67,9 @@ namespace ThreeArriveAction.Web.Ajax
                     break;
                 case "getUserPage":
                     GetUserPage(context);
+                    break;
+                case "changePwd":
+                    ChangePassword(context);
                     break;
                 default:
                     context.Response.Write("错误的请求");
@@ -494,6 +498,48 @@ namespace ThreeArriveAction.Web.Ajax
             });
 
             context.Response.Write(list.ToJson());
+        }
+
+        #endregion
+
+        #region 修改密码
+
+        private void ChangePassword(HttpContext context)
+        {
+            string result = "";
+            //获取当前登录的操作者信息
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            if (model == null)
+            {
+                result = "{\"info\":\"当前没有登录用户\",\"status\":\"n\"}";
+            }
+            else
+            {
+                string oldPassword = context.Request.Form["txtOldPassword"].ToString();
+                string newPassword = context.Request.Form["txtPassword"].ToString();
+                if (string.Equals(oldPassword, model.UserPassword))
+                {
+                    bool bl = usersBLL.ChangePassword(model.UserId, newPassword);
+
+                    if (bl)
+                    {
+                        context.Session[MXKeys.SESSION_ADMIN_INFO] = null;
+                        Utils.WriteCookie("uphone", "ThreeArriveAction", -14400);
+                        Utils.WriteCookie("upwd", "ThreeArriveAction", -14400);
+                        result = "{\"info\":\"密码修改成功\",\"status\":\"y\"}";
+                    }
+                    else
+                    {
+                        result = "{\"info\":\"密码修改失败\",\"status\":\"n\"}";
+                    }
+
+                }
+                else
+                {
+                    result = "{\"info\":\"原始密码不正确\",\"status\":\"n\"}";
+                }
+            }
+            context.Response.Write(result);
         }
 
         #endregion

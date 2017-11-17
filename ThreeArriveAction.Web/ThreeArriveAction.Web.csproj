@@ -99,6 +99,7 @@
     <Content Include="admin\LeavesEdit.html" />
     <Content Include="admin\MajorInfo.html" />
     <Content Include="admin\MajorInfoEdit.html" />
+    <Content Include="admin\Password.html" />
     <Content Include="admin\PublicMessageDetails.html" />
     <Content Include="admin\PublicMessages.html" />
     <Content Include="admin\sendMsg.html" />
