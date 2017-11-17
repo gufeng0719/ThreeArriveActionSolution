@@ -147,10 +147,10 @@
                 },
                 callback: function (form) {
                     var data = editor.html();
-                    data = encodeURIComponent(data);
+                    //data = encodeURIComponent(data);
                     var formData = $("#form1").serializeArray();
-                    formData[4].value= data;
-                    console.info(formData);
+                    formData[4].value = data;
+                   // console.info(formData);
                     $.ajax({
                         url: '../Ajax/sys_InteractionLearnsManager.ashx?type=save',
                         type: 'post',
@@ -176,7 +176,7 @@
         function LoadMsg() {
             //判断是添加还是修改
             var url = window.location.href;
-            var urlStr = url.substring(url.indexOf('?') + 1)
+            var urlStr = url.substring(url.indexOf('?') + 1);
             var urlArr = urlStr.split('&');
             if (urlArr.length == 2) {
                 $("#action").val(urlArr[0].split('=')[1]);

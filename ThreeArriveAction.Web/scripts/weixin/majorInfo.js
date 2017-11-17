@@ -41,7 +41,7 @@
                 that.userName = obj.userName;
                 that.time = obj.time;
                 that.title = obj.title;
-                that.content = obj.content;
+                that.content = decodeURIComponent(obj.content);
                 that.yetRead = obj.yetRead;
             }
         });

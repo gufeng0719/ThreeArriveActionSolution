@@ -125,11 +125,12 @@
                         return;
                     }
                     var context = editor.html();
-                    var content = encodeURIComponent(context);
+                    //console.info(context);
+                    //var content = encodeURIComponent(context);
                     var data = {
                         id: $("#majorid").val(),
                         title: title,
-                        content: content,
+                        content: context,
                         action:$("#action").val()
                     };
                     
