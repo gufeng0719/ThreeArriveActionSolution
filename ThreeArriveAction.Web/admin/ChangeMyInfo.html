@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>淮安区组织部微信平台</title>
+    <link href="skin/default/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="mainbody">
+    <form id="form1">
+        <!--导航栏-->
+        <div class="location">
+            <a href="#" class="home"><i></i><span>个人中心</span></a>
+        </div>
+        <div class="line10">
+        </div>
+        <!--/导航栏-->
+        <!--内容-->
+        <div class="content-tab-wrap">
+            <div id="floatHead" class="content-tab">
+                <div class="content-tab-ul-wrap">
+                    <ul>
+                        <li><a href="javascript:;" onclick="tabs(this);" class="selected">用户基本信息</a></li>
+                        <li><a href="javascript:;" onclick="tabs(this);">用户扩展信息</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <dl>
+                <dt>手机号</dt>
+                <dd>
+                    <input type="text" id="userphone" name="userphone" class="input normal" datatype="m"
+                           sucmsg=" " errormsg="请输入11位的电话号码" />
+                    <!--<input type="hidden" id="action" name="action" value="edit" />-->
+                    <input type="hidden" id="userid" name="userid" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户姓名</dt>
+                <dd>
+                    <input type="text" id="username" name="username" class="input normal" datatype="*"
+                           sucmsg=" " errormsg="请输入用户名" />
+                    <span class="Validform_checktip">*</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户密码</dt>
+                <dd>
+                    <input type="password" id="userpassword" name="userpassword" class="input normal"
+                           datatype="*6-12" sucmsg=" " errormsg="请输入用户密码" />
+                </dd>
+            </dl>
+            <!--<dl>
+                <dt>用户组织角色</dt>
+                <dd>
+                    <div id="org" class="single-select">
+                        <select id="organid" name="organid" datatype="*" disabled="disabled" errormsg="请选择组织角色" sucmsg=" "></select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>村居</dt>
+                <dd>
+                    <div id="village" class="single-select">
+                        <select id="villageid" name="villageid" disabled="disabled" datatype="*" errormsg="请选择村居" sucmsg=" "></select>
+                    </div>
+                </dd>
+            </dl>-->
+            <dl>
+                <dt>用户职位</dt>
+                <dd>
+                    <input type="text" id="userduties" name="userduties" class="input normal" datatype="*"
+                           sucmsg=" " errormsg="请输入职务" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>任职日期</dt>
+                <dd>
+                    <div class="input-date">
+                        <input id="userbirthday" name="userbirthday" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                               class="input date" />
+                        <i>日期</i>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+        <div class="tab-content" style="display: none;">
+            <dl>
+                <dt>用户照片</dt>
+                <dd>
+                    <img id="userimg" src="../images/noneimg.jpg" style="max-height: 80px;" />
+                    <input type="text" id="userphoto" name="userphoto" class="input normal upload-path" />
+                    <div class="upload-box upload-img">
+                    </div>
+                    <span class="Validform_checktip">（尺寸：宽720像素，高400像素） 小于200k;</span>
+                </dd>
+            </dl>
+            <dl>
+                <dt>联系地址</dt>
+                <dd>
+                    <textarea id="userurl" name="userurl" rows="2" cols="20" class="input normal"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户简介</dt>
+                <dd>
+                    <textarea id="introduction" name="introduction" class="input normal" rows="2" cols="20"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户荣誉</dt>
+                <dd>
+                    <textarea id="honor" name="honor" class="input normal" rows="2" cols="20"></textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt>用户学历</dt>
+                <dd>
+                    <div class="rule-single-select" id="edu">
+                        <select id="education" name="education">
+                            <option value="大学本科">大学本科</option>
+                            <option value="大学专科">大学专科</option>
+                            <option value="高中">高中</option>
+                            <option value="初中">初中</option>
+                            <option value="小学">小学</option>
+                            <option value="硕士研究生">硕士研究生</option>
+                            <option value="博士研究生">博士研究生</option>
+                        </select>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>入党时间</dt>
+                <dd>
+                    <input type="text" id="joinpartydate" name="joinpartydate" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                           class="input date" />
+                </dd>
+            </dl>
+            <dl>
+                <dt>备注</dt>
+                <dd>
+                    <textarea id="remark" name="remark" class="input normal" rows="2" cols="20"></textarea>
+                </dd>
+            </dl>
+        </div>
+        <!--/内容-->
+        <!--工具栏-->
+        <div class="page-footer">
+            <div class="btn-list">
+                <button type="submit" class="btn" id="btnSave">
+                    提交保存
+                </button>
+                <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <!--/工具栏-->
+    </form>
+
+    <script type="text/javascript" src="../scripts/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery/Validform_v5.3.2_min.js"></script>
+    <script type="text/javascript" src="../scripts/datepicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="../scripts/lhgdialog/lhgdialog.js?skin=idialog"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.js"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.queue.js"></script>
+    <script type="text/javascript" src="../scripts/swfupload/swfupload.handlers.js"></script>
+    <script type="text/javascript" src="js/layout.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            //初始化上传控件
+            $(".upload-img").each(function () {
+                $(this).InitSWFUpload({ sendurl: "../Ajax/upload_ajax.ashx", flashurl: "../scripts/swfupload/swfupload.swf", filetypes: "*.jpg;*.jpge;*.png;*.gif;*.rar;*.zip;*.doc;*.xls;*.mp3;*.mp4" });
+            });
+
+            //加载组织角色数据
+            $.getJSON('../Ajax/sys_OrganizationsManager.ashx?type=select', function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].OrganizationId + ">" + msg.rows[i].OrganizationName + "</option>";
+                    var li = "<li>" + msg.rows[i].OrganizationName + "</li>";
+                    $("#organid").append(s);
+                }
+                $("#org").ruleSingleSelect().addClass("rule-single-select");
+            });
+
+            //加载村居数据
+            $.getJSON('../Ajax/sys_VillagesManager.ashx?type=select', function (msg) {
+                for (var i = 0; i < msg.total; i++) {
+                    var s = "<option  value=" + msg.rows[i].value + ">" + msg.rows[i].title + "</option>";
+                    var li = "<li>" + msg.rows[i].title + "</li>";
+                    $("#villageid").append(s);
+                }
+                $("#village").ruleSingleSelect().addClass("rule-single-select");
+                LoadMsg();
+            });
+            $("#form1").Validform({
+                btnSubmit: '#btnSave',
+                showAllError: true,
+                //postonce: true,
+                tiptype: function (msg, o, cssctl) {
+                    /*msg：提示信息;
+                    o:{obj:*,type:*,curform:*}
+                    obj指向的是当前验证的表单元素（或表单对象）；
+                    type指示提示的状态，值为1、2、3、4， 1：正在检测/提交数据，2：通过验证，3：验证失败，4：提示ignore状态；
+                    curform为当前form对象;
+                    cssctl:内置的提示信息样式控制函数，该函数需传入两个参数：显示提示信息的对象 和 当前提示的状态（既形参o中的type）；*/
+                    //全部验证通过提交表单时o.obj为该表单对象;
+                    if (!o.obj.is("form")) {
+                        //定位到相应的Tab页面
+                        if (o.obj.is(o.curform.find(".Validform_error:first"))) {
+                            var tabobj = o.obj.parents(".tab-content"); //显示当前的选项
+                            var tabindex = $(".tab-content").index(tabobj); //显示当前选项索引
+                            if (!$(".content-tab ul li").eq(tabindex).children("a").hasClass("selected")) {
+                                $(".content-tab ul li a").removeClass("selected");
+                                $(".content-tab ul li").eq(tabindex).children("a").addClass("selected");
+                                $(".tab-content").hide();
+                                tabobj.show();
+                            }
+                        }
+                        //页面上不存在提示信息的标签时，自动创建;
+                        if (o.obj.parents("dd").find(".Validform_checktip").length == 0) {
+                            o.obj.parents("dd").append("<span class='Validform_checktip' />");
+                            o.obj.parents("dd").next().find(".Validform_checktip").remove();
+                        }
+                        var objtip = o.obj.parents("dd").find(".Validform_checktip");
+                        cssctl(objtip, o.type);
+                        objtip.text(msg);
+                    }
+                },
+                callback: function (form) {
+                    $.ajax({
+                        url: '../Ajax/sys_UsersManager.ashx?type=update',
+                        type: 'post',
+                        data: $("#form1").serializeArray(),
+                        success: function (data, obj) {
+                            var reg = $.parseJSON(data);
+                            if (reg.status == "y") {
+                                alert(reg.info);
+                                //window.location.href = "UsersList.html";
+                            } else {
+                                alert(reg.info);
+                            }
+                        },
+                        error: function (data, obj) {
+                            alert("通讯错误");
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+
+        function LoadMsg() {
+            $.getJSON('../Ajax/sys_UsersManager.ashx?type=myself', function (msg) {
+                if (msg) {
+                    $("#userid").val(msg.UserId);
+                    $("#userphone").val(msg.UserPhone);
+                    $("#username").val(msg.UserName);
+                    $("#userduties").val(msg.UserDuties);
+                    //$("#organid").val(msg.OrganizationId);
+                    //$("#org span").text($("#organid").find("option:selected").text());
+                    //$("#villageid").val(msg.VillageId);
+                    //console.info($("#villageid").find("option:selected").text());
+
+                    //$("#village span").text($("#villageid").find("option:selected").text());
+                    $("#userbirthday").val(msg.UserBirthday);
+                    $("#userpassword").val(msg.UserPassword);
+                    if (msg.info.length > 0) {
+                        $("#userimg").attr("src", msg.info[0].UserPhoto);
+                        $("#userphoto").val(msg.info[0].UserPhoto);
+                        $("#userurl").val(msg.info[0].UserUrl);
+                        $("#introduction").val(msg.info[0].PersonalIntroduction);
+                        $("#honor").val(msg.info[0].PersonalHonor);
+                        $("#education").val(msg.info[0].UserEducation);
+                        $("#edu span").text(msg.info[0].UserEducation);
+                        $("#joinpartydate").val(msg.info[0].JoinPartyDate);
+                        $("#remark").val(msg.info[0].UserRemarks);
+                    }
+                }
+            });
+
+        }
+    </script>
+</body>
+</html>

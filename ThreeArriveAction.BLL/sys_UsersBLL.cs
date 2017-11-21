@@ -100,6 +100,20 @@ namespace ThreeArriveAction.BLL
             }
         }
 
+        public string UpdateUserModel(sys_UsersModel userModel)
+        {
+            bool bl = userDAL.UpdateUserModel(userModel);
+            if (bl)
+            {
+                return "{\"info\":\"用户修改成功\",\"status\":\"y\"}";
+            }
+            else
+            {
+                return "{\"info\":\"用户修改失败\",\"status\":\"n\"}";
+            }
+
+        }
+
         public bool ChangePassword(int uid, string password)
         {
             bool bl = userDAL.ChangePassword(uid,password);

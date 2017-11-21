@@ -71,6 +71,12 @@ namespace ThreeArriveAction.Web.Ajax
                 case "changePwd":
                     ChangePassword(context);
                     break;
+                case "myself":
+                    GetMyUserModel(context);
+                    break;
+                case "update":
+                    UpdateUserModel(context);
+                    break;
                 default:
                     context.Response.Write("错误的请求");
                     return;
@@ -247,6 +253,25 @@ namespace ThreeArriveAction.Web.Ajax
         }
         #endregion
 
+        #region 加载本人用户信息
+        private void GetMyUserModel(HttpContext context)
+        {
+            //获取当前登录的操作者信息
+            sys_UsersModel model = new ManagePage().GetUsersinfo();
+            string result = "";
+            if (model == null)
+            {
+                result = "";
+            }
+            else
+            {
+                result = usersBLL.GetUsersModelJson(model.UserId);
+            }
+
+            context.Response.Write(result);
+        }
+        #endregion
+
         #region 保存用户信息
         private void SaveUser(HttpContext context)
         {
@@ -288,7 +313,7 @@ namespace ThreeArriveAction.Web.Ajax
                 userModel.UserInfoModel = infoModel;
             }
             string result = "";
-            if (action.IndexOf("add") > 0)
+            if (action.Contains("add"))
             {
                 result = usersBLL.AddUser(userModel);
             }
@@ -297,6 +322,52 @@ namespace ThreeArriveAction.Web.Ajax
                 userModel.UserId = int.Parse(MXRequest.GetFormString("userid"));
                 result = usersBLL.UpdateUser(userModel);
             }
+            context.Response.Write(result);
+        }
+
+        public void UpdateUserModel(HttpContext context)
+        {
+            sys_UsersModel userModel = new sys_UsersModel();
+            sys_UsersInfoModel infoModel = new sys_UsersInfoModel();
+            userModel.UserPhone = MXRequest.GetFormString("userphone").ToString();
+            userModel.UserName = MXRequest.GetFormString("username").ToString();
+            userModel.UserDuties = MXRequest.GetFormString("userduties").ToString();
+            //userModel.OrganizationId = int.Parse(MXRequest.GetFormString("organid").ToString());
+            //userModel.VillageId = int.Parse(MXRequest.GetFormString("villageid").ToString());
+            userModel.UserBirthday = MXRequest.GetFormString("userbirthday").ToString();
+            userModel.UserPassword = MXRequest.GetFormString("userpassword").ToString();
+
+
+            bool blinfo = false;
+            infoModel.UserPhoto = MXRequest.GetFormString("userphoto");
+            infoModel.UserUrl = MXRequest.GetFormString("userurl");
+            infoModel.PersonalIntroduction = MXRequest.GetFormString("introduction");
+            infoModel.PersonalHonor = MXRequest.GetFormString("honor");
+            infoModel.UserEducation = MXRequest.GetFormString("education");
+            infoModel.JoinPartyDate = MXRequest.GetFormString("joinpartydate");
+            infoModel.UserRemarks = MXRequest.GetFormString("remark");
+            //循环查看infoModel中是否有属性值不为空或者不为空字符串
+            PropertyInfo[] propertyInfo = infoModel.GetType().GetProperties();
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                object objectValue = propertyInfo[i].GetGetMethod().Invoke(infoModel, null);
+                if (objectValue == null)
+                {
+                    continue;
+                }
+                if (objectValue.ToString() != "" && objectValue.ToString() != "0")
+                {
+                    blinfo = true;
+                }
+            }
+            if (blinfo)
+            {
+                userModel.UserInfoModel = infoModel;
+            }
+
+            userModel.UserId = int.Parse(MXRequest.GetFormString("userid"));
+            string result = usersBLL.UpdateUserModel(userModel);
+
             context.Response.Write(result);
         }
         #endregion

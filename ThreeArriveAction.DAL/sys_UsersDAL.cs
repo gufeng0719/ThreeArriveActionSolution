@@ -256,6 +256,115 @@ namespace ThreeArriveAction.DAL
             }
         }
 
+        public bool UpdateUserModel(sys_UsersModel model)
+        {
+            List<CommandInfo> cmdList = new List<CommandInfo>();
+            CommandInfo cmdInfo1 = new CommandInfo();
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update sys_Users set ");
+            strSql.Append("UserPhone=@UserPhone,");
+            strSql.Append("UserName=@UserName,");
+            strSql.Append("UserDuties=@UserDuties,");
+            strSql.Append("UserBirthday=@UserBirthday,");
+            strSql.Append("UserPassword=@UserPassword ");
+            strSql.Append(" where UserId=@UserId");
+            SqlParameter[] parameters = {
+                    new SqlParameter("@UserId", SqlDbType.Int,4),
+                    new SqlParameter("@UserPhone", SqlDbType.VarChar,11),
+                    new SqlParameter("@UserName", SqlDbType.VarChar,10),
+                    new SqlParameter("@UserDuties", SqlDbType.VarChar,50),
+                    new SqlParameter("@UserBirthday", SqlDbType.VarChar,50),
+                    new SqlParameter("@UserPassword", SqlDbType.VarChar,20)};
+            parameters[0].Value = model.UserId;
+            parameters[1].Value = model.UserPhone;
+            parameters[2].Value = model.UserName;
+            parameters[3].Value = model.UserDuties;
+            parameters[4].Value = model.UserBirthday;
+            parameters[5].Value = model.UserPassword;
+            cmdInfo1.CommandText = strSql.ToString();
+            cmdInfo1.Parameters = parameters;
+            cmdList.Add(cmdInfo1);
+            sys_UsersInfoDAL infoDAL = new sys_UsersInfoDAL();
+            //已存在子表信息
+            if (infoDAL.GetUsersInfoByUserId(model.UserId) != null)
+            {
+                CommandInfo cmdInfo2 = new CommandInfo();
+                StringBuilder strSql2 = new StringBuilder();
+                strSql2.Append("update sys_UsersInfo set ");
+                strSql2.Append("UserPhoto =@UserPhoto,");
+                strSql2.Append("UserUrl=@UserUrl,");
+                strSql2.Append("PersonalIntroduction=@PersonalIntroduction,");
+                strSql2.Append("PersonalHonor=@PersonalHonor,");
+                strSql2.Append("UserEducation=@UserEducation,");
+                strSql2.Append("JoinPartyDate=@JoinPartyDate,");
+                strSql2.Append("UserRemarks=@UserRemarks");
+                strSql2.Append(" where UserId=@UserId ");
+                SqlParameter[] parameters2 ={
+                                            new SqlParameter("@UserId",SqlDbType.Int,4),
+                                            new SqlParameter("@UserPhoto",SqlDbType.VarChar,50),
+                                            new SqlParameter("@UserUrl",SqlDbType.VarChar,500),
+                                            new SqlParameter("@PersonalIntroduction",SqlDbType.VarChar,5000),
+                                            new SqlParameter("@PersonalHonor",SqlDbType.VarChar,5000),
+                                            new SqlParameter("@UserEducation",SqlDbType.VarChar,100),
+                                            new SqlParameter("@JoinPartyDate",SqlDbType.VarChar,50),
+                                            new SqlParameter("@UserRemarks",SqlDbType.VarChar,5000)
+                                       };
+                parameters2[0].Value = model.UserId;
+                parameters2[1].Value = model.UserInfoModel.UserPhoto;
+                parameters2[2].Value = model.UserInfoModel.UserUrl;
+                parameters2[3].Value = model.UserInfoModel.PersonalIntroduction;
+                parameters2[4].Value = model.UserInfoModel.PersonalHonor;
+                parameters2[5].Value = model.UserInfoModel.UserEducation;
+                parameters2[6].Value = model.UserInfoModel.JoinPartyDate;
+                parameters2[7].Value = model.UserInfoModel.UserRemarks;
+                cmdInfo2.CommandText = strSql2.ToString();
+                cmdInfo2.Parameters = parameters2;
+                cmdList.Add(cmdInfo2);
+            }
+            else
+            {
+                //不存在子表信息
+                if (model.UserInfoModel != null)
+                {
+                    StringBuilder strSql3 = new StringBuilder();
+                    strSql3.Append("insert into sys_UsersInfo(");
+                    strSql3.Append("UserId,UserPhoto,UserUrl,PersonalIntroduction,PersonalHonor,");
+                    strSql3.Append("UserEducation,JoinPartyDate,UserRemarks)");
+                    strSql3.Append(" values (");
+                    strSql3.Append("@UserId,@UserPhoto,@UserUrl,@PersonalIntroduction,");
+                    strSql3.Append("@PersonalHonor,@UserEducation,@JoinPartyDate,@UserRemarks)");
+                    SqlParameter[] parameters3 = {
+                        new SqlParameter("@UserId", SqlDbType.Int,4),
+                        new SqlParameter("@UserPhoto", SqlDbType.NVarChar,50),
+                        new SqlParameter("@UserUrl", SqlDbType.NVarChar,500),
+                        new SqlParameter("@PersonalIntroduction",SqlDbType.NVarChar,5000),
+                        new SqlParameter("@PersonalHonor",SqlDbType.NVarChar,5000),
+                        new SqlParameter("@UserEducation",SqlDbType.NVarChar,100),
+                        new SqlParameter("@JoinPartyDate",SqlDbType.VarChar,50),
+                        new SqlParameter("@UserRemarks", SqlDbType.NVarChar,5000)
+                                                 };
+                    parameters3[0].Value = model.UserId;
+                    parameters3[1].Value = model.UserInfoModel.UserPhoto;
+                    parameters3[2].Value = model.UserInfoModel.UserUrl;
+                    parameters3[3].Value = model.UserInfoModel.PersonalIntroduction;
+                    parameters3[4].Value = model.UserInfoModel.PersonalHonor;
+                    parameters3[5].Value = model.UserInfoModel.UserEducation;
+                    parameters3[6].Value = model.UserInfoModel.JoinPartyDate;
+                    parameters3[7].Value = model.UserInfoModel.UserRemarks;
+                    CommandInfo cmd3 = new CommandInfo(strSql3.ToString(), parameters3);
+                    cmdList.Add(cmd3);
+                }
+            }
+            int rows = DbHelperSQL.ExecuteSqlTran(cmdList);
+            if (rows > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         /// <summary>
         /// 根据用户编号修改用户密码
         /// </summary>

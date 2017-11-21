@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\center.html" />
+    <Content Include="admin\ChangeMyInfo.html" />
     <Content Include="admin\ie6update.html" />
     <Content Include="admin\index.html" />
     <Content Include="admin\IntegralCharts.html" />
